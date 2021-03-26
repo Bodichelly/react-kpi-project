@@ -1,1 +1,12 @@
-.Header {}
+.Header {
+    a[elementType = item] {
+        white-space: normal; 
+        min-width: 270px;
+    }
+    div[elementType = menu]{
+        
+            left: -110px;
+        
+        
+    }
+}
