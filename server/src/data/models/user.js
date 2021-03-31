@@ -4,7 +4,15 @@ export default (orm, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING
     },
-    name: {
+    firstName: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    lastName: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    middlesName: {
       allowNull: false,
       type: DataTypes.STRING
     },
@@ -16,6 +24,26 @@ export default (orm, DataTypes) => {
     passwordHash: {
       allowNull: false,
       type: DataTypes.STRING
+    },
+    birthday: {
+      allowNull: false,
+      type: DataTypes.DATE
+    },
+    passportSeria: DataTypes.STRING,
+    passportNumber: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true
+    },
+    ITN: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true
+    },
+    isActive: {
+      defaultValue: true,
+      allowNull: false,
+      type: DataTypes.BOOLEAN
     }
   }, {});
 
