@@ -5,9 +5,7 @@ import passport from 'passport';
 import cors from 'cors';
 import routes from './api/routes/index';
 import sequelize from './data/db/connection';
-import authorizationMiddleware from './api/middlewares/authorizationMiddleware';
 import errorHandlerMiddleware from './api/middlewares/errorHandlerMiddleware';
-import routesWhiteList from './config/routesWhiteListConfig';
 import env from './env';
 import './config/passportConfig';
 
@@ -15,7 +13,7 @@ const app = express();
 
 sequelize
   .authenticate()
-  .then(() => sequelize.sync({ force: true }))
+  .then(() => sequelize.sync(/* { force: true } */))
   .then(() => {
     // eslint-disable-next-line no-console
     console.log('Connection has been established successfully.');
@@ -29,8 +27,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
-
-app.use('/api/', authorizationMiddleware(routesWhiteList));
 
 routes(app);
 

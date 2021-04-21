@@ -23,4 +23,10 @@ export default models => {
   Contacts.belongsTo(Region);
   Contacts.belongsTo(Area);
   Contacts.belongsTo(Locality);
+
+  Region.hasMany(Area);
+  Area.belongsTo(Region);
+
+  Area.hasMany(Locality);
+  Locality.belongsTo(Area);
 };
