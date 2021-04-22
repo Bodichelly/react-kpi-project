@@ -16,7 +16,11 @@ passport.use(
     try {
       const user = await userRepository.getByEmail(login);
       if (!user) {
-        return done({ status: 401, message: 'Incorrect email.' }, false);
+        return done({ status: 401, message: 'Incorrect email.' }, null, false);
+      }
+
+      if (!user.isActive) {
+        return done({ status: 403, message: 'User with this credentials is blocked.' }, null, false);
       }
 
       return await compare(password, user.passwordHash)
