@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import {useDispatch, useSelector} from 'react-redux'
-import {switchSearchType} from 'src/redux/actions'
+import actions from 'src/redux/actions'
 import {
   SWITCH_SEARCH_TYPE,
   SEARCH_BY_ADDRESS,
@@ -16,7 +16,7 @@ const SearchBar = () => {
   const searchBarTitle = useSelector(state => state.app.loadingUsers)
 
   const onSearchTypeSelect = (searchType) =>{
-    dispatch(switchSearchType(searchType));
+    dispatch(actions.switchSearchType(searchType));
   }
 
   return (

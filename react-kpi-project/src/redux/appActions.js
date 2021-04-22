@@ -15,5 +15,4 @@ const switchSearchType = (searchType) => {
 
 export default {
     switchSearchType,
-
 }
