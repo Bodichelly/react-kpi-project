@@ -12,7 +12,7 @@ export default (orm, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING
     },
-    middlesName: {
+    middleName: {
       allowNull: false,
       type: DataTypes.STRING
     },
