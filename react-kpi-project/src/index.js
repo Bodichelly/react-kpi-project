@@ -6,7 +6,8 @@ import createSagaMiddleware from 'redux-saga'
 import App from './App';
 import {rootReducer} from './redux/rootReducer'
 import {sagaWatcher} from './redux/saga'
-import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 import './index.css';
 
 

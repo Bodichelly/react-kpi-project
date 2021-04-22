@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       <Header />
       {/* <Loggin></Loggin> */}
-      {/* <SearchPage></SearchPage> */}
+      <SearchPage></SearchPage>
     </div>
   );
 }

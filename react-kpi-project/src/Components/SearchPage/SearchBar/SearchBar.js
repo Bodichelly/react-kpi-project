@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 const SearchBar = () => {
   const dispatch = useDispatch()
 
-  const searchBarTitle = useSelector(state => state.app.loadingUsers)
+  const searchBarType = useSelector(state => state.app.searchType)
 
   const onSearchTypeSelect = (searchType) =>{
     dispatch(actions.switchSearchType(searchType));
@@ -30,6 +30,8 @@ const SearchBar = () => {
               type="radio"
               name="flexRadioDefault"
               id="flexRadioDefault1"
+              checked={searchBarType==SEARCH_BY_ADDRESS}
+              onClick={()=>{onSearchTypeSelect(SEARCH_BY_ADDRESS)}}
             />
             <label className="form-check-label" htmlFor="flexRadioDefault1">
               Пошук за адресою
@@ -41,6 +43,8 @@ const SearchBar = () => {
               type="radio"
               name="flexRadioDefault"
               id="flexRadioDefault2"
+              checked={searchBarType==SEARCH_BY_NAME}
+              onClick={()=>{onSearchTypeSelect(SEARCH_BY_NAME)}}
             />
             <label className="form-check-label" htmlFor="flexRadioDefault2">
               Пошук за назвою
@@ -52,6 +56,8 @@ const SearchBar = () => {
               type="radio"
               name="flexRadioDefault"
               id="flexRadioDefault3"
+              checked={searchBarType==SEARCH_BY_NOTARY}
+              onClick={()=>{onSearchTypeSelect(SEARCH_BY_NOTARY)}}
             />
             <label className="form-check-label" htmlFor="flexRadioDefault3">
               Пошук нотаріусу
