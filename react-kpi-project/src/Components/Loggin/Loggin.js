@@ -39,7 +39,7 @@ const Loggin = () => {
             </div>
             <div class="mb-3 mb-0">
               <p class="text-center">
-                Center aligned text on all viewport sizes.
+                {message}
               </p>
             </div>
             <div class="mb-3 mb-0">

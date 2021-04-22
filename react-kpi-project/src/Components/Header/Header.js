@@ -5,15 +5,15 @@ import styles from "./Header.module.scss";
 const Header = () => {
   return (
     <header className={styles.Header}>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid row mx-auto">
-          <a class="navbar-brand text-wrap col" href="#">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-success">
+        <div className="container-fluid row mx-auto">
+          <a className="navbar-brand text-wrap col" href="#">
             Єдиний реєстр нотаріусів
           </a>
-          <div class="col">
-            <div class="row justify-content-end">
+          <div className="col">
+            <div className="row justify-content-end">
               <button
-                class="navbar-toggler"
+                className="navbar-toggler"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#navbarNav"
@@ -21,22 +21,22 @@ const Header = () => {
                 aria-expanded="false"
                 aria-label="Toggle navigation"
               >
-                <span class="navbar-toggler-icon"></span>
+                <span className="navbar-toggler-icon"></span>
               </button>
             </div>
           </div>
 
           <div
-            class="collapse navbar-collapse justify-content-end"
+            className="collapse navbar-collapse justify-content-end"
             id="navbarNav"
           >
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">
+            <ul className="navbar-nav">
+              <li className="nav-item">
+                <a className="nav-link active" aria-current="page" href="#">
                   Головна
                 </a>
               </li>
-              <li class="nav-item dropdown" >
+              <li className="nav-item dropdown" >
                 
                   <a
                     className={"nav-link active dropdown-toggle "}
@@ -47,22 +47,22 @@ const Header = () => {
                   >
                     Пошук
                   </a>
-                  <div elementType="menu"  className={"dropdown-menu"} >
-                    <a elementType="item" class= "dropdown-item"  href="#">
+                  <div elementtype="menu"  className={"dropdown-menu"} >
+                    <a elementtype="item" className= "dropdown-item"  href="#">
                       Пошук державних нотаріальних контор
                     </a>
 
-                    <a elementType="item" className={ "dropdown-item"} href="#">
+                    <a elementtype="item" className={ "dropdown-item"} href="#">
                       Пошук нотаріусів
                     </a>
 
-                    <a elementType="item" className={ "dropdown-item"} href="#">
+                    <a elementtype="item" className={ "dropdown-item"} href="#">
                       Пошук за адресою
                     </a>
                   </div>
               </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="#">
+              <li className="nav-item">
+                <a className="nav-link active" href="#">
                   Допомога
                 </a>
               </li>
