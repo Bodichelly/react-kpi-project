@@ -16,8 +16,8 @@ const SearchPage = () => {
     <div className="container-md mt-1">
       <div className="row">
          {/* <SearchBar class="col-4"></SearchBar> */}
-         <div className="col-sm-4"><SearchBar class="col-4"></SearchBar></div>
-         <div className="col-sm-8">
+         <div className="col-sm-5"><SearchBar class="col-4"></SearchBar></div>
+         <div className="col-sm-7">
            <div className="card">asdasd</div>
          </div>
       </div>
