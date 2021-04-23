@@ -10,10 +10,12 @@ const Organization = orm.import('./organization');
 const PhoneNumber = orm.import('./phoneNumber');
 const Contacts = orm.import('./contacts');
 const Employment = orm.import('./employment');
+const Archive = orm.import('./archive');
 
 associate({
   User,
   Area,
+  Archive,
   Region,
   Locality,
   Notary,
@@ -26,6 +28,7 @@ associate({
 export {
   User as UserModel,
   Area as AreaModel,
+  Archive as ArchiveModel,
   Region as RegionModel,
   Locality as LocalityModel,
   Notary as NotaryModel,

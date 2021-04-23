@@ -1,5 +1,5 @@
 import localityRepository from '../../data/repositories/localityRepository';
 
-export const getByAreaId = areaId => localityRepository.getByAreaId(areaId);
+export const getByAreaId = async areaId => localityRepository.getByAreaId(areaId);
 
-export const create = body => localityRepository.create(body);
+export const create = async body => localityRepository.create(body);

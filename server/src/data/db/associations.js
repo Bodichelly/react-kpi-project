@@ -1,6 +1,8 @@
 export default models => {
   const {
     Area,
+    Archive,
+    User,
     Region,
     Locality,
     Notary,
@@ -9,6 +11,8 @@ export default models => {
     Contacts,
     Employment
   } = models;
+
+  Archive.belongsTo(User, { foreignKey: { name: 'registratorId' } });
 
   Organization.hasMany(Employment);
   Organization.belongsTo(Contacts);

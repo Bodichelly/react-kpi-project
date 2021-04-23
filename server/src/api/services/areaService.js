@@ -1,5 +1,5 @@
 import areaRepository from '../../data/repositories/areaRepository';
 
-export const getByRegionId = regionId => areaRepository.getByRegionId(regionId);
+export const getByRegionId = async regionId => areaRepository.getByRegionId(regionId);
 
-export const create = body => areaRepository.create(body);
+export const create = async body => areaRepository.create(body);

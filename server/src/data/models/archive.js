@@ -1,5 +1,5 @@
 export default (orm, DataTypes) => {
-  const Area = orm.define('area', {
+  const Archive = orm.define('archive', {
     documentCode: {
       allowNull: false,
       type: DataTypes.STRING
@@ -14,5 +14,5 @@ export default (orm, DataTypes) => {
     }
   }, {});
 
-  return Area;
+  return Archive;
 };
