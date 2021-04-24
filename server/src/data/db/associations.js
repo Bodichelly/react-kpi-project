@@ -18,9 +18,8 @@ export default models => {
   Organization.belongsTo(Contacts);
 
   Employment.belongsTo(Organization);
-  Employment.belongsTo(Notary);
 
-  Notary.hasMany(Employment);
+  Notary.belongsTo(Employment);
   Notary.belongsTo(Contacts);
 
   Contacts.hasMany(PhoneNumber);

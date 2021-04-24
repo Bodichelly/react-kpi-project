@@ -2,6 +2,7 @@ import { Router } from 'express';
 import * as notaryService from '../services/notaryService';
 import * as contactsService from '../services/contactsService';
 import * as phoneNumberService from '../services/phoneNumberService';
+import * as employmentService from '../services/employmentService';
 
 const router = Router();
 
@@ -18,9 +19,12 @@ router
     .then(data => notaryService.getNotaryById(data.id))
     .then(data => res.send(data))
     .catch(next))
-  .put('/:id', (req, res, next) => notaryService.updateNotaryById(req.params.id, req.body)
-    .then(() => notaryService.getNotaryById(req.params.id))
-    .then(data => contactsService.updateContacts(data.contact, req.body))
+  .put('/:id', (req, res, next) => notaryService.getNotaryById(req.params.id)
+    .then(data => Promise.all([
+      employmentService.updateEmployment(data.employment, req.body.employment),
+      contactsService.updateContacts(data.contact, req.body)
+    ]))
+    .then(([employment]) => notaryService.updateNotaryById(req.params.id, { ...req.body, employmentId: employment.id }))
     .then(() => notaryService.getNotaryById(req.params.id))
     .then(data => res.send(data))
     .catch(next))
