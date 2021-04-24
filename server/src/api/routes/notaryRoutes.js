@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import * as notaryService from '../services/notaryService';
+import * as contactsService from '../services/contactsService';
+import * as phoneNumberService from '../services/phoneNumberService';
 
 const router = Router();
 
@@ -10,10 +12,16 @@ router
   .get('/:id', (req, res, next) => notaryService.getNotaryById(req.params.id)
     .then(data => res.send(data))
     .catch(next))
-  .post('/:id', (req, res, next) => notaryService.create(req.body)
+  .post('/', (req, res, next) => contactsService.create(req.body)
+    .then(data => phoneNumberService.createAll(req.body.phoneNumbers, data))
+    .then(data => notaryService.create({ ...req.body, contactId: data.id }))
+    .then(data => notaryService.getNotaryById(data.id))
     .then(data => res.send(data))
     .catch(next))
   .put('/:id', (req, res, next) => notaryService.updateNotaryById(req.params.id, req.body)
+    .then(() => notaryService.getNotaryById(req.params.id))
+    .then(data => contactsService.updateContacts(data.contact, req.body))
+    .then(() => notaryService.getNotaryById(req.params.id))
     .then(data => res.send(data))
     .catch(next))
   .delete('/:id', (req, res, next) => notaryService.deleteNotaryById(req.params.id)

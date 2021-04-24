@@ -10,17 +10,15 @@ router
     .then(data => res.send(data))
     .catch(next))
   .post('/', (req, res, next) => contactsService.create(req.body)
-    .then(data => {
-      const { phoneNumbers } = req.body;
-      phoneNumbers.forEach(phoneNumber => phoneNumberService.create({ phoneNumber, contactId: data.id }));
-      return data;
-    })
+    .then(data => phoneNumberService.createAll(req.body.phoneNumbers, data))
     .then(data => organizationService.create({ ...req.body, contactId: data.id }))
     .then(data => organizationService.getOrganizationById(data.id))
     .then(data => res.send(data))
     .catch(next))
   .put('/:id', (req, res, next) => organizationService.updateOrganizationById(req.params.id, req.body)
-    .then(data => organizationService.getOrganizationById(data.id))
+    .then(() => organizationService.getOrganizationById(req.params.id))
+    .then(data => contactsService.updateContacts(data.contact, req.body))
+    .then(() => organizationService.getOrganizationById(req.params.id))
     .then(data => res.send(data))
     .catch(next))
   .delete('/:id', (req, res, next) => organizationService.deleteOrganizationById(req.params.id)
