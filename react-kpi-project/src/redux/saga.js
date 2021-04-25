@@ -13,6 +13,8 @@ import {
   SEARCH_BY_ADDRESS,
   SEARCH_BY_NAME,
   SEARCH_BY_NOTARY,
+  FETCH_AREA,
+  FETCH_SETTLEMENT,
 } from "./types";
 import actions from "src/redux/actions";
 
@@ -22,6 +24,8 @@ const delay = (time) =>
 export function* sagaWatcher() {
   yield takeLatest(FETCH_SEARCH_DATA, fetchSearchData);
   yield takeLatest(FETCH_REGION, fetchRegion);
+  yield takeLatest(FETCH_AREA, fetchArea);
+  yield takeLatest(FETCH_SETTLEMENT, fetchSettlement);
   // yield takeEvery(REQUEST_POSTS, fetchPostsWorker)
   // yield takeEvery(REQUEST_USERS, fetchUsersWorker)
   // yield takeEvery(SELECT_USER, selectUserWorker)
@@ -35,7 +39,7 @@ function* fetchRegion(action) {
       return;
     }
 
-    const regions = yield call(() => {});
+    const regions = yield call(getRegions);
     yield put(actions.setRegion, regions);
   } catch (e) {}
 }
@@ -48,7 +52,7 @@ function* fetchArea(action) {
     }
 
     const region = action.payload;
-    const areas = yield call(() => {}, region);
+    const areas = yield call(getAreasByRegionId, region.id);
     yield put(actions.setArea, areas);
   } catch (e) {}
 }
@@ -61,8 +65,8 @@ function* fetchSettlement(action) {
     }
 
     const area = action.payload;
-    const settlement = yield call(() => {}, area);
-    yield put(actions.setArea, settlement);
+    const settlements = yield call(getLocalitiesByAreaId, area.id);
+    yield put(actions.setArea, settlements);
   } catch (e) {}
 }
 
@@ -136,3 +140,18 @@ function* fetchSearchData(action) {
 //   const response = await fetch("https://jsonplaceholder.typicode.com/users?_limit=5")
 //   return await response.json()
 // }
+
+async function getRegions() {
+  const response = await fetch('http://localhost:3000/api/regions');
+  return response.json()
+}
+
+async function getAreasByRegionId(id) {
+  const response = await fetch(`http://localhost:3000/api/areas?id=${id}`);
+  return response.json()
+}
+
+async function getLocalitiesByAreaId(id) {
+  const response = await fetch(`http://localhost:3000/api/localities?id=${id}`);
+  return response.json()
+}
