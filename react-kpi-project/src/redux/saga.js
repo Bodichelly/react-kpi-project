@@ -13,6 +13,8 @@ import {
   SEARCH_BY_ADDRESS,
   SEARCH_BY_NAME,
   SEARCH_BY_NOTARY,
+  FETCH_AREA,
+  FETCH_SETTLEMENT,
 } from "./types";
 import actions from "src/redux/actions";
 
@@ -22,6 +24,8 @@ const delay = (time) =>
 export function* sagaWatcher() {
   yield takeLatest(FETCH_SEARCH_DATA, fetchSearchData);
   yield takeLatest(FETCH_REGION, fetchRegion);
+  yield takeLatest(FETCH_AREA, fetchArea);
+  yield takeLatest(FETCH_SETTLEMENT, fetchSettlement);
   // yield takeEvery(REQUEST_POSTS, fetchPostsWorker)
   // yield takeEvery(REQUEST_USERS, fetchUsersWorker)
   // yield takeEvery(SELECT_USER, selectUserWorker)
@@ -61,8 +65,8 @@ function* fetchSettlement(action) {
     }
 
     const area = action.payload;
-    const settlement = yield call(() => {}, area);
-    yield put(actions.setArea, settlement);
+    const settlements = yield call(() => {}, area);
+    yield put(actions.setArea, settlements);
   } catch (e) {}
 }
 
