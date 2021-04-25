@@ -3,9 +3,11 @@
         "airbnb-base",
         "eslint:recommended"
     ],
+    "plugins": ["jest"],
     "env": {
         "es6": true,
-        "node": true
+        "node": true,
+        "jest": true
     },
     "parserOptions": {
         "ecmaVersion": 2020
@@ -19,6 +21,11 @@
         "import/prefer-default-export": "off",
         "max-len": ["error", { "code": 120 }],
         "no-multiple-empty-lines": ["error", { "max": 1 }],
-        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
+        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+        "jest/no-disabled-tests": "warn",
+        "jest/no-focused-tests": "error",
+        "jest/no-identical-title": "error",
+        "jest/prefer-to-have-length": "warn",
+        "jest/valid-expect": "error"
     }
 }
