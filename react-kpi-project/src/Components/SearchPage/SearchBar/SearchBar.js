@@ -21,7 +21,7 @@ const SearchUsers = (props) => {
     if (props.searchKey === null) {
       return;
     }
-    if(!username.current){
+    if (!username.current) {
       //dispatch eror message with
     }
     dispatch(actions.fetchSearchData(username.current));
@@ -67,42 +67,54 @@ const SearchUsers = (props) => {
 };
 
 const SearchByAddressField = (props) => {
-  const dispatch = useDispatch()
-  
+  const dispatch = useDispatch();
+
   const onSubmitBtnClick = () => {
     if (props.searchKey === null) {
       return;
     }
-    if(regionSelect.current==="default" || areaSelect.current==="default" || settlementSelect.current==="default"){
+    if (
+      regionSelect.current === "default" ||
+      areaSelect.current === "default" ||
+      settlementSelect.current === "default"
+    ) {
       //error
     }
-    dispatch(actions.fetchSearchData({
-      region: regionSelect.current,
-      area: areaSelect.current,
-      settlement: settlementSelect.current,
-      address: addressInput.current
-    }));
+    dispatch(
+      actions.fetchSearchData({
+        region: regions[regions.indexOf(regionSelect.current)],
+        area: areas[regions.indexOf(areaSelect.current)],
+        settlement: settlements[regions.indexOf(settlementSelect.current)],
+        address: addressInput.current,
+      })
+    );
   };
   useEffect(onSubmitBtnClick, [props.searchKey]);
   const regionSelect = useRef("default");
-  useEffect(()=>{
-    if(regionSelect.current === "default"){
-      dispatch(actions.fetchRegion())
-    }else{
-      dispatch(actions.fetchArea(regionSelect.current))
+  useEffect(() => {
+    if (regionSelect.current === "default") {
+      dispatch(actions.fetchRegion());
+    } else {
+      dispatch(
+        actions.fetchArea(regions[regions.indexOf(regionSelect.current)])
+      );
     }
     areaSelect.current = "default";
     settlementSelect.current = "default";
-  }, [regionSelect])
+  }, [regionSelect]);
   const areaSelect = useRef("default");
-  useEffect(()=>{
-    if(areaSelect.current === "default"){
-      dispatch(actions.fetchArea(regionSelect.current))
-    }else{
-      dispatch(actions.fetchSettlement(areaSelect.current))
+  useEffect(() => {
+    if (areaSelect.current === "default") {
+      dispatch(
+        actions.fetchArea(regions[regions.indexOf(regionSelect.current)])
+      );
+    } else {
+      dispatch(
+        actions.fetchSettlement(areas[regions.indexOf(areaSelect.current)])
+      );
     }
     settlementSelect.current = "default";
-  }, [areaSelect])
+  }, [areaSelect]);
   const settlementSelect = useRef("default");
   const addressInput = useRef("");
 
@@ -135,7 +147,7 @@ const SearchByAddressField = (props) => {
         class="form-select"
         ref={areaSelect}
         aria-label="Default select example"
-        disabled = {areaSelect.current==="default"}
+        disabled={areaSelect.current === "default"}
       >
         <option value="default" selected>
           Район
@@ -145,7 +157,7 @@ const SearchByAddressField = (props) => {
       <select
         class="form-select"
         ref={settlementSelect}
-        disabled = {settlementSelect.current==="default"}
+        disabled={settlementSelect.current === "default"}
         aria-label="Default select example"
       >
         <option value="default" selected>
@@ -166,15 +178,15 @@ const SearchByAddressField = (props) => {
 
 const SearchByNameField = (props) => {
   const dispatch = useDispatch();
-  
+
   const onSubmitBtnClick = () => {
     if (props.searchKey === null) {
       return;
     }
-    if(!name.current){
+    if (!name.current) {
       //error
     }
-    //dispatch
+    dispatch(actions.fetchSearchData(name.current));
   };
   const name = useRef("");
   useEffect(onSubmitBtnClick, [props.searchKey]);
@@ -183,7 +195,6 @@ const SearchByNameField = (props) => {
       <input
         type="text"
         class="form-control"
-        id="exampleFormControlInput1"
         placeholder="Назва закладу"
       ></input>
     </div>
@@ -197,16 +208,23 @@ const SearchByNotaryField = (props) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  useEffect(handleSubmit, [props.searchKey]);
-  handleSubmit = (data) => {
-    if (props.searchKey === null) {
-      return;
-    }
-    if(!data.number && !data.lastName && !data.firstName && !data.middleName){
-      //dispatch eror message with
-    }
-    dispatch(actions.fetchSearchData(data));
-  };
+
+  const onSubmitBtnClick = () =>
+    handleSubmit((data) => {
+      if (props.searchKey === null) {
+        return;
+      }
+      if (
+        !data.number &&
+        !data.lastName &&
+        !data.firstName &&
+        !data.middleName
+      ) {
+        //dispatch eror message with
+      }
+      dispatch(actions.fetchSearchData(data));
+    });
+  useEffect(onSubmitBtnClick, [props.searchKey]);
   return (
     <form className="container-fluid d-grid gap-3">
       <input
@@ -313,7 +331,7 @@ const SearchBar = () => {
                 }}
               />
               <label className="form-check-label" htmlFor="flexRadioDefault3">
-                Пошук нотаріусу
+                Пошук користувачів
               </label>
             </div>
           ) : null}

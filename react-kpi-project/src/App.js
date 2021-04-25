@@ -38,14 +38,67 @@ function App() {
             <CreateUserPage />
           </Route>
           <Route path="/private-notary-page/:notaryId">
-            <PrivateNotaryPage/>
+            <PrivateNotaryPage />
           </Route>
           <Route path="/state-notary-department-page/:notaryId">
-            <StateNotaryDepartment/>
+            <StateNotaryDepartment />
+          </Route>
+          <Route path="/new-private-notary-page">
+            <PrivateNotaryPage />
+          </Route>
+          <Route path="/new-state-notary-department-page">
+            <StateNotaryDepartment />
+          </Route>
+          <Route path="/help">
+            <div className="container-md mt-1">
+              <div className="card bg-warning">
+                <div className="card-body bg-light m-1">
+                  <h2>Допомога</h2>
+                  <div>
+                    Для перегляду сайту рекомендується використовувати
+                    веб-браузери: Mozilla Firefox, Google
+                    Chrome, Opera
+                    <br />
+                    <br />
+                    <br />
+                    У випадку виникнення проблем під час роботи з сайтом просимо
+                    зателефонувати:
+                    <br />
+                    <br />- <b>черговому інженеру</b> за телефоном:{" "}
+                    <b>0-666-666-666</b>
+                    <br />- <b>адміністратору</b> за телефонами:{" "}
+                    <b>(+38 666) 666-66-66</b>, <b>(+38 666) 666-66-66</b>
+                    <br />
+                    <br />
+                    <a
+                      href="https://ern.minjust.gov.ua/docs/ern_search_rules.pdf"
+                      style={{textDecoration: "underlined"}}
+                      disabled=""
+                    >
+                      Правила пошуку інформації на сайті
+                    </a>
+                    <br />
+                    <br />
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
           </Route>
           <Route path="/">
-            {/* <Home /> */}
-            <h2>HOME</h2>
+            <div className="container-md mt-1">
+              <div className="card bg-warning">
+                <div className="card-body bg-light m-1">
+                  <h2>Головна</h2>
+                  <hr class="dropdown-divider mb-3 mt-3" />
+                  <Link to="/search">Пошук державних нотаріальних контор</Link>
+                  <hr class="dropdown-divider mb-3 mt-3" />
+                  <Link to="/search">Пошук нотаріусів</Link>
+                  <hr class="dropdown-divider mb-3 mt-3" />
+                  <Link to="/search">Пошук за адресою</Link>
+                </div>
+              </div>
+            </div>
           </Route>
         </Switch>
       </Router>
