@@ -7,7 +7,6 @@ import jwtMiddleware from '../middlewares/jwtMiddleware';
 
 const router = Router();
 
-// user added to the request (req.user) in a strategy, see passport config
 router
   .post('/login', authenticationMiddleware, (req, res, next) => authService.login(req.user)
     .then(data => res.send(data))
