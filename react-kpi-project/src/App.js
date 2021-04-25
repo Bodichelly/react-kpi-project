@@ -17,6 +17,7 @@ import Loader from "./Components/Loader/Loader";
 import SearchPage from "./Components/SearchPage/SearchPageTemplate/SearchPage";
 import PrivateNotaryPage from "./Components/NotaryPage/PrivateNotaryPage"
 import StateNotaryDepartment from "./Components/NotaryPage/StateNotaryDepartmentPage"
+import CreateUserPage from './Components/CreateUserPage/CreateUserPage';
 
 function App() {
   const isLoading = useSelector((state) => state.app.isLoading);
@@ -32,6 +33,9 @@ function App() {
           </Route>
           <Route path="/loggin">
             <Loggin />
+          </Route>
+          <Route path="/register">
+            <CreateUserPage />
           </Route>
           <Route path="/private-notary-page/:notaryId">
             <PrivateNotaryPage/>
