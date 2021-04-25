@@ -1,13 +1,26 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./Header.module.scss";
+import actions from "src/redux/actions";
+import { Link } from "react-router-dom";
+import {
+  SEARCH_BY_ADDRESS,
+  SEARCH_BY_NAME,
+  SEARCH_BY_NOTARY,
+  ADMINISTRATOR,
+} from "src/redux/types";
+import { SEARCH_USERS } from "../../redux/types";
 
 const Header = () => {
+  const dispatch = useDispatch();
+
   const [modifier, setModifier] = useState("");
 
   const collapseNavbar = () => {
     modifier ? setModifier("") : setModifier("show");
   };
+
+  const currentUser = useSelector((state) => state.app.currentUser);
 
   return (
     <header className={styles.Header}>
@@ -36,9 +49,14 @@ const Header = () => {
           >
             <ul className="navbar-nav">
               <li className="nav-item">
-                <a className="nav-link active text-center" onClick={collapseNavbar}  aria-current="page" href="#">
+                <Link
+                  className="nav-link active text-center"
+                  onClick={collapseNavbar}
+                  aria-current="page"
+                  to="/"
+                >
                   Головна
-                </a>
+                </Link>
               </li>
               <li className="nav-item dropdown">
                 <a
@@ -51,23 +69,64 @@ const Header = () => {
                   Пошук
                 </a>
                 <div elementtype="menu" className={"dropdown-menu"}>
-                  <a elementtype="item" className="dropdown-item" href="#" onClick={collapseNavbar}>
+                  <Link
+                    elementtype="item"
+                    className="dropdown-item"
+                    to="/search"
+                    onClick={() => {
+                      dispatch(actions.switchSearchType(SEARCH_BY_NAME));
+                      collapseNavbar();
+                    }}
+                  >
                     Пошук державних нотаріальних контор
-                  </a>
+                  </Link>
 
-                  <a elementtype="item" className={"dropdown-item"} href="#" onClick={collapseNavbar}>
+                  <Link
+                    elementtype="item"
+                    className={"dropdown-item"}
+                    to="/search"
+                    onClick={() => {
+                      dispatch(actions.switchSearchType(SEARCH_BY_NOTARY));
+                      collapseNavbar();
+                    }}
+                  >
                     Пошук нотаріусів
-                  </a>
+                  </Link>
 
-                  <a elementtype="item" className={"dropdown-item"} href="#" onClick={collapseNavbar}>
+                  <Link
+                    elementtype="item"
+                    className={"dropdown-item"}
+                    to="/search"
+                    onClick={() => {
+                      dispatch(actions.switchSearchType(SEARCH_BY_ADDRESS));
+                      collapseNavbar();
+                    }}
+                  >
                     Пошук за адресою
-                  </a>
+                  </Link>
+                  {currentUser === ADMINISTRATOR ? (
+                    <Link
+                      elementtype="item"
+                      className={"dropdown-item"}
+                      to="/search"
+                      onClick={() => {
+                        dispatch(actions.switchSearchType(SEARCH_USERS));
+                        collapseNavbar();
+                      }}
+                    >
+                      Пошук користувачів
+                    </Link>
+                  ) : null}
                 </div>
               </li>
               <li className="nav-item">
-                <a className="nav-link active text-center" href="#" onClick={collapseNavbar}>
+                <Link
+                  className="nav-link active text-center"
+                  to="/help"
+                  onClick={collapseNavbar}
+                >
                   Допомога
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

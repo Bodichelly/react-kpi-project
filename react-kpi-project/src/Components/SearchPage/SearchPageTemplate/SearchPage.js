@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import SearchBar from "../SearchBar/SearchBar"
+import SearchResults from "../SearchResults/SearchResults"
 
 // import styles from "./Loggin.module.scss";
 
@@ -18,7 +19,7 @@ const SearchPage = () => {
          {/* <SearchBar class="col-4"></SearchBar> */}
          <div className="col-sm-5"><SearchBar class="col-4"></SearchBar></div>
          <div className="col-sm-7">
-           <div className="card">asdasd</div>
+           <SearchResults></SearchResults>
          </div>
       </div>
     </div>

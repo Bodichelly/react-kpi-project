@@ -1,18 +1,31 @@
 import {
-    SWITCH_SEARCH_TYPE,
-    SEARCH_BY_ADDRESS,
-    SEARCH_BY_NAME,
-    SEARCH_BY_NOTARY
+    CHANGE_USER_SEARCH_TYPE,
+    HIDE_LOADER,
+    SHOW_LOADER,
+    CHANGE_USER_TYPE
 } from './types'
 
 
-const switchSearchType = (searchType) => {
+const hideLoader = () => {
     return {
-        type: SWITCH_SEARCH_TYPE,
-        payload: searchType
+        type: HIDE_LOADER,
+    }
+}
+
+const showLoader = () => {
+    return {
+        type: SHOW_LOADER,
+    }
+}
+
+const changeUserType = (userType) => {
+    return{
+        type: CHANGE_USER_TYPE,
+        payload: userType
     }
 }
 
 export default {
-    switchSearchType,
+    hideLoader,
+    showLoader
 }

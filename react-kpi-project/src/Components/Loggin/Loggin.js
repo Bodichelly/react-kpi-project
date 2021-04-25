@@ -11,11 +11,10 @@ const Loggin = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center mt-5">
-      <div className={styles.Loggin}>
-        <div elementType="card" className={"card border-info "}>
-          <div class="card-body">
-            <h5 class="card-title">Вхід в систему</h5>
-            <div class="mb-3">
+        <div className="card bg-warning">
+          <div className="card-body bg-light m-1">
+            <h5 className="card-title">Вхід в систему</h5>
+            <div className="mb-3">
               <label for="exampleFormControlInput1" class="form-label">
                 Електронна адреса
               </label>
@@ -26,30 +25,29 @@ const Loggin = () => {
                 placeholder="name@example.com"
               />
             </div>
-            <div class="mb-3">
+            <div className="mb-3">
               <label for="inputPassword" class="form-label">
                 Пароль
               </label>
               <input
                 type="password"
-                class="form-control"
+                className="form-control"
                 id="inputPassword"
                 placeholder="Secret phrase"
               />
             </div>
-            <div class="mb-3 mb-0">
-              <p class="text-center">
+            <div className="mb-3 mb-0">
+              <p className="text-center">
                 {message}
               </p>
             </div>
-            <div class="mb-3 mb-0">
-              <button type="button" class="btn btn-success w-75">
+            <div className="mb-3 mb-0">
+              <button type="button" className="btn btn-success w-100">
                 Увійти
               </button>
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 };
