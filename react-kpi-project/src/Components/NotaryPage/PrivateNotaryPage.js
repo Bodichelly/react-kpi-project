@@ -41,7 +41,24 @@ const PrivateNotaryPage = () => {
       // }
       dispatch(actions.fetchSearchData(data));
     });
-
+  const regions = useSelector((state) => state.search.region);
+  const getRegionsHtml = () => {
+    return regions.map((region) => (
+      <option value={region.id}>{region.name}</option>
+    ));
+  };
+  const areas = useSelector((state) => state.search.area);
+  const getAreasHtml = () => {
+    return areas.map((region) => (
+      <option value={region.id}>{region.name}</option>
+    ));
+  };
+  const settlements = useSelector((state) => state.search.settlement);
+  const getSettlementsHtml = () => {
+    return settlements.map((region) => (
+      <option value={region.id}>{region.name}</option>
+    ));
+  };
   return (
     <div className="container-md mt-1">
       <div className="card bg-warning">
@@ -141,9 +158,7 @@ const PrivateNotaryPage = () => {
                       ref={region}
                     >
                       <option selected>Регіон</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                      {getRegionsHtml()}
                     </select>
                   </div>
                   <div className="mb-3">
@@ -161,9 +176,7 @@ const PrivateNotaryPage = () => {
                       ref={area}
                     >
                       <option selected>Район</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                      {getAreasHtml()}
                     </select>
                   </div>
                   <div className="mb-3">
@@ -181,9 +194,7 @@ const PrivateNotaryPage = () => {
                       ref={settlement}
                     >
                       <option selected>Населений пункт</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                      {getSettlementsHtml()}
                     </select>
                   </div>
                   <div className="mb-3">

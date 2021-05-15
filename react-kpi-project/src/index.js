@@ -6,6 +6,7 @@ import createSagaMiddleware from 'redux-saga'
 import App from './App';
 import {rootReducer} from './redux/rootReducer'
 import {sagaWatcher} from './redux/saga'
+import logger from 'redux-logger'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import './index.css';
@@ -13,7 +14,7 @@ import './index.css';
 
 const saga = createSagaMiddleware()
 
-const store = createStore(rootReducer, compose(applyMiddleware(saga)))
+const store = createStore(rootReducer, compose(applyMiddleware(logger, saga)))
 
 saga.run(sagaWatcher)
 
