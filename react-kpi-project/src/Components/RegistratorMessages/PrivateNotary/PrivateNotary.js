@@ -79,6 +79,7 @@ const PrivateNotaryMessage = (props) => {
                     id="notaryActivityRegistration"
                     value="notaryActivityRegistration"
                     name="reason"
+                    {...register("reason", { required: true })}
                   />
                   <label
                     htmlFor="notaryActivityRegistration"
@@ -95,6 +96,7 @@ const PrivateNotaryMessage = (props) => {
                     id="notaryActivityPause"
                     value="notaryActivityPause"
                     name="reason"
+                    {...register("reason", { required: true })}
                   />
                   <label
                     htmlFor="notaryActivityPause"
@@ -111,6 +113,7 @@ const PrivateNotaryMessage = (props) => {
                     id="notaryActivityRenovation"
                     value="notaryActivityRenovation"
                     name="reason"
+                    {...register("reason", { required: true })}
                   />
                   <label
                     htmlFor="notaryActivityRenovation"
@@ -127,6 +130,7 @@ const PrivateNotaryMessage = (props) => {
                     id="nameChange"
                     value="nameChange"
                     name="reason"
+                    {...register("reason", { required: true })}
                   />
                   <label htmlFor="nameChange" className="form-check-label">
                     Зміна імені нотаріуса
@@ -140,6 +144,7 @@ const PrivateNotaryMessage = (props) => {
                     id="notaryAreaChange"
                     value="notaryAreaChange"
                     name="reason"
+                    {...register("reason", { required: true })}
                   />
                   <label
                     htmlFor="notaryAreaChange"
@@ -156,6 +161,7 @@ const PrivateNotaryMessage = (props) => {
                     id="notaryActivityStop"
                     value="notaryActivityStop"
                     name="reason"
+                    {...register("reason", { required: true })}
                   />
                   <label
                     htmlFor="notaryActivityStop"
@@ -172,6 +178,7 @@ const PrivateNotaryMessage = (props) => {
                     id="addressOrPhoneNumberChange"
                     value="addressOrPhoneNumberChange"
                     name="reason"
+                    {...register("reason", { required: true })}
                   />
                   <label
                     htmlFor="addressOrPhoneNumberChange"
@@ -195,6 +202,7 @@ const PrivateNotaryMessage = (props) => {
                 type="date"
                 name="date"
                 id="date"
+                {...register("date", { required: true })}
                 className="form-input"
               ></input>
             </div>
@@ -206,6 +214,7 @@ const PrivateNotaryMessage = (props) => {
                 Номер свідоцтва про право на зайняття нотаріальною діяльністю
               </label>
               <input
+                {...register("documentNumber", { required: true })}
                 name="documentNumber"
                 id="documentNumber"
                 className="form-input mr-2"
@@ -219,6 +228,7 @@ const PrivateNotaryMessage = (props) => {
                 діяльністю
               </label>
               <input
+                {...register("documentDate", { required: true })}
                 type="date"
                 name="documentDate"
                 id="documentDate"
@@ -235,6 +245,9 @@ const PrivateNotaryMessage = (props) => {
                   Номер реєстраційного посвідчення
                 </label>
                 <input
+                  {...register("registrationCertificationNumber", {
+                    required: true,
+                  })}
                   name="registrationCertificationNumber"
                   id="registrationCertificationNumber"
                   className="form-input mr-2"
@@ -250,6 +263,9 @@ const PrivateNotaryMessage = (props) => {
                 </label>
                 <input
                   type="date"
+                  {...register("registrationCertificationDate", {
+                    required: true,
+                  })}
                   name="registrationCertificationDate"
                   id="registrationCertificationDate"
                   className="form-input mr-2"
@@ -264,6 +280,7 @@ const PrivateNotaryMessage = (props) => {
                 Нотаріальний округ
               </label>
               <input
+                {...register("notaryArea", { required: true })}
                 name="notaryArea"
                 id="notaryArea"
                 className="form-input mr-2"
@@ -289,26 +306,31 @@ const PrivateNotaryMessage = (props) => {
                   <input
                     name="index"
                     id="index"
+                    {...register("index", { required: false })}
                     className="form-input mr-2 mb-1"
                   ></input>
                   <input
                     name="region"
                     id="region"
+                    {...register("region", { required: false })}
                     className="form-input mr-2 mb-1"
                   ></input>
                   <input
                     name="area"
                     id="area"
+                    {...register("area", { required: false })}
                     className="form-input mr-2 mb-1"
                   ></input>
                   <input
                     name="locality"
                     id="locality"
+                    {...register("locality", { required: false })}
                     className="form-input mr-2 mb-1"
                   ></input>
                   <input
                     name="street"
                     id="street"
+                    {...register("street", { required: false })}
                     className="form-input mr-2"
                   ></input>
                 </div>
@@ -319,18 +341,21 @@ const PrivateNotaryMessage = (props) => {
                   id="houseNumber"
                   className="form-input mr-2"
                   placeholder="буд."
+                  {...register("houseNumber", { required: false })}
                 ></input>
                 <input
                   name="sectionNumber"
                   id="sectionNumber"
                   className="form-input mr-2"
                   placeholder="корп."
+                  {...register("sectionNumber", { required: false })}
                 ></input>
                 <input
                   name="flatNumber"
                   id="flatNumber"
                   className="form-input mr-2"
                   placeholder="кв."
+                  {...register("flatNumber", { required: false })}
                 ></input>
               </div>
             </div>
@@ -350,6 +375,7 @@ const PrivateNotaryMessage = (props) => {
                       class="form-control"
                       id="updatedLastName"
                       name="updatedLastName"
+                      {...register("updatedLastName", { required: false })}
                     />
                   </div>
                   <div className="mb-3">
@@ -360,6 +386,7 @@ const PrivateNotaryMessage = (props) => {
                       class="form-control"
                       id="updatedFirstName"
                       name="updatedFirstName"
+                      {...register("updatedFirstName", { required: false })}
                     />
                   </div>
                   <div className="mb-3">
@@ -370,6 +397,7 @@ const PrivateNotaryMessage = (props) => {
                       class="form-control"
                       id="updatedMiddleName"
                       name="updatedMiddleName"
+                      {...register("updatedMiddleName", { required: false })}
                     />
                   </div>
                 </div>
@@ -388,6 +416,7 @@ const PrivateNotaryMessage = (props) => {
                 class="form-control"
                 id="reasonDocumentName"
                 name="reasonDocumentName"
+                {...register("reasonDocumentName", { required: true })}
               />
 
               <label
@@ -401,6 +430,7 @@ const PrivateNotaryMessage = (props) => {
                 name="reasonDate"
                 id="reasonDate"
                 className="form-input"
+                {...register("reasonDate", { required: true })}
               ></input>
               <div className="my-2 row-cols-2">
                 <label htmlFor="reasonDocumentNumber" class="form-label mr-2">
@@ -410,6 +440,7 @@ const PrivateNotaryMessage = (props) => {
                   class="form-control"
                   id="reasonDocumentNumber"
                   name="reasonDocumentNumber"
+                  {...register("reasonDocumentNumber", { required: true })}
                 />
                 <label
                   className="form-label mr-2 mb-0 align-self-center"
@@ -422,6 +453,7 @@ const PrivateNotaryMessage = (props) => {
                   name="reasonDocumentDate"
                   id="reasonDocumentDate"
                   className="form-input"
+                  {...register("reasonDocumentDate", { required: true })}
                 ></input>
               </div>
 
@@ -432,6 +464,7 @@ const PrivateNotaryMessage = (props) => {
                 class="form-control"
                 id="reasonDocumentIssuer"
                 name="reasonDocumentIssuer"
+                {...register("reasonDocumentIssuer", { required: false })}
               />
               <div className="my-2">
                 <label
@@ -446,6 +479,7 @@ const PrivateNotaryMessage = (props) => {
                   name="notaryActivityStopDate"
                   id="notaryActivityStopDate"
                   className="form-input"
+                  {...register("notaryActivityStopDate", { required: false })}
                 ></input>
               </div>
               <label
@@ -458,6 +492,9 @@ const PrivateNotaryMessage = (props) => {
                 class="form-control"
                 id="notaryActivityTerminationPeriod"
                 name="notaryActivityTerminationPeriod"
+                {...register("notaryActivityTerminationPeriod", {
+                  required: false,
+                })}
               />
             </div>
             <hr />
@@ -476,6 +513,7 @@ const PrivateNotaryMessage = (props) => {
                   class="form-control"
                   id="archiveName"
                   name="archiveName"
+                  {...register("archiveName", { required: false })}
                 />
               </div>
 
@@ -483,7 +521,12 @@ const PrivateNotaryMessage = (props) => {
                 <label htmlFor="notaryArea" class="form-label mr-2">
                   Нотаріальний округ
                 </label>
-                <input class="form-control" id="notaryArea" name="notaryArea" />
+                <input
+                  class="form-control"
+                  id="notaryArea"
+                  name="notaryArea"
+                  {...register("notaryArea", { required: false })}
+                />
               </div>
 
               <div className="my-2">
@@ -508,26 +551,31 @@ const PrivateNotaryMessage = (props) => {
                         name="notaryArchiveIndex"
                         id="notaryArchiveIndex"
                         className="form-input mr-2 mb-1"
+                        {...register("notaryArchiveIndex", { required: false })}
                       ></input>
                       <input
                         name="notaryArchiveRegion"
                         id="notaryArchiveRegion"
                         className="form-input mr-2 mb-1"
+                        {...register("notaryArchiveRegion", { required: false })}
                       ></input>
                       <input
                         name="notaryArchiveArea"
                         id="notaryArchiveArea"
                         className="form-input mr-2 mb-1"
+                        {...register("notaryArchiveArea", { required: false })}
                       ></input>
                       <input
                         name="notaryArchiveLocality"
                         id="notaryArchiveLocality"
                         className="form-input mr-2 mb-1"
+                        {...register("notaryArchiveLocality", { required: false })}
                       ></input>
                       <input
                         name="notaryArchiveStreet"
                         id="notaryArchiveStreet"
                         className="form-input mr-2"
+                        {...register("notaryArchiveStreet", { required: false })}
                       ></input>
                     </div>
                   </div>
@@ -537,18 +585,21 @@ const PrivateNotaryMessage = (props) => {
                       id="notaryArchiveHouseNumber"
                       className="form-input mr-2"
                       placeholder="буд."
+                      {...register("notaryArchiveHouseNumber", { required: true })}
                     ></input>
                     <input
                       name="notaryArchiveSectionNumber"
                       id="notaryArchiveSectionNumber"
                       className="form-input mr-2"
                       placeholder="корп."
+                      {...register("notaryArchiveHouseNumber", { required: false })}
                     ></input>
                     <input
                       name="notaryArchiveFlatNumber"
                       id="notaryArchiveFlatNumber"
                       className="form-input mr-2"
                       placeholder="кв."
+                      {...register("notaryArchiveFlatNumber", { required: false })}
                     ></input>
                   </div>
                 </div>
@@ -569,6 +620,7 @@ const PrivateNotaryMessage = (props) => {
                       class="form-control"
                       id="additionalStatements"
                       rows="6"
+                      {...register("additionalStatements", { required: false })}
                     />
                   </div>
                 </div>
@@ -583,6 +635,7 @@ const PrivateNotaryMessage = (props) => {
                     <input
                       class="form-control"
                       id="responsiblePersonFullname"
+                      {...register("responsiblePersonFullname", { required: true })}
                     />
                   </div>
                   <div className="mb-3">
@@ -595,6 +648,7 @@ const PrivateNotaryMessage = (props) => {
                     <input
                       class="form-control"
                       id="responsiblePersonPosition"
+                      {...register("responsiblePersonPosition", { required: true })}
                     />
                     <div className="d-flex justify-content-end mt-3">
                       <button className="btn btn-primary">
