@@ -69,7 +69,11 @@ const CreateUserPage = (props) => {
                   <label htmlFor="passportSeries" class="form-label">
                     Серія паспорту
                   </label>
-                  <input class="form-control" id="passportSeries" maxlength="2"/>
+                  <input
+                    class="form-control"
+                    id="passportSeries"
+                    maxlength="2"
+                  />
                 </div>
 
                 <div className="mb-3">
@@ -84,7 +88,7 @@ const CreateUserPage = (props) => {
                   />
                 </div>
 
-				<div className="mb-3">
+                <div className="mb-3">
                   <label htmlFor="ITN" class="form-label">
                     ІПН
                   </label>
@@ -99,7 +103,7 @@ const CreateUserPage = (props) => {
             </div>
             <div className="mb-3 mb-0">
               <button type="submit" className="btn btn-success btn-block">
-			  	Підтвердити
+                Підтвердити
               </button>
             </div>
           </form>

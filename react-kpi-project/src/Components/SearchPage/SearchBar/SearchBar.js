@@ -16,7 +16,6 @@ import randomStr from "src/utils/random";
 // import styles from "./Loggin.module.scss";
 
 const SearchUsers = (props) => {
-  useEffect(onSubmitBtnClick, [props.searchKey]);
   const onSubmitBtnClick = () => {
     if (props.searchKey === null) {
       return;
@@ -26,6 +25,8 @@ const SearchUsers = (props) => {
     }
     dispatch(actions.fetchSearchData(username.current));
   };
+
+  useEffect(onSubmitBtnClick, [props.searchKey]);
 
   const username = useRef("");
   const dispatch = useDispatch();
