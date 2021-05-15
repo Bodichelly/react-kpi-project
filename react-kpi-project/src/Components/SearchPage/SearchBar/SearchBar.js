@@ -306,14 +306,14 @@ const SearchBar = () => {
             <input
               className="form-check-input"
               type="radio"
-              name="flexRadioDefault"
-              id="flexRadioDefault1"
+              name="SEARCH_BY_ADDRESS"
+              id="SEARCH_BY_ADDRESS"
               checked={searchBarType == SEARCH_BY_ADDRESS}
               onClick={() => {
                 onSearchTypeSelect(SEARCH_BY_ADDRESS);
               }}
             />
-            <label className="form-check-label" htmlFor="flexRadioDefault1">
+            <label className="form-check-label" htmlFor="SEARCH_BY_ADDRESS">
               Пошук за адресою
             </label>
           </div>
@@ -321,14 +321,14 @@ const SearchBar = () => {
             <input
               className="form-check-input"
               type="radio"
-              name="flexRadioDefault"
-              id="flexRadioDefault2"
+              name="SEARCH_BY_NAME"
+              id="SEARCH_BY_NAME"
               checked={searchBarType == SEARCH_BY_NAME}
               onClick={() => {
                 onSearchTypeSelect(SEARCH_BY_NAME);
               }}
             />
-            <label className="form-check-label" htmlFor="flexRadioDefault2">
+            <label className="form-check-label" htmlFor="SEARCH_BY_NAME">
               Пошук за назвою
             </label>
           </div>
@@ -336,14 +336,14 @@ const SearchBar = () => {
             <input
               className="form-check-input"
               type="radio"
-              name="flexRadioDefault"
-              id="flexRadioDefault3"
+              name="SEARCH_BY_NOTARY"
+              id="SEARCH_BY_NOTARY"
               checked={searchBarType == SEARCH_BY_NOTARY}
               onClick={() => {
                 onSearchTypeSelect(SEARCH_BY_NOTARY);
               }}
             />
-            <label className="form-check-label" htmlFor="flexRadioDefault3">
+            <label className="form-check-label" htmlFor="SEARCH_BY_NOTARY">
               Пошук нотаріусу
             </label>
           </div>
@@ -352,14 +352,14 @@ const SearchBar = () => {
               <input
                 className="form-check-input"
                 type="radio"
-                name="flexRadioDefault"
-                id="flexRadioDefault3"
+                name="SEARCH_USERS"
+                id="SEARCH_USERS"
                 checked={searchBarType == SEARCH_USERS}
                 onClick={() => {
-                  onSearchTypeSelect(SEARCH_BY_NOTARY);
+                  onSearchTypeSelect(SEARCH_USERS);
                 }}
               />
-              <label className="form-check-label" htmlFor="flexRadioDefault3">
+              <label className="form-check-label" htmlFor="SEARCH_USERS">
                 Пошук користувачів
               </label>
             </div>
@@ -375,7 +375,7 @@ const SearchBar = () => {
             <SearchByNameField searchKey={key} />
           ) : null}
           {searchBarType === SEARCH_USERS && currentUser === ADMINISTRATOR ? (
-            <SearchUsers />
+            <SearchUsers searchKey={key} />
           ) : null}
           <hr class="dropdown-divider mb-3 mt-3" />
           <button

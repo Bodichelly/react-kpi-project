@@ -5,16 +5,34 @@ import SearchBar from "../SearchBar/SearchBar";
 import {
   SEARCH_PRIVATE_NOTATY,
   SEARCH_STATE_NOTARY_DEPARTMENT,
+  SEARCH_BY_ADDRESS,
 } from "src/redux/types";
 
-const SearchItem = (props) => {
+const SearchItemDepartment = (props) => {
   return (
     <div className="card">
       <div className="card-body">
         <div className="card-title">
           <img
             style={{ width: 30 + "px", height: 30 + "px" }}
-            src="https://static.thenounproject.com/png/659530-200.png"
+            src="https://icons.iconarchive.com/icons/icons8/windows-8/512/Business-Department-icon.png"
+          />
+          <span class="fw-bold">Відомості про заклад: </span>{props.name}
+        </div>
+        <div className="card-text">Контактні дані: {props.information}</div>
+      </div>
+    </div>
+  );
+};
+
+const SearchItemNotary = (props) => {
+  return (
+    <div className="card">
+      <div className="card-body">
+        <div className="card-title">
+          <img
+            style={{ width: 30 + "px", height: 30 + "px" }}
+            src="https://icon-library.com/images/department-icon/department-icon-0.jpg"
           />
           <span class="fw-bold">Відомості про нотаріус: </span>{props.lastName} {props.firstName} {props.middleName}
         </div>
@@ -30,6 +48,7 @@ const SearchResults = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const items = useSelector((state) => state.search.data);
   const departmentTypes = useSelector((state) => state.search.departmentTypes);
+  const searchBarType = useSelector((state) => state.search.searchType);
 
   const checkDepartmentType = (type) => {
     const index = departmentTypes.indexOf(type);
@@ -45,7 +64,7 @@ const SearchResults = () => {
   };
 
   const getPageNumber = () => {
-    if (!items) {
+    if (!items || !items.length) {
       return 0;
     }
     if (items.length / itemsPerPage && items.length % itemsPerPage != 0) {
@@ -71,10 +90,14 @@ const SearchResults = () => {
   const getItemsHtml = () => {
     if(items && items.length){
       return items.slice(currentPage-1, itemsPerPage).map((item) => {
-      return <SearchItem {...item}></SearchItem>;
+        if(!!item.name){
+          return <SearchItemDepartment {...item}></SearchItemDepartment>;
+        }else{
+          return <SearchItemNotary {...item}></SearchItemNotary>;
+        }
     });
     }else{
-      return <h4>Нотаріуси не знайдені</h4>
+      return <h4>Інформацію не знайдено</h4>
     }
     
   };
@@ -82,7 +105,8 @@ const SearchResults = () => {
   return (
     <div className="card bg-warning">
       <div className="card-body bg-light m-1">
-        <div className="container-fluid">
+        <h3>Результати пошуку</h3>
+        { searchBarType===SEARCH_BY_ADDRESS ?<div className="container-fluid">
           <div className="form-check">
             <input
               className="form-check-input"
@@ -111,7 +135,7 @@ const SearchResults = () => {
               Приватні нотаріуси
             </label>
           </div>
-        </div>
+        </div> : null}
         <hr className="dropdown-divider mb-3 mt-3" />
         <div
           className="container-fluid overflow-auto"

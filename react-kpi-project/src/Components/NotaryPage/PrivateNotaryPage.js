@@ -3,11 +3,21 @@ import { useForm } from "react-hook-form";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import actions from "src/redux/actions";
+
 const PrivateNotaryPage = () => {
   let { notaryId } = useParams();
   const dispatch = useDispatch();
 
-  const firtName = useRef("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    setValue,
+    watch,
+  } = useForm();
+
+  const firstName = useRef("");
   const lastName = useRef("");
   const middleName = useRef("");
   const licenceNumber = useRef("");
@@ -20,27 +30,56 @@ const PrivateNotaryPage = () => {
   const name = useRef("");
   const phoneNumber = useRef("");
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const onSubmitBtnClick = () =>
-    handleSubmit((data) => {
-      // const resultData = {
-      //   firstName
-      //   lastName
-      //   middleName
-      //   certificateNumber
-      //   isPrivate
-      //   phoneNumbers
-      //   regionId
-      //   areaId
-      //   localityId
-      //   address
-      // }
-      dispatch(actions.fetchSearchData(data));
-    });
+  const currentFirstName = watch().firstName;
+  const currentLastName = watch().lastName;
+  const currentMiddleName = watch().middleName;
+  const currentLicenceNumber = watch().licenceNumber;
+  const currentRegion = watch().region;
+  const currentArea = watch().area;
+  const currentSettlement = watch().settlement;
+  const currentAddress = watch().address;
+
+  const currentPosition = watch().position;
+  const currentName = watch().name;
+  const currentPhoneNumber = watch().phoneNumber;
+
+
+  const onSubmitBtnClick = () => {
+    const resultData = {
+      currentFirstName,
+      currentLastName,
+      currentMiddleName,
+      currentLicenceNumber,
+      currentRegion,
+      currentArea,
+      currentSettlement,
+      currentAddress,
+
+      currentPosition,
+      currentName,
+      currentPhoneNumber,
+
+    }
+    console.log(resultData);
+  }
+  //   handleSubmit((data) => {
+  //     const resultData = {
+  //       currentFirstName,
+  //       currentLastName,
+  //       currentMiddleName,
+  //       currentLicenceNumber,
+  //       currentRegion,
+  //       currentArea,
+  //       currentSettlement,
+  //       currentAddress,
+
+  //       currentPosition,
+  //       currentName,
+  //       currentPhoneNumber,
+
+  //     }
+  //     console.log(resultData)
+  //   });
   const regions = useSelector((state) => state.search.region);
   const getRegionsHtml = () => {
     return regions.map((region) => (
@@ -59,6 +98,9 @@ const PrivateNotaryPage = () => {
       <option value={region.id}>{region.name}</option>
     ));
   };
+
+  const validateDropDown = (value) => value !== "default";
+
   return (
     <div className="container-md mt-1">
       <div className="card bg-warning">
@@ -68,7 +110,7 @@ const PrivateNotaryPage = () => {
               ? "Внесення змін про нотаріус до рєстру"
               : "Внесення нового нотаріусу до рєстру"}
           </h2>
-          <form>
+          <form onSubmit={handleSubmit(onSubmitBtnClick)}>
             <div className="row">
               <div className="col-md gap-3">
                 <div className="container-fluid d-grid gap-3">
@@ -85,7 +127,7 @@ const PrivateNotaryPage = () => {
                       className="form-control"
                       placeholder="Прізвище"
                       {...register("lastName", { required: true })}
-                      ref={lastName}
+                    //ref={lastName}
                     />
                   </div>
 
@@ -102,7 +144,7 @@ const PrivateNotaryPage = () => {
                       className="form-control"
                       placeholder="Ім'я"
                       {...register("firstName", { required: true })}
-                      ref={firtName}
+                    //ref={firstName}
                     />
                   </div>
 
@@ -119,7 +161,7 @@ const PrivateNotaryPage = () => {
                       className="form-control"
                       placeholder="По батькові"
                       {...register("middleName", { required: true })}
-                      ref={middleName}
+                    //ref={middleName}
                     />
                   </div>
                   <div className="mb-3">
@@ -135,7 +177,7 @@ const PrivateNotaryPage = () => {
                       className="form-control"
                       placeholder="Номер ліцензії"
                       {...register("licenceNumber", { required: true })}
-                      ref={licenceNumber}
+                    //ref={licenceNumber}
                     />
                   </div>
                 </div>
@@ -154,10 +196,11 @@ const PrivateNotaryPage = () => {
                     <select
                       className="form-select"
                       aria-label="Default select example"
-                      {...register("region", { required: true })}
-                      ref={region}
+                      {...register("region", { required: true, validate: validateDropDown })}
+                      //ref={region}
+                      placeholder="Регіон"
                     >
-                      <option selected>Регіон</option>
+                      <option selected value="default">Регіон</option>
                       {getRegionsHtml()}
                     </select>
                   </div>
@@ -172,10 +215,10 @@ const PrivateNotaryPage = () => {
                     <select
                       className="form-select"
                       aria-label="Default select example"
-                      {...register("area", { required: true })}
-                      ref={area}
+                      {...register("area", { required: true, validate: validateDropDown })}
+                    //ref={area}
                     >
-                      <option selected>Район</option>
+                      <option selected value="default">Район</option>
                       {getAreasHtml()}
                     </select>
                   </div>
@@ -190,10 +233,10 @@ const PrivateNotaryPage = () => {
                     <select
                       className="form-select"
                       aria-label="Default select example"
-                      {...register("settlement", { required: true })}
-                      ref={settlement}
+                      {...register("settlement", { required: true, validate: validateDropDown })}
+                    //ref={settlement}
                     >
-                      <option selected>Населений пункт</option>
+                      <option selected value="default">Населений пункт</option>
                       {getSettlementsHtml()}
                     </select>
                   </div>
@@ -211,7 +254,7 @@ const PrivateNotaryPage = () => {
                       id="exampleFormControlInput1"
                       placeholder="Адреса"
                       {...register("address", { required: true })}
-                      ref={address}
+                    //ref={address}
                     />
                   </div>
                 </div>
@@ -261,8 +304,8 @@ const PrivateNotaryPage = () => {
                     className="form-control"
                     id="exampleFormControlInput1"
                     placeholder="Посада"
-                    {...register("possition", { required: true })}
-                    ref={position}
+                    {...register("possition")}
+                    //ref={position}
                     disabled={isPrivateNotary}
                   />
                 </div>
@@ -279,8 +322,8 @@ const PrivateNotaryPage = () => {
                     className="form-control"
                     id="exampleFormControlInput2"
                     placeholder="Назва"
-                    {...register("name", { required: true })}
-                    ref={name}
+                    {...register("name")}
+                    //ref={name}
                     disabled={isPrivateNotary}
                     list="datalistOptions"
                   />
@@ -294,7 +337,7 @@ const PrivateNotaryPage = () => {
                 </div>
                 <div className="mb-3">
                   <label
-                    htmlFor="exampleFormControlInput1"
+                    htmlFor="phoneNumber"
                     className="form-label"
                   >
                     Робочий телефон
@@ -303,12 +346,17 @@ const PrivateNotaryPage = () => {
                   <input
                     type="text"
                     className="form-control"
-                    id="exampleFormControlInput1"
+                    id="phoneNumber"
                     placeholder="Робочий телефон"
-                    ref={phoneNumber}
+                    //ref={phoneNumber}
+                    {...register("phoneNumber", {
+                      required: false,
+                      minLength: 6,
+                      maxLength: 20,
+                    })}
                   />
                 </div>
-                <button type="button" className="btn btn-info w-100">
+                <button type="submit" className="btn btn-info w-100">
                   Підтвердити
                 </button>
               </div>

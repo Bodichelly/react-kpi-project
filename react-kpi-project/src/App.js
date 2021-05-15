@@ -34,7 +34,7 @@ function App() {
           <Route path="/search">
             <SearchPage />
           </Route>
-          <Route path="/loggin">
+          <Route path="/login">
             <Loggin />
           </Route>
           <Route path="/register">
