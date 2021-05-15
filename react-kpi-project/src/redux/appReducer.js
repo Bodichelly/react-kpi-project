@@ -3,7 +3,7 @@ import { HIDE_LOADER, SHOW_LOADER, CHANGE_USER_TYPE, COMMON, ADMINISTRATOR } fro
 const initialState = {
   currentPage: "",
   isLoading: false,
-  currentUser: COMMON,
+  currentUser: ADMINISTRATOR,
 };
 
 export const appReducer = (state = initialState, action) => {

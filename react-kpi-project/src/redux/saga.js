@@ -15,6 +15,8 @@ import {
   SEARCH_BY_NOTARY,
   FETCH_AREA,
   FETCH_SETTLEMENT,
+  UPDATE_MESSAGE_LIST,
+  CREATE_NEW_MESSAGE
 } from "./types";
 import actions from "src/redux/actions";
 
@@ -26,11 +28,31 @@ export function* sagaWatcher() {
   yield takeLatest(FETCH_REGION, fetchRegion);
   yield takeLatest(FETCH_AREA, fetchArea);
   yield takeLatest(FETCH_SETTLEMENT, fetchSettlement);
+
+  //messages
+  yield takeLatest(UPDATE_MESSAGE_LIST, updateMessageList);
+  yield takeLatest(CREATE_NEW_MESSAGE, createNewMessage);
   // yield takeEvery(REQUEST_POSTS, fetchPostsWorker)
   // yield takeEvery(REQUEST_USERS, fetchUsersWorker)
   // yield takeEvery(SELECT_USER, selectUserWorker)
 }
 //takeevery takeLatest takeLeading
+
+function* createNewMessage(action){
+  try {
+    const messages = JSON.parse(localStorage.getItem('messages'));
+    messages.push(action.payload);
+    localStorage.setItem('messages', JSON.stringify(messages))
+    yield put(actions.updateMessageList());
+  } catch (e) {}
+}
+
+function* updateMessageList(action){
+  try {
+    const messages = JSON.parse(localStorage.getItem('messages'));
+    yield put(actions.setMessageListData(messages));
+  } catch (e) {}
+}
 
 function* fetchRegion(action) {
   try {
