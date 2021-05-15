@@ -40,7 +40,8 @@ function* fetchRegion(action) {
     }
 
     const regions = yield call(getRegions);
-    yield put(actions.setRegion, regions);
+
+    yield put(actions.setRegion(regions));
   } catch (e) {}
 }
 
@@ -53,7 +54,7 @@ function* fetchArea(action) {
 
     const region = action.payload;
     const areas = yield call(getAreasByRegionId, region.id);
-    yield put(actions.setArea, areas);
+    yield put(actions.setArea(areas));
   } catch (e) {}
 }
 
@@ -66,24 +67,27 @@ function* fetchSettlement(action) {
 
     const area = action.payload;
     const settlements = yield call(getLocalitiesByAreaId, area.id);
-    yield put(actions.setArea, settlements);
+    yield put(actions.setArea(settlements));
   } catch (e) {}
 }
 
 function* fetchSearchData(action) {
   try {
-    const searchType = yield select((state) => state.search.searchType);
-    const data = action ? action.payload : {};
-    if (searchType === SEARCH_BY_ADDRESS) {
-      const searchData = yield call(() => {}, data);
-      yield put(actions.updateSearchData, searchData);
-    } else if (searchType === SEARCH_BY_NAME) {
-      const searchData = yield call(() => {}, data);
-      yield put(actions.updateSearchData, searchData);
-    } else if (searchType === SEARCH_BY_NOTARY) {
-      const searchData = yield call(() => {}, data);
-      yield put(actions.updateSearchData, searchData);
-    }
+    // const searchType = yield select((state) => state.search.searchType);
+    // const data = action ? action.payload : {};
+    // if (searchType === SEARCH_BY_ADDRESS) {
+    //   const searchData = yield call(() => {}, data);
+    //   yield put(actions.updateSearchData(searchData));
+    // } else if (searchType === SEARCH_BY_NAME) {
+    //   const searchData = yield call(() => {}, data);
+    //   yield put(actions.updateSearchData(searchData));
+    // } else if (searchType === SEARCH_BY_NOTARY) {
+    //   const searchData = yield call(() => {}, data);
+    yield put(actions.showLoader());
+    yield call(delay, 1);
+      yield put(actions.updateSearchData(notaries));
+      yield put(actions.hideLoader());
+    //}
   } catch (e) {}
 }
 
@@ -142,16 +146,151 @@ function* fetchSearchData(action) {
 // }
 
 async function getRegions() {
-  const response = await fetch('http://localhost:3000/api/regions');
-  return response.json()
+  const response = await fetch("http://localhost:3000/api/regions");
+  return response.json();
 }
 
 async function getAreasByRegionId(id) {
   const response = await fetch(`http://localhost:3000/api/areas?id=${id}`);
-  return response.json()
+  return response.json();
 }
 
 async function getLocalitiesByAreaId(id) {
   const response = await fetch(`http://localhost:3000/api/localities?id=${id}`);
-  return response.json()
+  return response.json();
 }
+
+function getNotaries() {
+  return JSON.parse(localStorage.getItem("notaries"));
+}
+
+function addNotaries(notaries) {
+  localStorage.setItem("notaries", JSON.stringify(notaries));
+}
+
+const notaries = [
+  // {
+  //   firstName: "Барська",
+  //   lastName: "державна нотаріальна",
+  //   middleName: "контора",
+  //   phoneNumbers: "(04341) 2-10-11",
+  //   certificateNumber: "Барський р., м. Бар, вул. Героїв Майдану, 6"
+  // }
+//   {
+//   firstName: "Володимир ",
+//   lastName: "Мельник",
+//   middleName: "Олексійович",
+//   certificateNumber: "3163",
+//   isPrivate: true,
+//   phoneNumbers: "+380592949243",
+//   regionId: 1,
+//   areaId: 1,
+//   localityId: 1, 
+//   address: "вул. Робоча, 20",
+//   id: "4354654624135646"
+// },
+// {
+//   firstName: "Людмила",
+//   lastName: "Ковальчук",
+//   middleName: "Вікторівна ",
+//   certificateNumber: "7604",
+//   isPrivate: true,
+//   phoneNumbers: "+380592949243",
+//   regionId: 1,
+//   areaId: 2,
+//   localityId: 1, 
+//   address: "ул. Незалежності, 36",
+//   id: "3211827661462414"
+// },
+ {
+  firstName: "Антон",
+  lastName: "Воробйов",
+  middleName: "Олексійович",
+  certificateNumber: "170",
+  isPrivate: true,
+  phoneNumbers: "+380592949243",
+  regionId: 2,
+  areaId: 1,
+  localityId: 1, 
+  address: "вул. Центральна, 15",
+  id: "143183517351375137"
+},
+{
+  firstName: "Анатолій",
+  lastName: "Воробйов",
+  middleName: "Олексійович",
+  certificateNumber: "2109",
+  isPrivate: true,
+  phoneNumbers: "+380592949243",
+  regionId: 2,
+  areaId: 1,
+  localityId: 1, 
+  address: "бул. Шевченка, 6",
+  id: "271268874776867164"
+},
+// {
+//   firstName: "Віктор",
+//   lastName: "Дробаха",
+//   middleName: "Анастасійович",
+//   certificateNumber: "7162",
+//   isPrivate: true,
+//   phoneNumbers: "+380592949243",
+//   regionId: 3,
+//   areaId: 1,
+//   localityId: 1, 
+//   address: "вул. Духновича, 32-а",
+//   id: "8439847398839476873"
+// },
+// {
+//   firstName: "Євгеній",
+//   lastName: "Заліпський",
+//   middleName: "Вікторович",
+//   certificateNumber: "3878",
+//   isPrivate: true,
+//   phoneNumbers: "+380592949243",
+//   regionId: 3,
+//   areaId: 1,
+//   localityId: 1, 
+//   address: "ул. Героїв Майдану, буд.25",
+//   id: "35438485135131385112"
+// },
+// {
+//   firstName: "Сергій",
+//   lastName: "Авдієнко",
+//   middleName: "Вікторович",
+//   certificateNumber: "5564",
+//   isPrivate: true,
+//   phoneNumbers: "+380592949243",
+//   regionId: 4,
+//   areaId: 1,
+//   localityId: 1, 
+//   address: "пр-т Миру, 52",
+//   id: "131929874913794017349"
+// },
+// {
+//   firstName: "Юрій",
+//   lastName: "Бендеров",
+//   middleName: "Вікторович",
+//   certificateNumber: "5597",
+//   isPrivate: true,
+//   phoneNumbers: "+380592949243",
+//   regionId: 4,
+//   areaId: 1,
+//   localityId: 1, 
+//   address: "ул. С.Крушельницької, 35",
+//   id: "81857138571835187131153"
+// },
+// {
+//   firstName: "Богатов",
+//   lastName: "Сергій",
+//   middleName: "Гейоргійович",
+//   certificateNumber: "2930",
+//   isPrivate: true,
+//   phoneNumbers: "+380592949243",
+//   regionId: 5,
+//   areaId: 1,
+//   localityId: 1, 
+//   address: "р-т Леніна, 151",
+//   id: "58435874357894334446"
+// },
+];

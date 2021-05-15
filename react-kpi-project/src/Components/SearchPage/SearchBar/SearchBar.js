@@ -68,111 +68,139 @@ const SearchUsers = (props) => {
 
 const SearchByAddressField = (props) => {
   const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    setValue,
+    watch,
+  } = useForm({
+    defaultValue: {
+      region: "default",
+      area: "default",
+      settlement: "default",
+    },
+  });
 
+  // useEffect(() => {
+  //   if (getValues().region === "default") {
+  //     console.log("fetchRegion");
+  //     dispatch(actions.fetchRegion());
+  //   } else {
+  //     console.log("regionSelect ",getValues().region);
+  //     dispatch(
+  //       actions.fetchArea(regions.find(region=>region.id===getValues().region))
+  //     );
+  //   }
+
+  //   setValue("area" ,"default");
+  //   setValue("settlement" ,"default");
+  // }, [getValues().region]);
+
+  // useEffect(() => {
+  //   if (getValues().area === "default") {
+  //     dispatch(
+  //       actions.fetchArea(regions.find(region=>region.id===getValues().region))
+  //     );
+  //   } else {
+  //     dispatch(
+  //       actions.fetchSettlement(areas.find(area=>area.id===getValues().area))
+  //     );
+  //   }
+  //   setValue("settlement" ,"default") ;
+  // }, [getValues().area]);
+
+  const currentRegion = watch().region;
+  const currentArea = watch().area;
+  const currentSettlement = watch().settlement;
+
+  // useEffect(() => {
+  //   console.table({ currentRegion, currentArea, currentSettlement });
+  // }, [currentRegion, currentArea, currentSettlement]);
+
+  const regions = useSelector((state) => state.search.region);
+  const getRegionsHtml = () => {
+    return regions.map((region) => (
+      <option value={region.id}>{region.name}</option>
+    ));
+  };
+  const areas = useSelector((state) => state.search.area);
+  const getAreasHtml = () => {
+    return areas.map((region) => (
+      <option value={region.id}>{region.name}</option>
+    ));
+  };
+  const settlements = useSelector((state) => state.search.settlement);
+  const getSettlementsHtml = () => {
+    return settlements.map((region) => (
+      <option value={region.id}>{region.name}</option>
+    ));
+  };
   const onSubmitBtnClick = () => {
     if (props.searchKey === null) {
       return;
     }
     if (
-      regionSelect.current === "default" ||
-      areaSelect.current === "default" ||
-      settlementSelect.current === "default"
+      getValues().region === "default" ||
+      getValues().area === "default" ||
+      getValues().settlement === "default"
     ) {
       //error
     }
     dispatch(
       actions.fetchSearchData({
-        region: regions[regions.indexOf(regionSelect.current)],
-        area: areas[regions.indexOf(areaSelect.current)],
-        settlement: settlements[regions.indexOf(settlementSelect.current)],
-        address: addressInput.current,
+        region: regions[regions.indexOf(getValues().region)],
+        area: areas[regions.indexOf(getValues().area)],
+        settlement: settlements[regions.indexOf(getValues().settlement)],
+        address: getValues().address,
       })
     );
   };
   useEffect(onSubmitBtnClick, [props.searchKey]);
-  const regionSelect = useRef("default");
-  useEffect(() => {
-    if (regionSelect.current === "default") {
-      dispatch(actions.fetchRegion());
-    } else {
-      dispatch(
-        actions.fetchArea(regions[regions.indexOf(regionSelect.current)])
-      );
-    }
-    areaSelect.current = "default";
-    settlementSelect.current = "default";
-  }, [regionSelect]);
-  const areaSelect = useRef("default");
-  useEffect(() => {
-    if (areaSelect.current === "default") {
-      dispatch(
-        actions.fetchArea(regions[regions.indexOf(regionSelect.current)])
-      );
-    } else {
-      dispatch(
-        actions.fetchSettlement(areas[regions.indexOf(areaSelect.current)])
-      );
-    }
-    settlementSelect.current = "default";
-  }, [areaSelect]);
-  const settlementSelect = useRef("default");
-  const addressInput = useRef("");
-
-  const regions = useSelector((state) => state.search.region);
-  const getRegionsHtml = () => {
-    return regions.map((region) => <option value={region}>One</option>);
-  };
-  const areas = useSelector((state) => state.search.area);
-  const getAreasHtml = () => {
-    return areas.map((region) => <option value={region}>One</option>);
-  };
-  const settlements = useSelector((state) => state.search.settlement);
-  const getSettlementsHtml = () => {
-    return settlements.map((region) => <option value={region}>One</option>);
-  };
 
   return (
-    <div className="container-fluid d-grid gap-3">
+    <form className="container-fluid d-grid gap-3">
       <select
         class="form-select"
-        ref={regionSelect}
+        {...register("region")}
         aria-label="Default select example"
       >
         <option value="default" selected>
           Регіон
         </option>
-        {getRegionsHtml}
+        {getRegionsHtml()}
       </select>
       <select
         class="form-select"
-        ref={areaSelect}
+        {...register("area")}
         aria-label="Default select example"
-        disabled={areaSelect.current === "default"}
+        disabled={getValues().region === "default" || !getValues().region}
       >
         <option value="default" selected>
           Район
         </option>
-        {getAreasHtml}
+        {getAreasHtml()}
       </select>
       <select
         class="form-select"
-        ref={settlementSelect}
-        disabled={settlementSelect.current === "default"}
+        {...register("settlement")}
+        disabled={getValues().area === "default" || !getValues().area}
         aria-label="Default select example"
       >
         <option value="default" selected>
           Населений пункт
         </option>
-        {getSettlementsHtml}
+        {getSettlementsHtml()}
       </select>
       <input
         type="text"
-        ref={addressInput}
+        {...register("address")}
         class="form-control"
         id="exampleFormControlInput1"
         placeholder="Адреса"
       ></input>
-    </div>
+    </form>
   );
 };
 

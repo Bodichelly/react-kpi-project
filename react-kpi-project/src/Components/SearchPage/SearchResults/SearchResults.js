@@ -16,9 +16,9 @@ const SearchItem = (props) => {
             style={{ width: 30 + "px", height: 30 + "px" }}
             src="https://static.thenounproject.com/png/659530-200.png"
           />
-          <span class="fw-bold">Назва закладу: </span> {props.name}
+          <span class="fw-bold">Відомості про нотаріус: </span>{props.lastName} {props.firstName} {props.middleName}
         </div>
-        <div className="card-text">{props.details}</div>
+        <div className="card-text">Номер свідоцтва: {props.certificateNumber}, Телефонний номер: {props.phoneNumbers}</div>
       </div>
     </div>
   );
@@ -69,9 +69,14 @@ const SearchResults = () => {
   };
 
   const getItemsHtml = () => {
-    return items.map((item) => {
+    if(items && items.length){
+      return items.slice(currentPage-1, itemsPerPage).map((item) => {
       return <SearchItem {...item}></SearchItem>;
     });
+    }else{
+      return <h4>Нотаріуси не знайдені</h4>
+    }
+    
   };
 
   return (

@@ -1,8 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import actions from "src/redux/actions";
+import {
+  SWITCH_SEARCH_TYPE,
+  SEARCH_BY_ADDRESS,
+  SEARCH_BY_NAME,
+  SEARCH_BY_NOTARY,
+  SEARCH_ADMINISTRATOR,
+  SEARCH_REGISTRATOR,
+  SEARCH_USERS,
+  ADMINISTRATOR,
+} from "src/redux/types";
+import { useForm } from "react-hook-form";
+import randomStr from "src/utils/random";
 import { useParams } from "react-router-dom";
 
 const StateNotaryDepartmentPage = () => {
   let { notaryId } = useParams();
+  const regions = useSelector((state) => state.search.region);
+  const getRegionsHtml = () => {
+    return regions.map((region) => (
+      <option value={region.id}>{region.name}</option>
+    ));
+  };
+  const areas = useSelector((state) => state.search.area);
+  const getAreasHtml = () => {
+    return areas.map((region) => (
+      <option value={region.id}>{region.name}</option>
+    ));
+  };
+  const settlements = useSelector((state) => state.search.settlement);
+  const getSettlementsHtml = () => {
+    return settlements.map((region) => (
+      <option value={region.id}>{region.name}</option>
+    ));
+  };
 
   return (
     <div className="container-md mt-1">
@@ -24,7 +56,7 @@ const StateNotaryDepartmentPage = () => {
                       className="form-check-label"
                       htmlFor="flexRadioDefault1"
                     >
-                      Державна нотаріальна контора / архів
+                      Державна нотаріальна контора
                     </label>
                   </div>
                   <div className="form-check d-flex justify-content-start">
@@ -38,23 +70,11 @@ const StateNotaryDepartmentPage = () => {
                       className="form-check-label"
                       htmlFor="flexRadioDefault2"
                     >
-                      Приватний нотаріус
+                      Державний нотаріальний архів
                     </label>
                   </div>
                 </div>
 
-                <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label">
-                    Посада
-                  </label>
-
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="exampleFormControlInput1"
-                    placeholder="Посада"
-                  />
-                </div>
                 <div class="mb-3">
                   <label for="exampleFormControlInput1" class="form-label">
                     Назва державної нотаріальної контори / архіву
@@ -93,9 +113,7 @@ const StateNotaryDepartmentPage = () => {
                       aria-label="Default select example"
                     >
                       <option selected>Регіон</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                      {getRegionsHtml()}
                     </select>
                   </div>
                   <div class="mb-1">
@@ -108,9 +126,7 @@ const StateNotaryDepartmentPage = () => {
                       aria-label="Default select example"
                     >
                       <option selected>Район</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                      {getAreasHtml()}
                     </select>
                   </div>
                   <div class="mb-1">
@@ -123,9 +139,7 @@ const StateNotaryDepartmentPage = () => {
                       aria-label="Default select example"
                     >
                       <option selected>Населений пункт</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                      {getSettlementsHtml()}
                     </select>
                   </div>
                   <div class="mb-3">

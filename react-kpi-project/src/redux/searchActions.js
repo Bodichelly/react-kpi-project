@@ -52,9 +52,10 @@ const setRegion = (region) =>{
     }
 }
 
-const fetchArea = () =>{
+const fetchArea = (region) =>{
     return {
-        type: FETCH_AREA
+        type: FETCH_AREA,
+        payload: region
     }
 }
 
@@ -65,9 +66,10 @@ const setArea = (area) =>{
     }
 }
 
-const fetchSettlement = () =>{
+const fetchSettlement = (area) =>{
     return {
-        type: FETCH_SETTLEMENT
+        type: FETCH_SETTLEMENT,
+        payload: area
     }
 }
 
