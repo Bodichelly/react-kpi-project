@@ -1,11 +1,18 @@
+import { useForm } from "react-hook-form";
+
 const PrivateNotaryMessage = (props) => {
-  //
+  const { handleSubmit, register } = useForm();
+
+  const handler = (data) => {
+    // BIGBEN DAROVA, DELAY TUTb
+    console.log(data);
+  };
 
   return (
     <div className="container d-flex justify-content-center align-items-center my-5">
       <div className="card bg-warning">
         <div className="card-body bg-light m-1">
-          <form>
+          <form onSubmit={handleSubmit(handler)}>
             <h4 className="card-title text-center">
               Повідомлення для внесення відомостей про нотаріусів, які
               займаються приватною нотаріальною діяльністю, до Єдиного реєстру
@@ -22,9 +29,7 @@ const PrivateNotaryMessage = (props) => {
                   <select
                     className="form-select"
                     id="region"
-                    // todo
-                    // {...register("region", { required: true })}
-                    // ref={region}
+                    {...register("region", { required: true })}
                   >
                     <option selected>Регіон</option>
                     <option value="1">One</option>
@@ -36,19 +41,31 @@ const PrivateNotaryMessage = (props) => {
                   <label htmlFor="lastName" class="form-label mr-2">
                     Прізвище
                   </label>
-                  <input class="form-control" id="lastName" />
+                  <input
+                    class="form-control"
+                    id="lastName"
+                    {...register("lastName", { required: true })}
+                  />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="firstName" class="form-label mr-2">
                     Ім'я
                   </label>
-                  <input class="form-control" id="firstName" />
+                  <input
+                    class="form-control"
+                    id="firstName"
+                    {...register("firstName", { required: true })}
+                  />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="middleName" class="form-label mr-2">
                     По батькові
                   </label>
-                  <input class="form-control" id="middleName" />
+                  <input
+                    class="form-control"
+                    id="middleName"
+                    {...register("middleName", { required: true })}
+                  />
                 </div>
               </div>
               <div className="col col-12 col-md-6">

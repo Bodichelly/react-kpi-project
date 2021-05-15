@@ -1,11 +1,18 @@
+import { useForm } from "react-hook-form";
+
 const OrganizationMessage = (props) => {
-  //
+  const { handleSubmit, register } = useForm();
+
+  const handler = (data) => {
+    // BIGBEN DAROVA, DELAY TUTb
+    console.log(data);
+  };
 
   return (
     <div className="container d-flex justify-content-center align-items-center my-5">
       <div className="card bg-warning">
         <div className="card-body bg-light m-1">
-          <form>
+          <form onSubmit={handleSubmit(handler)}>
             <h4 className="card-title text-center">
               Повідомлення для внесення відомостей про державні нотаріальні
               контори та архіви до Єдиного реєстру нотаріусів
@@ -21,9 +28,7 @@ const OrganizationMessage = (props) => {
                   <select
                     className="form-select"
                     id="region"
-                    // todo
-                    // {...register("region", { required: true })}
-                    // ref={region}
+                    {...register("region", { required: true })}
                   >
                     <option selected>Регіон</option>
                     <option value="1">One</option>
@@ -39,6 +44,7 @@ const OrganizationMessage = (props) => {
                     id="department"
                     value="department"
                     name="orgType"
+                    {...register("orgType", { required: true })}
                   />
                   <label htmlFor="department" className="form-check-label">
                     Державна нотаріальна контора
@@ -52,6 +58,7 @@ const OrganizationMessage = (props) => {
                     id="archive"
                     value="archive"
                     name="orgType"
+                    {...register("orgType", { required: true })}
                   />
                   <label htmlFor="archive" className="form-check-label">
                     Державний нотаріальний архів
@@ -69,6 +76,7 @@ const OrganizationMessage = (props) => {
                     id="orgRegistration"
                     value="orgRegistration"
                     name="reason"
+                    {...register("reason", { required: true })}
                   />
                   <label htmlFor="orgRegistration" className="form-check-label">
                     Реєстрація контори чи архіву
@@ -82,6 +90,7 @@ const OrganizationMessage = (props) => {
                     id="orgLiquidation"
                     value="orgLiquidation"
                     name="reason"
+                    {...register("reason", { required: true })}
                   />
                   <label htmlFor="orgLiquidation" className="form-check-label">
                     Ліквідація контори чи архіву
@@ -95,6 +104,7 @@ const OrganizationMessage = (props) => {
                     id="locationOrNumberChange"
                     value="locationOrNumberChange"
                     name="reason"
+                    {...register("reason", { required: true })}
                   />
                   <label
                     htmlFor="locationOrNumberChange"
@@ -111,6 +121,7 @@ const OrganizationMessage = (props) => {
                     id="notaryAreaChange"
                     value="notaryAreaChange"
                     name="reason"
+                    {...register("reason", { required: true })}
                   />
                   <label
                     htmlFor="notaryAreaChange"
@@ -133,19 +144,21 @@ const OrganizationMessage = (props) => {
                 name="notaryAreaChangeDate"
                 id="notaryAreaChangeDate"
                 className="form-input"
+                {...register("notaryAreaChangeDate", { required: true })}
               ></input>
             </div>
             <div className="form-group">
               <label
-                htmlFor="documentNumber"
+                htmlFor="documentName"
                 className="form-label mr-2 align-self-center"
               >
                 Назва документа, на підставі якого вносяться зміни до Реєстру
               </label>
               <input
-                name="documentNumber"
-                id="documentNumber"
+                name="documentName"
+                id="documentName"
                 className="form-input mr-2"
+                {...register("documentName", { required: true })}
               ></input>
 
               <div className="form-group">
@@ -159,6 +172,7 @@ const OrganizationMessage = (props) => {
                   name="documentNumber"
                   id="documentNumber"
                   className="form-input mr-2"
+                  {...register("documentNumber", { required: true })}
                 ></input>
               </div>
 
@@ -173,6 +187,7 @@ const OrganizationMessage = (props) => {
                 name="documentDate"
                 id="documentDate"
                 className="form-input"
+                {...register("documentDate", { required: true })}
               ></input>
             </div>
 
@@ -187,6 +202,7 @@ const OrganizationMessage = (props) => {
                 name="issuer"
                 id="issuer"
                 className="form-input mr-2"
+                {...register("issuer", { required: true })}
               ></input>
             </div>
             <div className="form-group">
@@ -200,6 +216,7 @@ const OrganizationMessage = (props) => {
                 name="orgName"
                 id="orgName"
                 className="form-input mr-2"
+                {...register("orgName", { required: true })}
               ></input>
             </div>
 
@@ -214,6 +231,7 @@ const OrganizationMessage = (props) => {
                 name="notaryArea"
                 id="notaryArea"
                 className="form-input mr-2"
+                {...register("notaryArea", { required: true })}
               ></input>
             </div>
             <hr />
@@ -236,26 +254,31 @@ const OrganizationMessage = (props) => {
                       name="index"
                       id="index"
                       className="form-input mr-2 mb-1"
+                      {...register("index", { required: true })}
                     ></input>
                     <input
                       name="region"
                       id="region"
                       className="form-input mr-2 mb-1"
+                      {...register("region", { required: true })}
                     ></input>
                     <input
                       name="area"
                       id="area"
                       className="form-input mr-2 mb-1"
+                      {...register("area", { required: true })}
                     ></input>
                     <input
                       name="locality"
                       id="locality"
                       className="form-input mr-2 mb-1"
+                      {...register("locality", { required: true })}
                     ></input>
                     <input
                       name="street"
                       id="street"
                       className="form-input mr-2"
+                      {...register("street", { required: true })}
                     ></input>
                   </div>
                 </div>
@@ -265,18 +288,21 @@ const OrganizationMessage = (props) => {
                     id="houseNumber"
                     className="form-input mr-2"
                     placeholder="буд."
+                    {...register("houseNumber", { required: true })}
                   ></input>
                   <input
                     name="sectionNumber"
                     id="sectionNumber"
                     className="form-input mr-2"
                     placeholder="корп."
+                    {...register("sectionNumber", { required: false })}
                   ></input>
                   <input
                     name="flatNumber"
                     id="flatNumber"
                     className="form-input mr-2"
                     placeholder="кв."
+                    {...register("flatNumber", { required: false })}
                   ></input>
                 </div>
                 <div className="form-group">
@@ -290,6 +316,7 @@ const OrganizationMessage = (props) => {
                     name="phoneNumber"
                     id="phoneNumber"
                     className="form-input mr-2"
+                    {...register("phoneNumber", { required: false })}
                   ></input>
                 </div>
               </div>
@@ -323,6 +350,9 @@ const OrganizationMessage = (props) => {
                     <input
                       class="form-control"
                       id="responsiblePersonFullname"
+                      {...register("responsiblePersonFullname", {
+                        required: false,
+                      })}
                     />
                   </div>
                   <div className="mb-3">
@@ -335,6 +365,9 @@ const OrganizationMessage = (props) => {
                     <input
                       class="form-control"
                       id="responsiblePersonPosition"
+                      {...register("responsiblePersonPosition", {
+                        required: false,
+                      })}
                     />
                     <div className="d-flex justify-content-end mt-3">
                       <button className="btn btn-primary">
