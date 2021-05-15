@@ -20,6 +20,7 @@ import StateNotaryDepartment from "./Components/NotaryPage/StateNotaryDepartment
 import CreateUserPage from './Components/CreateUserPage/CreateUserPage';
 import GovernmentNotaryMessage from './Components/RegistratorMessages/GovernmentNotary/GovernmentNotaryMessage';
 import PrivateNotaryMessage from './Components/RegistratorMessages/PrivateNotary/PrivateNotary';
+import OrganizationMessage from './Components/RegistratorMessages/Organization/OrganizationMessage';
 
 function App() {
   const isLoading = useSelector((state) => state.app.isLoading);
@@ -92,6 +93,9 @@ function App() {
           </Route>
           <Route path="/private-notary-message/:notaryId?">
             <PrivateNotaryMessage />
+          </Route>
+          <Route path="/organization-message/:notaryId?">
+            <OrganizationMessage />
           </Route>
           <Route path="/">
             <div className="container-md mt-1">
