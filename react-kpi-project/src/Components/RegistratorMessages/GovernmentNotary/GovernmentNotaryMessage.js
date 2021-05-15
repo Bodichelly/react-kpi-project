@@ -1,11 +1,19 @@
+import { useForm } from "react-hook-form";
+
 const GovernmentNotaryMessage = (props) => {
   //
+  const { handleSubmit, register } = useForm();
+
+  const handler = (data) => {
+    // BIGBEN DAROVA, DELAY TUTb
+    console.log(data);
+  };
 
   return (
     <div className="container d-flex justify-content-center align-items-center my-5">
       <div className="card bg-warning">
         <div className="card-body bg-light m-1">
-          <form>
+          <form onSubmit={handleSubmit(handler)}>
             <h4 className="card-title text-center">
               Повідомлення для внесення відомостей про нотаріусів, які працюють
               у державних нотаріальних конторах або архівах, до Єдиного реєстру
@@ -22,11 +30,9 @@ const GovernmentNotaryMessage = (props) => {
                   <select
                     className="form-select"
                     id="region"
-                    // todo
-                    // {...register("region", { required: true })}
-                    // ref={region}
+                    placeholder="Регіон"
+                    {...register("region", { required: true })}
                   >
-                    <option selected>Регіон</option>
                     <option value="1">One</option>
                     <option value="2">Two</option>
                     <option value="3">Three</option>
@@ -36,19 +42,31 @@ const GovernmentNotaryMessage = (props) => {
                   <label htmlFor="lastName" class="form-label mr-2">
                     Прізвище
                   </label>
-                  <input class="form-control" id="lastName" />
+                  <input
+                    class="form-control"
+                    id="lastName"
+                    {...register("lastName", { required: true })}
+                  />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="firstName" class="form-label mr-2">
                     Ім'я
                   </label>
-                  <input class="form-control" id="firstName" />
+                  <input
+                    class="form-control"
+                    id="firstName"
+                    {...register("firstName", { required: true })}
+                  />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="middleName" class="form-label mr-2">
                     По батькові
                   </label>
-                  <input class="form-control" id="middleName" />
+                  <input
+                    class="form-control"
+                    id="middleName"
+                    {...register("middleName", { required: true })}
+                  />
                 </div>
               </div>
               <div className="col col-12 col-md-6">
@@ -61,7 +79,7 @@ const GovernmentNotaryMessage = (props) => {
                     className="form-check-input"
                     id="newPosition"
                     value="newPosition"
-                    name="reason"
+                    {...register("reason", { required: true })}
                   />
                   <label htmlFor="newPosition" className="form-check-label">
                     Призначення на посаду
@@ -75,6 +93,7 @@ const GovernmentNotaryMessage = (props) => {
                     id="fired"
                     value="fired"
                     name="reason"
+                    {...register("reason", { required: true })}
                   />
                   <label htmlFor="fired" className="form-check-label">
                     Звільнення з роботи
@@ -88,6 +107,7 @@ const GovernmentNotaryMessage = (props) => {
                     id="nameChange"
                     value="nameChange"
                     name="reason"
+                    {...register("reason", { required: true })}
                   />
                   <label htmlFor="nameChange" className="form-check-label">
                     Зміна імені нотаріуса
@@ -101,6 +121,7 @@ const GovernmentNotaryMessage = (props) => {
                     id="positionChangeInOneOrg"
                     value="positionChangeInOneOrg"
                     name="reason"
+                    {...register("reason", { required: true })}
                   />
                   <label
                     htmlFor="positionChangeInOneOrg"
@@ -118,6 +139,7 @@ const GovernmentNotaryMessage = (props) => {
                     id="positionChangeToAnotherOrg"
                     value="positionChangeToAnotherOrg"
                     name="reason"
+                    {...register("reason", { required: true })}
                   />
                   <label
                     htmlFor="positionChangeToAnotherOrg"
@@ -141,6 +163,7 @@ const GovernmentNotaryMessage = (props) => {
                 name="date"
                 id="date"
                 className="form-input"
+                {...register("date", { required: true })}
               ></input>
             </div>
             <div className="form-group">
@@ -151,9 +174,9 @@ const GovernmentNotaryMessage = (props) => {
                 Номер документа
               </label>
               <input
-                name="documentNumber"
                 id="documentNumber"
                 className="form-input mr-2"
+                {...register("documentNumber", { required: true })}
               ></input>
 
               <label
@@ -167,16 +190,21 @@ const GovernmentNotaryMessage = (props) => {
                 name="documentDate"
                 id="documentDate"
                 className="form-input"
+                {...register("documentDate", { required: true })}
               ></input>
             </div>
             <div className="form-group">
-              <label htmlFor="issuer" className="form-label mr-2 align-self-center">
+              <label
+                htmlFor="issuer"
+                className="form-label mr-2 align-self-center"
+              >
                 Видавець
               </label>
               <input
                 name="issuer"
                 id="issuer"
                 className="form-input mr-2"
+                {...register("issuer", { required: true })}
               ></input>
             </div>
 
@@ -188,9 +216,9 @@ const GovernmentNotaryMessage = (props) => {
                 Номер свідоцтва про право на зайняття нотаріальною діяльністю
               </label>
               <input
-                name="certificateNumber"
                 id="certificateNumber"
                 className="form-input mr-2"
+                {...register("certificateNumber", { required: true })}
               ></input>
             </div>
             <div className="form-group">
@@ -205,18 +233,23 @@ const GovernmentNotaryMessage = (props) => {
                 type="date"
                 name="certificateDate"
                 id="certificateDate"
+                {...register("certificateDate", { required: true })}
                 className="form-input mr-2"
               ></input>
             </div>
             <hr />
             <div className="form-group">
-              <label htmlFor="orgName" className="form-label mr-2 align-self-center">
+              <label
+                htmlFor="orgName"
+                className="form-label mr-2 align-self-center"
+              >
                 Назва державної нотаріальної контори / архіву
               </label>
               <input
                 list="orgName"
                 name="orgName"
                 className="form-input"
+                {...register("orgName", { required: true })}
               ></input>
               {/* todo: get all orgs names */}
               <datalist id="orgName">
@@ -238,11 +271,13 @@ const GovernmentNotaryMessage = (props) => {
                     name="position"
                     id="position"
                     className="form-input mr-2 mb-2"
+                    {...register("position", { required: true })}
                   ></input>
                   <input
                     name="workPhoneNumber"
                     id="workPhoneNumber"
                     className="form-input mr-2"
+                    {...register("workPhoneNumber", { required: true })}
                   ></input>
                 </div>
               </div>
@@ -250,10 +285,10 @@ const GovernmentNotaryMessage = (props) => {
                 <div className="form-check">
                   <input
                     type="radio"
-                    name="orgType"
                     id="organization"
                     value="organization"
                     className="form-check-input"
+                    {...register("orgType", { required: true })}
                   ></input>
                   <label htmlFor="organization" className="form-check-label">
                     Державна нотаріальна контора
@@ -263,10 +298,10 @@ const GovernmentNotaryMessage = (props) => {
                 <div className="form-check">
                   <input
                     type="radio"
-                    name="orgType"
                     id="archive"
                     value="archive"
                     className="form-check-input"
+                    {...register("orgType", { required: true })}
                   ></input>
                   <label htmlFor="archive" className="form-check-label">
                     Державний нотаріальний архів
@@ -286,19 +321,31 @@ const GovernmentNotaryMessage = (props) => {
                     <label htmlFor="updatedLastName" class="form-label mr-2">
                       Прізвище
                     </label>
-                    <input class="form-control" id="updatedLastName" />
+                    <input
+                      class="form-control"
+                      id="updatedLastName"
+                      {...register("updatedLastName", { required: true })}
+                    />
                   </div>
                   <div className="mb-3">
                     <label htmlFor="updatedFirstName" class="form-label mr-2">
                       Ім'я
                     </label>
-                    <input class="form-control" id="updatedFirstName" />
+                    <input
+                      class="form-control"
+                      id="updatedFirstName"
+                      {...register("updatedFirstName", { required: true })}
+                    />
                   </div>
                   <div className="mb-3">
                     <label htmlFor="updatedMiddleName" class="form-label mr-2">
                       По батькові
                     </label>
-                    <input class="form-control" id="updatedMiddleName" />
+                    <input
+                      class="form-control"
+                      id="updatedMiddleName"
+                      {...register("updatedMiddleName", { required: true })}
+                    />
                   </div>
                 </div>
               </div>
@@ -314,7 +361,12 @@ const GovernmentNotaryMessage = (props) => {
                     >
                       Додаткові відомості
                     </label>
-                    <textarea class="form-control" id="additionalStatements" rows="6"/>
+                    <textarea
+                      {...register("additionalStatements")}
+                      class="form-control"
+                      id="additionalStatements"
+                      rows="6"
+                    />
                   </div>
                 </div>
                 <div className="col-12 col-md-6">
@@ -326,6 +378,7 @@ const GovernmentNotaryMessage = (props) => {
                       ПІБ відповідальної особи
                     </label>
                     <input
+                      {...register("responsiblePersonFullname", { required: true })}
                       class="form-control"
                       id="responsiblePersonFullname"
                     />
@@ -338,11 +391,12 @@ const GovernmentNotaryMessage = (props) => {
                       Посада відповідальної особи
                     </label>
                     <input
+                      {...register("responsiblePersonPosition", { required: true })}
                       class="form-control"
                       id="responsiblePersonPosition"
                     />
                     <div className="d-flex justify-content-end mt-3">
-                      <button className="btn btn-primary">
+                      <button type="submit" className="btn btn-primary">
                         Відправити повідомлення
                       </button>
                     </div>
