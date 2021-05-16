@@ -1,12 +1,21 @@
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import actions from "../../../redux/actions";
+import { MESSAGE_TYPE_GOVERNMENT_NOTARY } from "../../../redux/types";
+import random from "../../../utils/random";
 
 const GovernmentNotaryMessage = (props) => {
-  //
   const { handleSubmit, register } = useForm();
+  const dispatch = useDispatch();
 
   const handler = (data) => {
-    // BIGBEN DAROVA, DELAY TUTb
-    console.log(data);
+    dispatch(
+      actions.createNewMessage({
+        ...data,
+        id: random(),
+        type: MESSAGE_TYPE_GOVERNMENT_NOTARY,
+      })
+    );
   };
 
   return (
@@ -378,7 +387,9 @@ const GovernmentNotaryMessage = (props) => {
                       ПІБ відповідальної особи
                     </label>
                     <input
-                      {...register("responsiblePersonFullname", { required: true })}
+                      {...register("responsiblePersonFullname", {
+                        required: true,
+                      })}
                       class="form-control"
                       id="responsiblePersonFullname"
                     />
@@ -391,7 +402,9 @@ const GovernmentNotaryMessage = (props) => {
                       Посада відповідальної особи
                     </label>
                     <input
-                      {...register("responsiblePersonPosition", { required: true })}
+                      {...register("responsiblePersonPosition", {
+                        required: true,
+                      })}
                       class="form-control"
                       id="responsiblePersonPosition"
                     />

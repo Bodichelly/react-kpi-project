@@ -24,7 +24,7 @@ import CreateUserPage from './Components/CreateUserPage/CreateUserPage';
 import GovernmentNotaryMessage from './Components/RegistratorMessages/GovernmentNotary/GovernmentNotaryMessage';
 import PrivateNotaryMessage from './Components/RegistratorMessages/PrivateNotary/PrivateNotary';
 import OrganizationMessage from './Components/RegistratorMessages/Organization/OrganizationMessage';
-import MessageListPage from './Components/RegistratorMessages/MessageListPage'
+import MessageListPage from './Components/RegistratorMessages/MessageList/MessageListPage'
 
 
 function App() {

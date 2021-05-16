@@ -1,11 +1,22 @@
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import actions from "../../../redux/actions";
+import { MESSAGE_TYPE_PRIVATE_NOTARY } from "../../../redux/types";
+import random from "../../../utils/random";
 
 const PrivateNotaryMessage = (props) => {
   const { handleSubmit, register } = useForm();
 
+  const dispatch = useDispatch();
+
   const handler = (data) => {
-    // BIGBEN DAROVA, DELAY TUTb
-    console.log(data);
+    dispatch(
+      actions.createNewMessage({
+        ...data,
+        id: random(),
+        type: MESSAGE_TYPE_PRIVATE_NOTARY,
+      })
+    );
   };
 
   return (
@@ -557,7 +568,9 @@ const PrivateNotaryMessage = (props) => {
                         name="notaryArchiveRegion"
                         id="notaryArchiveRegion"
                         className="form-input mr-2 mb-1"
-                        {...register("notaryArchiveRegion", { required: false })}
+                        {...register("notaryArchiveRegion", {
+                          required: false,
+                        })}
                       ></input>
                       <input
                         name="notaryArchiveArea"
@@ -569,13 +582,17 @@ const PrivateNotaryMessage = (props) => {
                         name="notaryArchiveLocality"
                         id="notaryArchiveLocality"
                         className="form-input mr-2 mb-1"
-                        {...register("notaryArchiveLocality", { required: false })}
+                        {...register("notaryArchiveLocality", {
+                          required: false,
+                        })}
                       ></input>
                       <input
                         name="notaryArchiveStreet"
                         id="notaryArchiveStreet"
                         className="form-input mr-2"
-                        {...register("notaryArchiveStreet", { required: false })}
+                        {...register("notaryArchiveStreet", {
+                          required: false,
+                        })}
                       ></input>
                     </div>
                   </div>
@@ -585,21 +602,27 @@ const PrivateNotaryMessage = (props) => {
                       id="notaryArchiveHouseNumber"
                       className="form-input mr-2"
                       placeholder="буд."
-                      {...register("notaryArchiveHouseNumber", { required: true })}
+                      {...register("notaryArchiveHouseNumber", {
+                        required: true,
+                      })}
                     ></input>
                     <input
                       name="notaryArchiveSectionNumber"
                       id="notaryArchiveSectionNumber"
                       className="form-input mr-2"
                       placeholder="корп."
-                      {...register("notaryArchiveHouseNumber", { required: false })}
+                      {...register("notaryArchiveHouseNumber", {
+                        required: false,
+                      })}
                     ></input>
                     <input
                       name="notaryArchiveFlatNumber"
                       id="notaryArchiveFlatNumber"
                       className="form-input mr-2"
                       placeholder="кв."
-                      {...register("notaryArchiveFlatNumber", { required: false })}
+                      {...register("notaryArchiveFlatNumber", {
+                        required: false,
+                      })}
                     ></input>
                   </div>
                 </div>
@@ -635,7 +658,9 @@ const PrivateNotaryMessage = (props) => {
                     <input
                       class="form-control"
                       id="responsiblePersonFullname"
-                      {...register("responsiblePersonFullname", { required: true })}
+                      {...register("responsiblePersonFullname", {
+                        required: true,
+                      })}
                     />
                   </div>
                   <div className="mb-3">
@@ -648,7 +673,9 @@ const PrivateNotaryMessage = (props) => {
                     <input
                       class="form-control"
                       id="responsiblePersonPosition"
-                      {...register("responsiblePersonPosition", { required: true })}
+                      {...register("responsiblePersonPosition", {
+                        required: true,
+                      })}
                     />
                     <div className="d-flex justify-content-end mt-3">
                       <button className="btn btn-primary">
