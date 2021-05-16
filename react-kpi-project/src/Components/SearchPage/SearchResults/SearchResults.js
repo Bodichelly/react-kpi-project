@@ -21,7 +21,7 @@ const SearchItemUser = (props) => {
         <div className="card-title">
           <img
             style={{ width: 30 + "px", height: 30 + "px", margin: 5 + "px" }}
-            src="https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png"
+            src="https://image.flaticon.com/icons/png/128/2919/2919600.png"
           />
           <span className="fw-bold">Електронна адреса: </span>
           {props.login}
@@ -108,13 +108,16 @@ const SearchItemNotary = (props) => {
             style={{ width: 30 + "px", height: 30 + "px", margin: 5 + "px" }}
             src="https://icon-library.com/images/department-icon/department-icon-0.jpg"
           />
-          <span className="fw-bold">Відомості про нотаріус: </span>
+          <span className="fw-bold">Відомості про нотаріуса: </span>
           {props.lastName} {props.firstName} {props.middleName}
         </div>
         <div className="card-text">
           Номер свідоцтва: {props.certificateNumber}, Телефонний номер:{" "}
           {props?.contact?.phoneNumbers[0]?.phoneNumber}
         </div>
+        <p className="card-text">
+          Адреса: {props.contact.address}
+        </p>
         {currentUser === ADMINISTRATOR ? (
           <div class="d-flex justify-content-end">
             <button

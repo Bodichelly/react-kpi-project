@@ -218,7 +218,9 @@ function* loginUser(action) {
     yield put(actions.setUserData(user));
     yield put(actions.hideLoader());
     localStorage.setItem('currentUser', yield select(state => state.app.currentUser))
-  } catch (e) { }
+  } catch (e) {
+    yield put(actions.hideLoader());
+   }
 }
 
 async function loginUserRequest(userData) {
