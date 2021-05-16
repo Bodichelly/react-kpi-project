@@ -10,7 +10,8 @@ import {
   SET_AREA,
   SET_SETTLEMENT,
   UPDATE_SEARCH_DATA,
-  CLEAR_SEARCH_DATA
+  CLEAR_SEARCH_DATA,
+  SET_SEARCH_QUERY_DATA
 } from "./types";
 
 const initialState = {
@@ -47,6 +48,7 @@ const initialState = {
   region: [],
   area: [],
   settlement: [],
+  searchQueryData: {}
 };
 
 export const searchReducer = (state = initialState, action) => {
@@ -65,6 +67,8 @@ export const searchReducer = (state = initialState, action) => {
       return { ...state, settlement: action.payload };
     case CLEAR_SEARCH_DATA:
       return { ...state, data: []};
+    case SET_SEARCH_QUERY_DATA:
+      return { ...state, searchQueryData: action.payload }
     default:
       return state;
   }
