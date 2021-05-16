@@ -17,18 +17,7 @@ const PrivateNotaryPage = () => {
     watch,
   } = useForm();
 
-  const firstName = useRef("");
-  const lastName = useRef("");
-  const middleName = useRef("");
-  const licenceNumber = useRef("");
-  const region = useRef("");
-  const area = useRef("");
-  const settlement = useRef("");
-  const address = useRef("");
   const [isPrivateNotary, setPrivateNotary] = useState(true);
-  const position = useRef("");
-  const name = useRef("");
-  const phoneNumber = useRef("");
 
   const currentFirstName = watch().firstName;
   const currentLastName = watch().lastName;
@@ -38,48 +27,88 @@ const PrivateNotaryPage = () => {
   const currentArea = watch().area;
   const currentSettlement = watch().settlement;
   const currentAddress = watch().address;
-
+  const currentDateFrom = watch().dateFrom;
   const currentPosition = watch().position;
-  const currentName = watch().name;
+  const currentOrganization = watch().organization;
   const currentPhoneNumber = watch().phoneNumber;
 
 
   const onSubmitBtnClick = () => {
     const resultData = {
-      currentFirstName,
-      currentLastName,
-      currentMiddleName,
-      currentLicenceNumber,
-      currentRegion,
-      currentArea,
-      currentSettlement,
-      currentAddress,
-
-      currentPosition,
-      currentName,
-      currentPhoneNumber,
-
+      firstName: currentFirstName,
+      lastName: currentLastName,
+      middleName: currentMiddleName,
+      certificateNumber: currentLicenceNumber,
+      regionId: currentRegion,
+      areaId: currentArea,
+      localityId: currentSettlement,
+      address: currentAddress,
+      phoneNumbers: [currentPhoneNumber],
     }
-    console.log(resultData);
+    if (isPrivateNotary) {
+      resultData.isPrivate = !!isPrivateNotary
+    } else {
+      resultData.employment = {
+        position: currentPosition,
+        dataFrom: currentDateFrom,
+        organizationId: currentOrganization
+      }
+    }
+
+    if (!!notaryId) {
+      resultData.id = notaryId;
+      dispatch(actions.updateNotary(resultData));
+    } else {
+      dispatch(actions.addNewNotary(resultData));
+    }
+
   }
-  //   handleSubmit((data) => {
-  //     const resultData = {
-  //       currentFirstName,
-  //       currentLastName,
-  //       currentMiddleName,
-  //       currentLicenceNumber,
-  //       currentRegion,
-  //       currentArea,
-  //       currentSettlement,
-  //       currentAddress,
 
-  //       currentPosition,
-  //       currentName,
-  //       currentPhoneNumber,
+  useEffect(() => {
+    if (!!notaryId) {
+      dispatch(actions.searchNotaryById(notaryId));
+    }
+    dispatch(actions.fetchAllOrganizations())
+  }, []);
+  useEffect(() => {
+    if (currentRegion === "default") {
+      dispatch(actions.fetchRegion());
+    } else {
+      dispatch(actions.fetchArea(currentRegion));
+    }
+    setValue("area", "default");
+    setValue("settlement", "default");
+  }, [currentRegion]);
 
-  //     }
-  //     console.log(resultData)
-  //   });
+  useEffect(() => {
+    if (currentArea === "default") {
+      dispatch(actions.fetchArea(currentRegion));
+    } else {
+      dispatch(actions.fetchSettlement(currentArea));
+    }
+    setValue("settlement", "default");
+  }, [currentArea]);
+
+  const currentNotary = useSelector((state) => state.search.currentNotary);
+
+  useEffect(() => {
+    if (!!notaryId) {
+      setValue("firstName", currentNotary.firstName || "");
+      setValue("lastName", currentNotary.lastName || "");
+      setValue("middleName", currentNotary.middleName || "");
+      setValue("licenceNumber", currentNotary.certificateNumber || "");
+      setValue("region", currentNotary.region || "default");
+      setValue("area", currentNotary.area || "default");
+      setValue("settlement", currentNotary.settlement || "default");
+      setValue("address", currentNotary.address || "");
+      setValue("dateFrom", currentNotary.employment.dateFrom || "default");
+      setValue("position", currentNotary.employment.position || "default");
+      setValue("organization", currentNotary.employment.organizationId || "default");
+      setValue("phoneNumber", currentNotary.phoneNumbers[0]);
+      setPrivateNotary(currentNotary.isPrivate)
+    }
+  }, [currentNotary])
+
   const regions = useSelector((state) => state.search.region);
   const getRegionsHtml = () => {
     return regions.map((region) => (
@@ -99,6 +128,13 @@ const PrivateNotaryPage = () => {
     ));
   };
 
+  const organizations = useSelector((state) => state.search.organizations);
+  const getOrganizationsHtml = () => {
+    return organizations.map((organization) => (
+      <option value={organization.id}>{organization.name}</option>
+    ));
+  };
+
   const validateDropDown = (value) => value !== "default";
 
   return (
@@ -106,7 +142,7 @@ const PrivateNotaryPage = () => {
       <div className="card bg-warning">
         <div className="card-body bg-light m-1">
           <h2>
-            {notaryId
+            {!!notaryId
               ? "Внесення змін про нотаріус до рєстру"
               : "Внесення нового нотаріусу до рєстру"}
           </h2>
@@ -216,6 +252,7 @@ const PrivateNotaryPage = () => {
                       className="form-select"
                       aria-label="Default select example"
                       {...register("area", { required: true, validate: validateDropDown })}
+                      disabled={currentRegion === "default"}
                     //ref={area}
                     >
                       <option selected value="default">Район</option>
@@ -234,7 +271,7 @@ const PrivateNotaryPage = () => {
                       className="form-select"
                       aria-label="Default select example"
                       {...register("settlement", { required: true, validate: validateDropDown })}
-                    //ref={settlement}
+                      disabled={currentArea === "default" || currentRegion === "default"}
                     >
                       <option selected value="default">Населений пункт</option>
                       {getSettlementsHtml()}
@@ -311,29 +348,26 @@ const PrivateNotaryPage = () => {
                 </div>
                 <div className="mb-3">
                   <label
-                    htmlFor="exampleFormControlInput2"
+                    htmlFor="exampleFormControlInput1"
                     className="form-label"
                   >
                     Назва державної нотаріальної контори / архіву
-                  </label>
+                    </label>
 
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="exampleFormControlInput2"
-                    placeholder="Назва"
-                    {...register("name")}
-                    //ref={name}
-                    disabled={isPrivateNotary}
-                    list="datalistOptions"
-                  />
-                  <datalist id="datalistOptions">
-                    <option value="San Francisco" />
-                    <option value="New York" />
-                    <option value="Seattle" />
-                    <option value="Los Angeles" />
-                    <option value="Chicago" />
-                  </datalist>
+                  <select
+                    className="form-select"
+                    aria-label="Default select example"
+                    {...register("organization", { required: true, validate: validateDropDown })}
+                  >
+                    <option selected value="default">Назва закладу</option>
+                    {getSettlementsHtml()}
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="birthDate" class="form-label">
+                    Дата влаштування
+                  </label>
+                  <input {...register("dateFrom", { required: true })} class="form-control" id="birthDate" type="date" />
                 </div>
                 <div className="mb-3">
                   <label

@@ -14,9 +14,54 @@ import {
     UPDATE_SEARCH_DATA,
     FETCH_SEARCH_DATA,
     CLEAR_SEARCH_DATA,
-    SET_SEARCH_QUERY_DATA
+    SET_SEARCH_QUERY_DATA,
+    SEARCH_NOTARY_BY_ID,
+    SET_NOTARY_BY_ID,
+    SEARCH_NOTARY_DEPARTMENT_BY_ID,
+    SET_NOTARY_DEPARTMENT_BY_ID,
+    SET_ALL_ORGANIZATIONS,
+    FETCH_ALL_ORGANIZATIONS
 } from './types'
 
+const fetchAllOrganizations = (orgs) => {
+    return {
+        type: FETCH_ALL_ORGANIZATIONS,
+        payload: orgs
+    }
+} 
+
+const setAllOrganizations = (orgs) => {
+    return {
+        type: SET_ALL_ORGANIZATIONS,
+        payload: orgs
+    }
+}
+
+const searchNotaryById = (id) => {
+    return {
+        type: SEARCH_NOTARY_BY_ID,
+        payload: id
+    }
+}
+const setNotaryById = (data) => {
+    return {
+        type: SET_NOTARY_BY_ID,
+        payload: data
+    }
+}
+
+const searchNotaryDepartmentById = (id) => {
+    return {
+        type: SEARCH_NOTARY_DEPARTMENT_BY_ID,
+        payload: id
+    }
+}
+const setNotaryDepartmentById = (data) => {
+    return {
+        type: SET_NOTARY_DEPARTMENT_BY_ID,
+        payload: data
+    }
+}
 
 const setSearchQueryData = (data) => {
     return {
@@ -111,5 +156,12 @@ export default {
     setSettlement,
     updateSearchData,
     fetchSearchData,
-    clearSearchData
+    clearSearchData,
+    fetchAllOrganizations,
+    setAllOrganizations,
+    searchNotaryById,
+    setNotaryById,
+    searchNotaryDepartmentById,
+    setNotaryDepartmentById,
+    setSearchQueryData
 }

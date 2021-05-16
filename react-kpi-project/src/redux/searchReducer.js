@@ -11,44 +11,23 @@ import {
   SET_SETTLEMENT,
   UPDATE_SEARCH_DATA,
   CLEAR_SEARCH_DATA,
-  SET_SEARCH_QUERY_DATA
+  SET_SEARCH_QUERY_DATA,
+  SET_NOTARY_BY_ID,
+  SET_NOTARY_DEPARTMENT_BY_ID,
+  SET_ALL_ORGANIZATIONS
 } from "./types";
 
 const initialState = {
-  data: [
-    {
-      firstName: "Антон",
-      lastName: "Воробйов",
-      middleName: "Олексійович",
-      certificateNumber: "170",
-      isPrivate: true,
-      phoneNumbers: "+380592949243",
-      regionId: 2,
-      areaId: 1,
-      localityId: 1,
-      address: "вул. Центральна, 15",
-      id: "143183517351375137"
-    },
-    {
-      firstName: "Антон",
-      lastName: "Воробйов",
-      middleName: "Олексійович",
-      certificateNumber: "170",
-      isPrivate: true,
-      phoneNumbers: "+380592949243",
-      regionId: 2,
-      areaId: 1,
-      localityId: 1,
-      address: "вул. Центральна, 15",
-      id: "143183517351375137"
-    },
-  ],
+  data: [],
   searchType: SEARCH_BY_ADDRESS,
   departmentTypes: [SEARCH_PRIVATE_NOTATY, SEARCH_STATE_NOTARY_DEPARTMENT],
   region: [],
   area: [],
   settlement: [],
-  searchQueryData: {}
+  searchQueryData: {},
+  currentNotary: {},
+  currentNotaryDepartment: {},
+  organizations: [],
 };
 
 export const searchReducer = (state = initialState, action) => {
@@ -66,9 +45,15 @@ export const searchReducer = (state = initialState, action) => {
     case SET_SETTLEMENT:
       return { ...state, settlement: action.payload };
     case CLEAR_SEARCH_DATA:
-      return { ...state, data: []};
+      return { ...state, data: [] };
     case SET_SEARCH_QUERY_DATA:
       return { ...state, searchQueryData: action.payload }
+    case SET_NOTARY_BY_ID:
+      return { ...state, currentNotary: action.payload }
+    case SET_NOTARY_DEPARTMENT_BY_ID:
+      return { ...state, currentNotaryDepartment: action.payload }
+    case SET_ALL_ORGANIZATIONS:
+      return { ...state, organizations: action.payload };
     default:
       return state;
   }

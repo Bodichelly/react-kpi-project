@@ -26,7 +26,11 @@ import {
   UPDATE_NOTARY,
   UPDATE_DEPARTMENT,
   DELETE_NOTARY,
-  DELETE_DEPARTMENT
+  DELETE_DEPARTMENT,
+  SEARCH_NOTARY_DEPARTMENT_BY_ID,
+  SEARCH_NOTARY_BY_ID,
+  FETCH_ALL_ORGANIZATIONS,
+  SET_ALL_ORGANIZATIONS
 } from "./types";
 import actions from "src/redux/actions";
 
@@ -38,6 +42,7 @@ export function* sagaWatcher() {
   yield takeLatest(FETCH_REGION, fetchRegion);
   yield takeLatest(FETCH_AREA, fetchArea);
   yield takeLatest(FETCH_SETTLEMENT, fetchSettlement);
+  yield takeLatest(FETCH_ALL_ORGANIZATIONS, fetchAllOrganizations);
 
   //messages
   yield takeLatest(UPDATE_MESSAGE_LIST, updateMessageList);
@@ -58,8 +63,53 @@ export function* sagaWatcher() {
   yield takeLatest(DELETE_NOTARY, deleteNotary);
   yield takeLatest(DELETE_DEPARTMENT, deleteDepartment);
 
+  //update data
+  yield takeLatest(SEARCH_NOTARY_BY_ID, searchNotaryById);
+  yield takeLatest(SEARCH_NOTARY_DEPARTMENT_BY_ID, searchNotaryDepartmentById);
+
 }
 //takeevery takeLatest takeLeading
+function* fetchAllOrganizations(){
+  try {
+    yield put(actions.showLoader());
+    const orgs = yield call(fetchAllOrganizationsRequest);
+    yield put({SET_ALL_ORGANIZATIONS, orgs});
+    yield put(actions.hideLoader());
+  }
+  catch(e){}
+}
+async function fetchAllOrganizationsRequest(){
+  //make request
+  return []
+}
+
+function* searchNotaryById(action) {
+  try {
+    const id = action.payload;
+    yield put(actions.showLoader());
+    const notary = yield call(searchNotaryByIdRequest, id);
+    yield put(actions.setNotaryById(notary));
+    yield put(actions.hideLoader());
+  } catch (e) { }
+}
+async function searchNotaryByIdRequest(id) {
+  // make request
+  //await fetch("http://localhost:3000/api/regions");
+}
+
+function* searchNotaryDepartmentById(action) {
+  try {
+    const id = action.payload;
+    yield put(actions.showLoader());
+    const notaryDepartment = yield call(searchNotaryDepartmentByIdRequest, id);
+    yield put(actions.setNotaryDepartmentById(notaryDepartment));
+    yield put(actions.hideLoader());
+  } catch (e) { }
+}
+async function searchNotaryDepartmentByIdRequest(id) {
+  // make request
+  //await fetch("http://localhost:3000/api/regions");
+}
 
 function* addNewNotary(action) {
   try {
