@@ -30,7 +30,7 @@ const SearchItemUser = (props) => {
         </div>
         { currentUser === ADMINISTRATOR && props?.role !==ADMINISTRATOR ?(
         <div class="d-flex justify-content-end">
-          <button onClick={()=>{/*DELETE ITEM*/}} className="btn btn-danger m-1">Видалити</button>
+          <button onClick={()=>{dispatch(actions.removeUser(props.id))}} className="btn btn-danger m-1">Видалити</button>
         </div>)
         : null}
       </div>
@@ -57,7 +57,7 @@ const SearchItemDepartment = (props) => {
         { currentUser === ADMINISTRATOR ?(
         <div class="d-flex justify-content-end">
           <button onClick={() => history.push('/state-notary-department-page/'+props.id)} className="btn btn-primary m-1">Редагувати</button>
-          <button onClick={()=>{/*DELETE ITEM*/}}  className="btn btn-danger m-1">Видалити</button>
+          <button onClick={()=>{dispatch(actions.deleteDepartment(props.id))}}  className="btn btn-danger m-1">Видалити</button>
         </div>)
         : null}
       </div>
@@ -85,7 +85,7 @@ const SearchItemNotary = (props) => {
         { currentUser === ADMINISTRATOR ?(
         <div class="d-flex justify-content-end">
           <button onClick={() => history.push('/private-notary-page/'+props.id)} className="btn btn-primary m-1">Редагувати</button>
-          <button onClick={()=>{/*DELETE ITEM*/}}  className="btn btn-danger m-1">Видалити</button>
+          <button onClick={()=>{dispatch(actions.deleteNotary(props.id))}}  className="btn btn-danger m-1">Видалити</button>
         </div>)
         : null}
       </div>

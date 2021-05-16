@@ -357,17 +357,18 @@ const PrivateNotaryPage = () => {
                   <select
                     className="form-select"
                     aria-label="Default select example"
+                    disabled={isPrivateNotary}
                     {...register("organization", { required: true, validate: validateDropDown })}
                   >
                     <option selected value="default">Назва закладу</option>
-                    {getSettlementsHtml()}
+                    {getOrganizationsHtml()}
                   </select>
                 </div>
                 <div className="mb-3">
                   <label htmlFor="birthDate" class="form-label">
                     Дата влаштування
                   </label>
-                  <input {...register("dateFrom", { required: true })} class="form-control" id="birthDate" type="date" />
+                  <input disabled={isPrivateNotary} {...register("dateFrom", { required: true })} class="form-control" id="birthDate" type="date" />
                 </div>
                 <div className="mb-3">
                   <label
