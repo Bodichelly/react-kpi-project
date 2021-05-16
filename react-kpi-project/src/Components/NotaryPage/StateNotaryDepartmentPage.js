@@ -14,6 +14,7 @@ import {
 import { useForm } from "react-hook-form";
 import randomStr from "src/utils/random";
 import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const StateNotaryDepartmentPage = () => {
   let { notaryId } = useParams();
@@ -28,6 +29,8 @@ const StateNotaryDepartmentPage = () => {
     watch,
   } = useForm();
 
+  const history = useHistory();
+
   const currentDepartmentName = watch().departmentName;
   const currentRegion = watch().region;
   const currentArea = watch().area;
@@ -39,36 +42,42 @@ const StateNotaryDepartmentPage = () => {
   const onSubmitBtnClick = () => {
     const resultData = {
       name: currentDepartmentName,
-      regionId: currentRegion,
-      areaId: currentArea,
-      localityId: currentSettlement,
+      regionId: +currentRegion,
+      areaId: +currentArea,
+      localityId: +currentSettlement,
       address: currentAddress,
       phoneNumbers: [currentPhoneNumber],
     }
 
     if (!!notaryId) {
-      resultData.id = notaryId;
-      dispatch(actions.updateNotaryDepartment(resultData));
+      resultData.id = +notaryId;
+      dispatch(actions.updateDepartment(resultData));
     } else {
       dispatch(actions.addNewNotaryDepartment(resultData));
     }
-
+    history.goBack();
   }
+
+  const currentNotaryDepartment = useSelector((state) => state.search.currentNotaryDepartment);
 
   useEffect(() => {
     if (!!notaryId) {
-      dispatch(actions.searchNotaryById(notaryId));
+      dispatch(actions.searchNotaryDepartmentById(notaryId));
     }
-    dispatch(actions.fetchAllOrganizations())
+    dispatch(actions.fetchRegion());
+    // dispatch(actions.fetchAllOrganizations())
   }, []);
+
   useEffect(() => {
     if (currentRegion === "default") {
       dispatch(actions.fetchRegion());
     } else {
       dispatch(actions.fetchArea(currentRegion));
     }
-    setValue("area", "default");
-    setValue("settlement", "default");
+    if (currentRegion !== currentNotaryDepartment?.contact?.region?.id) {
+      setValue("area", "default");
+      setValue("settlement", "default");
+    }
   }, [currentRegion]);
 
   useEffect(() => {
@@ -77,19 +86,21 @@ const StateNotaryDepartmentPage = () => {
     } else {
       dispatch(actions.fetchSettlement(currentArea));
     }
-    setValue("settlement", "default");
+    if (currentArea !== currentNotaryDepartment?.contact?.area?.id) {
+      setValue("settlement", "default");
+    }
   }, [currentArea]);
 
-  const currentNotaryDepartment = useSelector((state) => state.search.currentNotaryDepartment);
-
   useEffect(() => {
-    if (!!notaryId) {
+    if (!!notaryId && !!Object.keys(currentNotaryDepartment).length) {
       setValue("departmentName", currentNotaryDepartment.name || "");
-      setValue("region", currentNotaryDepartment.region || "default");
-      setValue("area", currentNotaryDepartment.area || "default");
-      setValue("settlement", currentNotaryDepartment.settlement || "default");
-      setValue("address", currentNotaryDepartment.address || "");
-      setValue("phoneNumber", currentNotaryDepartment.phoneNumbers[0]);
+      console.log('currentNotaryDepartment.contact:', currentNotaryDepartment.contact)
+      setValue("region", currentNotaryDepartment.contact.region.id || "default");
+      setValue("area", currentNotaryDepartment.contact.area.id || "default");
+      setValue("settlement", currentNotaryDepartment.contact.locality.id || "default");
+      setValue("address", currentNotaryDepartment.contact.address || "");
+      setValue("phoneNumber", currentNotaryDepartment?.contact?.phoneNumbers?.[0]?.phoneNumber);
+      console.log('currentNotaryDepartment:', currentNotaryDepartment)
     }
   }, [currentNotaryDepartment])
 
@@ -123,45 +134,6 @@ const StateNotaryDepartmentPage = () => {
           <form onSubmit={handleSubmit(onSubmitBtnClick)}>
             <div className="row">
               <div className="col-md gap-3">
-                {/* <div className="mt-4 mb-4">
-                  <div className="form-check d-flex justify-content-start">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="flexRadioDefault"
-                      id="flexRadioDefault1"
-                      checked={isDepartmentArchive}
-                      onClick={() => {
-                        setDepartmentArchive(false);
-                      }}
-                    />
-                    <label
-                      className="form-check-label"
-                      htmlFor="flexRadioDefault1"
-                    >
-                      Державна нотаріальна контора
-                    </label>
-                  </div>
-                  <div className="form-check d-flex justify-content-start">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="flexRadioDefault"
-                      id="flexRadioDefault2"
-                      checked={isDepartmentArchive}
-                      onClick={() => {
-                        setDepartmentArchive(true);
-                      }}
-                    />
-                    <label
-                      className="form-check-label"
-                      htmlFor="flexRadioDefault2"
-                    >
-                      Державний нотаріальний архів
-                    </label>
-                  </div>
-                </div> */}
-
                 <div class="mb-3">
                   <label for="exampleFormControlInput1" class="form-label">
                     Назва державної нотаріальної контори / архіву

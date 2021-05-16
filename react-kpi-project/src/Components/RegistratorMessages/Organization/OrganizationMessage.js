@@ -31,20 +31,16 @@ const OrganizationMessage = (props) => {
             <div className="row">
               <div className="col col-12 col-md-6">
                 <div className="mb-3">
-                  <label htmlFor="region" className="form-label mr-2">
+                  <label htmlFor="messageRegion" className="form-label mr-2">
                     Регіон
                   </label>
 
-                  <select
-                    className="form-select"
-                    id="region"
-                    {...register("region", { required: true })}
-                  >
-                    <option selected>Регіон</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
+                  <input
+                    name="messageRegion"
+                    id="messageRegion"
+                    className="form-input mr-2"
+                    {...register("messageRegion", { required: true })}
+                  ></input>
                 </div>
 
                 <div className="form-check">
@@ -264,31 +260,31 @@ const OrganizationMessage = (props) => {
                       name="index"
                       id="index"
                       className="form-input mr-2 mb-1"
-                      {...register("index", { required: true })}
+                      {...register("index", { required: false })}
                     ></input>
                     <input
                       name="region"
                       id="region"
                       className="form-input mr-2 mb-1"
-                      {...register("region", { required: true })}
+                      {...register("region", { required: false })}
                     ></input>
                     <input
                       name="area"
                       id="area"
                       className="form-input mr-2 mb-1"
-                      {...register("area", { required: true })}
+                      {...register("area", { required: false })}
                     ></input>
                     <input
                       name="locality"
                       id="locality"
                       className="form-input mr-2 mb-1"
-                      {...register("locality", { required: true })}
+                      {...register("locality", { required: false })}
                     ></input>
                     <input
                       name="street"
                       id="street"
                       className="form-input mr-2"
-                      {...register("street", { required: true })}
+                      {...register("street", { required: false })}
                     ></input>
                   </div>
                 </div>

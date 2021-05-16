@@ -94,6 +94,7 @@ export const tableLabelsMap = {
     responsiblePersonPosition: "Посада відповідальної особи",
     sectionNumber: "корп.",
     street: "вул.",
+    messageRegion: "Регіон організації",
     type: "Повідомлення для внесення відомостей про державні нотаріальні контори та архіви до Єдиного реєстру нотаріусів",
   },
 };

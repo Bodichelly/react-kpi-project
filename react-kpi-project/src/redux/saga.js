@@ -32,7 +32,9 @@ import {
   SEARCH_NOTARY_BY_ID,
   FETCH_ALL_ORGANIZATIONS,
   SET_ALL_ORGANIZATIONS,
-  LOGOUT_USER
+  LOGOUT_USER,
+  SEARCH_PRIVATE_NOTATY,
+  SEARCH_STATE_NOTARY_DEPARTMENT
 } from "./types";
 import actions from "src/redux/actions";
 
@@ -76,14 +78,15 @@ function* fetchAllOrganizations(){
   try {
     yield put(actions.showLoader());
     const orgs = yield call(fetchAllOrganizationsRequest);
-    yield put({SET_ALL_ORGANIZATIONS, orgs});
+    console.log('orgs:', orgs)
+    yield put({ type: SET_ALL_ORGANIZATIONS, payload: orgs});
     yield put(actions.hideLoader());
   }
   catch(e){}
 }
 async function fetchAllOrganizationsRequest(){
-  //make request
-  return []
+  const { data } = await axios.post('http://localhost:3000/api/search/name', { name: '' })
+  return data;
 }
 
 function* searchNotaryById(action) {
@@ -96,8 +99,8 @@ function* searchNotaryById(action) {
   } catch (e) { }
 }
 async function searchNotaryByIdRequest(id) {
-  // make request
-  //await fetch("http://localhost:3000/api/regions");
+  const { data } = await axios.get(`http://localhost:3000/api/notaries/${id}`);
+  return data;
 }
 
 function* searchNotaryDepartmentById(action) {
@@ -110,8 +113,8 @@ function* searchNotaryDepartmentById(action) {
   } catch (e) { }
 }
 async function searchNotaryDepartmentByIdRequest(id) {
-  // make request
-  //await fetch("http://localhost:3000/api/regions");
+  const { data } = await axios.get(`http://localhost:3000/api/organizations/${id}`);
+  return data;
 }
 
 function* addNewNotary(action) {
@@ -119,12 +122,15 @@ try {
     const notaryData = action.payload;
     yield put(actions.showLoader());
     yield call(addNewNotaryRequest, notaryData);
+    const searchQueryData = yield select((state) => state.search.searchQueryData);
+    yield put(actions.fetchSearchData(searchQueryData));
     yield put(actions.hideLoader());
   } catch (e) { }
 }
+
 async function addNewNotaryRequest(notaryData) {
-  console.log('notaryData:', notaryData)
-  // await fetch("http://localhost:3000/api/notaries");
+  const { data } = await axios.post("http://localhost:3000/api/notaries", notaryData);
+  return data;
 }
 
 function* addNewDepartment(action) {
@@ -132,12 +138,14 @@ function* addNewDepartment(action) {
     const departmentData = action.payload;
     yield put(actions.showLoader());
     yield call(addNewDepartmentRequest, departmentData);
+    const searchQueryData = yield select((state) => state.search.searchQueryData);
+    yield put(actions.fetchSearchData(searchQueryData));
     yield put(actions.hideLoader());
   } catch (e) { }
 }
 async function addNewDepartmentRequest(departmentData) {
-  // make request
-  //await fetch("http://localhost:3000/api/regions");
+  const { data } = await axios.post(`http://localhost:3000/api/organizations`, departmentData);
+  return data;
 }
 
 function* updateNotary(action) {
@@ -145,12 +153,15 @@ function* updateNotary(action) {
     const notaryData = action.payload;
     yield put(actions.showLoader());
     yield call(updateNotaryRequest, notaryData);
+    const searchQueryData = yield select((state) => state.search.searchQueryData);
+    yield put(actions.fetchSearchData(searchQueryData));
     yield put(actions.hideLoader());
   } catch (e) { }
 }
 async function updateNotaryRequest(notaryData) {
-  // make request
-  //await fetch("http://localhost:3000/api/regions");
+  const { id, ...rest } = notaryData;
+  const { data } = await axios.put(`http://localhost:3000/api/notaries/${id}`, rest)
+  return data;
 }
 
 function* updateDepartment(action) {
@@ -158,12 +169,15 @@ function* updateDepartment(action) {
     const departmentData = action.payload;
     yield put(actions.showLoader());
     yield call(updateDepartmentRequest, departmentData);
+    const searchQueryData = yield select((state) => state.search.searchQueryData);
+    yield put(actions.fetchSearchData(searchQueryData));
     yield put(actions.hideLoader());
   } catch (e) { }
 }
 async function updateDepartmentRequest(departmentData) {
-  // make request
-  //await fetch("http://localhost:3000/api/regions");
+  const { id, ...other } = departmentData;
+  const { data } = await axios.put(`http://localhost:3000/api/organizations/${id}`, other)
+  return data;
 }
 
 function* deleteNotary(action) {
@@ -177,8 +191,8 @@ function* deleteNotary(action) {
   } catch (e) { }
 }
 async function deleteNotaryRequest(notaryId) {
-  // make request
-  //await fetch("http://localhost:3000/api/regions");
+  const { data } = await axios.delete(`http://localhost:3000/api/notaries/${notaryId}`);
+  return data;
 }
 
 function* deleteDepartment(action) {
@@ -191,12 +205,10 @@ function* deleteDepartment(action) {
     yield put(actions.hideLoader());
   } catch (e) { }
 }
-async function deleteDepartmentRequest(userData) {
-  // make request
-  //await fetch("http://localhost:3000/api/regions");
+async function deleteDepartmentRequest(departmentId) {
+  const { data } = await axios.delete(`http://localhost:3000/api/organizations/${departmentId}`);
+  return data;
 }
-
-
 
 function* loginUser(action) {
   try {
@@ -241,9 +253,9 @@ function* removeUser(action) {
   } catch (e) { }
 }
 
-async function removeUserRequest(userData) {
-  // make request
-  //await fetch("http://localhost:3000/api/regions");
+async function removeUserRequest(userId) {
+  const { data } = await axios.delete(`http://localhost:3000/api/users/${userId}`)
+  return data;
 }
 
 function* createNewMessage(action) {
@@ -307,24 +319,24 @@ function* fetchSettlement(action) {
 
 function* fetchSearchData(action) {
   try {
-    //
-    // return;
-    //
     const searchType = yield select((state) => state.search.searchType);
-    console.log('searchType:', searchType)
     const data = action ? action.payload : {};
-    console.log('data:', data)
     yield put(actions.setSearchQueryData(data));
     let searchData = [];
     yield put(actions.showLoader());
     if (searchType === SEARCH_BY_ADDRESS) {
-      searchData = yield call(searchByAddress, data);
+      const flags = yield select((state) => state.search.departmentTypes);
+      searchData = yield call(searchByAddress, { 
+        ...data, 
+        getNotaries: flags.includes(SEARCH_PRIVATE_NOTATY),
+        getOrganizations: flags.includes(SEARCH_STATE_NOTARY_DEPARTMENT),
+      });
     } else if (searchType === SEARCH_BY_NAME) {
-      searchData = yield call(() => { }, data);
+      searchData = yield call(searchByName, data);
     } else if (searchType === SEARCH_BY_NOTARY) {
-      searchData = yield call(() => { }, data);
+      searchData = yield call(searchByNotary, data);
     } else if (searchType === SEARCH_USERS) {
-      searchData = yield call(() => { }, data);
+      searchData = yield call(searchUsers, data);
     }
     console.log('searchData:', searchData)
     yield put(actions.updateSearchData(searchData));
@@ -337,6 +349,24 @@ function* fetchSearchData(action) {
 
 async function searchByAddress(query) {
   const { data } = await axios.post('http://localhost:3000/api/search/address', query)
+  return data;
+}
+
+async function searchByName(name) {
+  console.log('name:', name)
+  const { data } = await axios.post('http://localhost:3000/api/search/name', { name });
+  return data;
+}
+
+async function searchByNotary(query) {
+  const { data } = await axios.post('http://localhost:3000/api/search/notary', query)
+  // @todo search
+  return data;
+}
+
+async function searchUsers(query) {
+  const { data } = await axios.post('http://localhost:3000/api/users', query)
+  // @todo search
   return data;
 }
 

@@ -47,3 +47,12 @@ const deleteDepartment = (id) => {
         payload: id
     }
 }
+
+export default {
+    addNewNotary,
+    addNewDepartment,
+    updateNotary,
+    updateDepartment,
+    deleteNotary,
+    deleteDepartment
+}

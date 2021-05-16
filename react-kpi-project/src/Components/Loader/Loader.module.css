@@ -715,8 +715,8 @@
   width: 100vw;
   height: 100vh;
   background-color: rgb(81, 81, 255);
-  animation: loaderOpacity 0.2s ease-in;
-  opacity: 0.9;
+  animation: loaderOpacity .2s ease-in;
+  opacity: .95;
   display: flex;
   justify-content: center;
   align-items: center;

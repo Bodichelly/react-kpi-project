@@ -36,8 +36,8 @@ const SearchUsers = (props) => {
       //dispatch eror message with
     }
     dispatch(actions.fetchSearchData({
-      currentUserType,
-      currentUsername
+      email: currentUsername,
+      name: '',
     }));
   };
 
@@ -48,7 +48,7 @@ const SearchUsers = (props) => {
 
   return (
     <form className="container-fluid d-grid gap-3">
-      <select class="form-select" aria-label="Default select example"
+      {/* <select class="form-select" aria-label="Default select example"
         {...register("userType")}
       >
         <option value={ADMINISTRATOR}>
@@ -57,11 +57,11 @@ const SearchUsers = (props) => {
         <option value={REGISTRATOR}>
           Реєстратори
         </option>
-      </select>
+      </select> */}
       <input
         type="text"
         class="form-control"
-        placeholder="Ім'я користувача"
+        placeholder="Email користувача"
         {...register("username")}
       ></input>
     </form>
@@ -196,7 +196,7 @@ const SearchByNameField = (props) => {
     if (!name.current) {
       //error
     }
-    dispatch(actions.fetchSearchData(name.current));
+    dispatch(actions.fetchSearchData(name.current.value));
   };
   const name = useRef("");
   useEffect(onSubmitBtnClick, [props.searchKey]);
@@ -206,6 +206,7 @@ const SearchByNameField = (props) => {
         type="text"
         class="form-control"
         placeholder="Назва закладу"
+        ref={name}
       ></input>
     </div>
   );
@@ -232,7 +233,7 @@ const SearchByNotaryField = (props) => {
       //dispatch eror message with
     }
     const data = {}
-    currentNumber ? data["licenceNumber"] = currentNumber : (()=>{})();
+    currentNumber ? data["certificateNumber"] = currentNumber : (()=>{})();
     currentLastName ? data["lastName"] = currentLastName : (()=>{})();
     currentFirstName ? data["firstName"] = currentFirstName : (()=>{})();
     currentMiddleName ? data["middleName"] = currentMiddleName : (()=>{})();

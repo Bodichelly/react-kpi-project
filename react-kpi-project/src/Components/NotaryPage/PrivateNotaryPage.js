@@ -3,10 +3,12 @@ import { useForm } from "react-hook-form";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import actions from "src/redux/actions";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const PrivateNotaryPage = () => {
   let { notaryId } = useParams();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const {
     register,
@@ -16,6 +18,8 @@ const PrivateNotaryPage = () => {
     setValue,
     watch,
   } = useForm();
+
+
 
   const [isPrivateNotary, setPrivateNotary] = useState(true);
 
@@ -32,6 +36,7 @@ const PrivateNotaryPage = () => {
   const currentOrganization = watch().organization;
   const currentPhoneNumber = watch().phoneNumber;
 
+  const currentNotary = useSelector((state) => state.search.currentNotary);
 
   const onSubmitBtnClick = () => {
     const resultData = {
@@ -44,16 +49,17 @@ const PrivateNotaryPage = () => {
       localityId: currentSettlement,
       address: currentAddress,
       phoneNumbers: [currentPhoneNumber],
-    }
-    if (isPrivateNotary) {
-      resultData.isPrivate = !!isPrivateNotary
-    } else {
+      isPrivate: !!isPrivateNotary,
+    };
+    if (!isPrivateNotary) {
       resultData.employment = {
         position: currentPosition,
-        dataFrom: currentDateFrom,
-        organizationId: currentOrganization
-      }
+        dateFrom: currentDateFrom,
+        organizationId: currentOrganization,
+      };
     }
+
+    console.log('resultData:', resultData)
 
     if (!!notaryId) {
       resultData.id = notaryId;
@@ -61,23 +67,26 @@ const PrivateNotaryPage = () => {
     } else {
       dispatch(actions.addNewNotary(resultData));
     }
-
-  }
+    history.goBack();
+  };
 
   useEffect(() => {
     if (!!notaryId) {
       dispatch(actions.searchNotaryById(notaryId));
     }
-    dispatch(actions.fetchAllOrganizations())
+    dispatch(actions.fetchAllOrganizations());
   }, []);
+
   useEffect(() => {
     if (currentRegion === "default") {
       dispatch(actions.fetchRegion());
     } else {
       dispatch(actions.fetchArea(currentRegion));
     }
-    setValue("area", "default");
-    setValue("settlement", "default");
+    if (currentRegion !== currentNotary?.contact?.region?.id) {
+      setValue("area", "default");
+      setValue("settlement", "default");
+    }
   }, [currentRegion]);
 
   useEffect(() => {
@@ -86,28 +95,33 @@ const PrivateNotaryPage = () => {
     } else {
       dispatch(actions.fetchSettlement(currentArea));
     }
-    setValue("settlement", "default");
+    if (currentArea !== currentNotary?.contact?.area?.id) {
+      setValue("settlement", "default");
+    }
   }, [currentArea]);
 
-  const currentNotary = useSelector((state) => state.search.currentNotary);
-
   useEffect(() => {
-    if (!!notaryId) {
+    console.log('currentNotary:', currentNotary)
+    if (!!notaryId && !!Object.keys(currentNotary).length) {
       setValue("firstName", currentNotary.firstName || "");
       setValue("lastName", currentNotary.lastName || "");
       setValue("middleName", currentNotary.middleName || "");
       setValue("licenceNumber", currentNotary.certificateNumber || "");
-      setValue("region", currentNotary.region || "default");
-      setValue("area", currentNotary.area || "default");
-      setValue("settlement", currentNotary.settlement || "default");
-      setValue("address", currentNotary.address || "");
-      setValue("dateFrom", currentNotary.employment.dateFrom || "default");
-      setValue("position", currentNotary.employment.position || "default");
-      setValue("organization", currentNotary.employment.organizationId || "default");
-      setValue("phoneNumber", currentNotary.phoneNumbers[0]);
-      setPrivateNotary(currentNotary.isPrivate)
+      setValue("region", currentNotary.contact.region.id || "default"); 
+      setValue("area", currentNotary.contact.area.id || "default");
+      setValue("settlement", currentNotary.contact.locality.id || "default");
+      setValue("address", currentNotary.contact.address || "");
+      console.log('currentNotary.employment?.dateFrom:', new Date(currentNotary.employment?.dateFrom).toISOString())
+      setValue("dateFrom", new Date() || "default");
+      setValue("position", currentNotary.employment?.position || "");
+      setValue(
+        "organization",
+        currentNotary.employment?.organization.id || "default"
+      );
+      setValue("phoneNumber", currentNotary?.contact.phoneNumbers?.[0]?.phoneNumber);
+      setPrivateNotary(currentNotary.isPrivate);
     }
-  }, [currentNotary])
+  }, [currentNotary]);
 
   const regions = useSelector((state) => state.search.region);
   const getRegionsHtml = () => {
@@ -163,7 +177,7 @@ const PrivateNotaryPage = () => {
                       className="form-control"
                       placeholder="Прізвище"
                       {...register("lastName", { required: true })}
-                    //ref={lastName}
+                      //ref={lastName}
                     />
                   </div>
 
@@ -180,7 +194,7 @@ const PrivateNotaryPage = () => {
                       className="form-control"
                       placeholder="Ім'я"
                       {...register("firstName", { required: true })}
-                    //ref={firstName}
+                      //ref={firstName}
                     />
                   </div>
 
@@ -197,7 +211,7 @@ const PrivateNotaryPage = () => {
                       className="form-control"
                       placeholder="По батькові"
                       {...register("middleName", { required: true })}
-                    //ref={middleName}
+                      //ref={middleName}
                     />
                   </div>
                   <div className="mb-3">
@@ -213,7 +227,7 @@ const PrivateNotaryPage = () => {
                       className="form-control"
                       placeholder="Номер ліцензії"
                       {...register("licenceNumber", { required: true })}
-                    //ref={licenceNumber}
+                      //ref={licenceNumber}
                     />
                   </div>
                 </div>
@@ -232,11 +246,16 @@ const PrivateNotaryPage = () => {
                     <select
                       className="form-select"
                       aria-label="Default select example"
-                      {...register("region", { required: true, validate: validateDropDown })}
+                      {...register("region", {
+                        required: true,
+                        validate: validateDropDown,
+                      })}
                       //ref={region}
                       placeholder="Регіон"
                     >
-                      <option selected value="default">Регіон</option>
+                      <option selected value="default">
+                        Регіон
+                      </option>
                       {getRegionsHtml()}
                     </select>
                   </div>
@@ -251,11 +270,16 @@ const PrivateNotaryPage = () => {
                     <select
                       className="form-select"
                       aria-label="Default select example"
-                      {...register("area", { required: true, validate: validateDropDown })}
+                      {...register("area", {
+                        required: true,
+                        validate: validateDropDown,
+                      })}
                       disabled={currentRegion === "default"}
-                    //ref={area}
+                      //ref={area}
                     >
-                      <option selected value="default">Район</option>
+                      <option selected value="default">
+                        Район
+                      </option>
                       {getAreasHtml()}
                     </select>
                   </div>
@@ -270,10 +294,16 @@ const PrivateNotaryPage = () => {
                     <select
                       className="form-select"
                       aria-label="Default select example"
-                      {...register("settlement", { required: true, validate: validateDropDown })}
-                      disabled={currentArea === "default" || currentRegion === "default"}
+                      {...register("settlement", {
+                        validate: validateDropDown,
+                      })}
+                      disabled={
+                        currentArea === "default" || currentRegion === "default"
+                      }
                     >
-                      <option selected value="default">Населений пункт</option>
+                      <option selected value="default">
+                        Населений пункт
+                      </option>
                       {getSettlementsHtml()}
                     </select>
                   </div>
@@ -291,7 +321,7 @@ const PrivateNotaryPage = () => {
                       id="exampleFormControlInput1"
                       placeholder="Адреса"
                       {...register("address", { required: true })}
-                    //ref={address}
+                      //ref={address}
                     />
                   </div>
                 </div>
@@ -341,8 +371,7 @@ const PrivateNotaryPage = () => {
                     className="form-control"
                     id="exampleFormControlInput1"
                     placeholder="Посада"
-                    {...register("possition")}
-                    //ref={position}
+                    {...register("position")}
                     disabled={isPrivateNotary}
                   />
                 </div>
@@ -352,29 +381,36 @@ const PrivateNotaryPage = () => {
                     className="form-label"
                   >
                     Назва державної нотаріальної контори / архіву
-                    </label>
+                  </label>
 
                   <select
                     className="form-select"
                     aria-label="Default select example"
                     disabled={isPrivateNotary}
-                    {...register("organization", { required: true, validate: validateDropDown })}
+                    {...register("organization", {
+                      ...(!isPrivateNotary && {validate: validateDropDown}),
+                    })}
                   >
-                    <option selected value="default">Назва закладу</option>
+                    <option selected value="default">
+                      Назва закладу
+                    </option>
                     {getOrganizationsHtml()}
                   </select>
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="birthDate" class="form-label">
+                  <label htmlFor="dateFrom" class="form-label">
                     Дата влаштування
                   </label>
-                  <input disabled={isPrivateNotary} {...register("dateFrom", { required: true })} class="form-control" id="birthDate" type="date" />
+                  <input
+                    disabled={isPrivateNotary}
+                    class="form-control"
+                    id="dateFrom"
+                    type="date"
+                    {...register("dateFrom")}
+                  />
                 </div>
                 <div className="mb-3">
-                  <label
-                    htmlFor="phoneNumber"
-                    className="form-label"
-                  >
+                  <label htmlFor="phoneNumber" className="form-label">
                     Робочий телефон
                   </label>
 
@@ -385,7 +421,7 @@ const PrivateNotaryPage = () => {
                     placeholder="Робочий телефон"
                     //ref={phoneNumber}
                     {...register("phoneNumber", {
-                      required: false,
+                      required: true,
                       minLength: 6,
                       maxLength: 20,
                     })}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import actions from "src/redux/actions";
 import SearchBar from "../SearchBar/SearchBar";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import {
   SEARCH_PRIVATE_NOTATY,
   SEARCH_STATE_NOTARY_DEPARTMENT,
@@ -23,16 +23,27 @@ const SearchItemUser = (props) => {
             style={{ width: 30 + "px", height: 30 + "px", margin: 5 + "px" }}
             src="https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png"
           />
-          <span className="fw-bold">Електронна адреса: </span>{props.email}
+          <span className="fw-bold">Електронна адреса: </span>
+          {props.login}
         </div>
-        <div className="card-text">Ім'я: {props.name};
+        <div className="card-text">
+          Ім'я: {`${props.firstName} ${props.lastName} ${props.middleName}`};
           Роль: {props?.role}
         </div>
-        { currentUser === ADMINISTRATOR && props?.role !==ADMINISTRATOR ?(
-        <div class="d-flex justify-content-end">
-          <button onClick={()=>{dispatch(actions.removeUser(props.id))}} className="btn btn-danger m-1">Видалити</button>
-        </div>)
-        : null}
+        {currentUser === ADMINISTRATOR && props?.role !== "admin" ? (
+          <div class="d-flex justify-content-end">
+            <button
+              onClick={() => {
+                if (window.confirm('Видалити користувача?')) {
+                  dispatch(actions.removeUser(props.id));
+                }
+              }}
+              className="btn btn-danger m-1"
+            >
+              Видалити
+            </button>
+          </div>
+        ) : null}
       </div>
     </div>
   );
@@ -51,22 +62,40 @@ const SearchItemDepartment = (props) => {
             style={{ width: 30 + "px", height: 30 + "px", margin: 5 + "px" }}
             src="https://icons.iconarchive.com/icons/icons8/windows-8/512/Business-Department-icon.png"
           />
-          <span className="fw-bold">Відомості про заклад: </span>{props.name}
+          <span className="fw-bold">Відомості про заклад: </span>
+          {props.name}
         </div>
-        <div className="card-text">Контактні дані: {props.information}</div>
-        { currentUser === ADMINISTRATOR ?(
-        <div class="d-flex justify-content-end">
-          <button onClick={() => history.push('/state-notary-department-page/'+props.id)} className="btn btn-primary m-1">Редагувати</button>
-          <button onClick={()=>{dispatch(actions.deleteDepartment(props.id))}}  className="btn btn-danger m-1">Видалити</button>
-        </div>)
-        : null}
+        <div className="card-text">Контактні дані: {props?.contact?.phoneNumbers?.[0]?.phoneNumber}</div>
+        <div className="card-text">Адреса: {props?.contact?.address}</div>
+        {currentUser === ADMINISTRATOR ? (
+          <div class="d-flex justify-content-end">
+            <button
+              onClick={() =>
+                history.push("/state-notary-department-page/" + props.id)
+              }
+              className="btn btn-primary m-1"
+            >
+              Редагувати
+            </button>
+            <button
+              onClick={() => { 
+                if (window.confirm('Видалити організацію?')) {
+                  dispatch(actions.deleteDepartment(props.id));
+                }
+              }}
+              className="btn btn-danger m-1"
+            >
+              Видалити
+            </button>
+          </div>
+        ) : null}
       </div>
     </div>
   );
 };
 
 const SearchItemNotary = (props) => {
-  console.log('props:', props)
+  console.log("props:", props);
   const currentUser = useSelector((state) => state.app.currentUser);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -79,15 +108,34 @@ const SearchItemNotary = (props) => {
             style={{ width: 30 + "px", height: 30 + "px", margin: 5 + "px" }}
             src="https://icon-library.com/images/department-icon/department-icon-0.jpg"
           />
-          <span className="fw-bold">Відомості про нотаріус: </span>{props.lastName} {props.firstName} {props.middleName}
+          <span className="fw-bold">Відомості про нотаріус: </span>
+          {props.lastName} {props.firstName} {props.middleName}
         </div>
-        <div className="card-text">Номер свідоцтва: {props.certificateNumber}, Телефонний номер: {props?.contact?.phoneNumbers[0]?.phoneNumber}</div>
-        { currentUser === ADMINISTRATOR ?(
-        <div class="d-flex justify-content-end">
-          <button onClick={() => history.push('/private-notary-page/'+props.id)} className="btn btn-primary m-1">Редагувати</button>
-          <button onClick={()=>{dispatch(actions.deleteNotary(props.id))}}  className="btn btn-danger m-1">Видалити</button>
-        </div>)
-        : null}
+        <div className="card-text">
+          Номер свідоцтва: {props.certificateNumber}, Телефонний номер:{" "}
+          {props?.contact?.phoneNumbers[0]?.phoneNumber}
+        </div>
+        {currentUser === ADMINISTRATOR ? (
+          <div class="d-flex justify-content-end">
+            <button
+              onClick={() => history.push("/private-notary-page/" + props.id)}
+              className="btn btn-primary m-1"
+            >
+              Редагувати
+            </button>
+            <button
+              onClick={() => {
+                if (window.confirm('Видалити нотаріуса?')) {
+
+                  dispatch(actions.deleteNotary(props.id));
+                }
+              }}
+              className="btn btn-danger m-1"
+            >
+              Видалити
+            </button>
+          </div>
+        ) : null}
       </div>
     </div>
   );
@@ -141,7 +189,7 @@ const SearchResults = () => {
   const getItemsHtml = () => {
     if (items && items.length) {
       return items.slice(currentPage - 1, itemsPerPage).map((item) => {
-        if (searchBarType!==SEARCH_USERS) {
+        if (searchBarType !== SEARCH_USERS) {
           if (!!item.name) {
             return <SearchItemDepartment {...item}></SearchItemDepartment>;
           } else {
@@ -150,48 +198,50 @@ const SearchResults = () => {
         } else {
           return <SearchItemUser {...item}></SearchItemUser>;
         }
-
       });
     } else {
-      return <h4>Інформацію не знайдено</h4>
+      return <h4>Інформацію не знайдено</h4>;
     }
-
   };
 
   return (
     <div className="card bg-warning">
       <div className="card-body bg-light m-1">
         <h3>Результати пошуку</h3>
-        {searchBarType === SEARCH_BY_ADDRESS ? <div className="container-fluid">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              value=""
-              id="flexCheckDefault"
-              checked={departmentTypes.includes(SEARCH_STATE_NOTARY_DEPARTMENT)}
-              onClick={() =>
-                checkDepartmentType(SEARCH_STATE_NOTARY_DEPARTMENT)
-              }
-            />
-            <label className="form-check-label" htmlFor="flexCheckDefault">
-              Державні нотаріальні контори
-            </label>
+        {searchBarType === SEARCH_BY_ADDRESS ? (
+          <div className="container-fluid">
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+                checked={departmentTypes.includes(
+                  SEARCH_STATE_NOTARY_DEPARTMENT
+                )}
+                onClick={() =>
+                  checkDepartmentType(SEARCH_STATE_NOTARY_DEPARTMENT)
+                }
+              />
+              <label className="form-check-label" htmlFor="flexCheckDefault">
+                Державні нотаріальні контори
+              </label>
+            </div>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value=""
+                id="flexCheckChecked"
+                checked={departmentTypes.includes(SEARCH_PRIVATE_NOTATY)}
+                onClick={() => checkDepartmentType(SEARCH_PRIVATE_NOTATY)}
+              />
+              <label className="form-check-label" htmlFor="flexCheckChecked">
+                Приватні нотаріуси
+              </label>
+            </div>
           </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              value=""
-              id="flexCheckChecked"
-              checked={departmentTypes.includes(SEARCH_PRIVATE_NOTATY)}
-              onClick={() => checkDepartmentType(SEARCH_PRIVATE_NOTATY)}
-            />
-            <label className="form-check-label" htmlFor="flexCheckChecked">
-              Приватні нотаріуси
-            </label>
-          </div>
-        </div> : null}
+        ) : null}
         <hr className="dropdown-divider mb-3 mt-3" />
         <div
           className="container-fluid overflow-auto"
