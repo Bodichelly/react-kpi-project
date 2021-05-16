@@ -13,9 +13,17 @@ import {
     SET_ADDRESS,
     UPDATE_SEARCH_DATA,
     FETCH_SEARCH_DATA,
-    CLEAR_SEARCH_DATA
+    CLEAR_SEARCH_DATA,
+    SET_SEARCH_QUERY_DATA
 } from './types'
 
+
+const setSearchQueryData = (data) => {
+    return {
+        type: SET_SEARCH_QUERY_DATA,
+        payload: data
+    }
+}
 
 const clearSearchData = () => {
     return {

@@ -20,7 +20,13 @@ import {
   SEARCH_USERS,
   ADD_USER,
   REMOVE_USER,
-  LOGIN_USER
+  LOGIN_USER,
+  ADD_NEW_NOTARY,
+  ADD_NEW_DEPARTMENT,
+  UPDATE_NOTARY,
+  UPDATE_DEPARTMENT,
+  DELETE_NOTARY,
+  DELETE_DEPARTMENT
 } from "./types";
 import actions from "src/redux/actions";
 
@@ -44,11 +50,100 @@ export function* sagaWatcher() {
   //auth
   yield takeLatest(LOGIN_USER, loginUser);
 
-  // yield takeEvery(REQUEST_POSTS, fetchPostsWorker)
-  // yield takeEvery(REQUEST_USERS, fetchUsersWorker)
-  // yield takeEvery(SELECT_USER, selectUserWorker)
+  //notaries
+  yield takeLatest(ADD_NEW_NOTARY, addNewNotary);
+  yield takeLatest(ADD_NEW_DEPARTMENT, addNewDepartment);
+  yield takeLatest(UPDATE_NOTARY, updateNotary);
+  yield takeLatest(UPDATE_DEPARTMENT, updateDepartment);
+  yield takeLatest(DELETE_NOTARY, deleteNotary);
+  yield takeLatest(DELETE_DEPARTMENT, deleteDepartment);
+
 }
 //takeevery takeLatest takeLeading
+
+function* addNewNotary(action) {
+  try {
+    const notaryData = action.payload;
+    yield put(actions.showLoader());
+    yield call(addNewNotaryRequest, notaryData);
+    yield put(actions.hideLoader());
+  } catch (e) { }
+}
+async function addNewNotaryRequest(notaryData) {
+  // make request
+  //await fetch("http://localhost:3000/api/regions");
+}
+
+function* addNewDepartment(action) {
+  try {
+    const departmentData = action.payload;
+    yield put(actions.showLoader());
+    yield call(addNewDepartmentRequest, departmentData);
+    yield put(actions.hideLoader());
+  } catch (e) { }
+}
+async function addNewDepartmentRequest(departmentData) {
+  // make request
+  //await fetch("http://localhost:3000/api/regions");
+}
+
+function* updateNotary(action) {
+  try {
+    const notaryData = action.payload;
+    yield put(actions.showLoader());
+    yield call(updateNotaryRequest, notaryData);
+    yield put(actions.hideLoader());
+  } catch (e) { }
+}
+async function updateNotaryRequest(notaryData) {
+  // make request
+  //await fetch("http://localhost:3000/api/regions");
+}
+
+function* updateDepartment(action) {
+  try {
+    const departmentData = action.payload;
+    yield put(actions.showLoader());
+    yield call(updateDepartmentRequest, departmentData);
+    yield put(actions.hideLoader());
+  } catch (e) { }
+}
+async function updateDepartmentRequest(departmentData) {
+  // make request
+  //await fetch("http://localhost:3000/api/regions");
+}
+
+function* deleteNotary(action) {
+  try {
+    const notaryId = action.payload;
+    const searchQueryData = yield select((state) => state.search.searchQueryData);
+    yield put(actions.showLoader());
+    yield call(deleteNotaryRequest, notaryId);
+    yield put(actions.fetchSearchData(searchQueryData));
+    yield put(actions.hideLoader());
+  } catch (e) { }
+}
+async function deleteNotaryRequest(notaryId) {
+  // make request
+  //await fetch("http://localhost:3000/api/regions");
+}
+
+function* deleteDepartment(action) {
+  try {
+    const departmentId = action.payload;
+    const searchQueryData = yield select((state) => state.search.searchQueryData);
+    yield put(actions.showLoader());
+    yield call(deleteDepartmentRequest, departmentId);
+    yield put(actions.fetchSearchData(searchQueryData));
+    yield put(actions.hideLoader());
+  } catch (e) { }
+}
+async function deleteDepartmentRequest(userData) {
+  // make request
+  //await fetch("http://localhost:3000/api/regions");
+}
+
+
 
 function* loginUser(action) {
   try {
@@ -82,8 +177,10 @@ async function addUserRequest(userData) {
 function* removeUser(action) {
   try {
     const userId = action.payload;
+    const searchQueryData = yield select((state) => state.search.searchQueryData);
     yield put(actions.showLoader());
     yield call(removeUserRequest, userId);
+    yield put(actions.fetchSearchData(searchQueryData));
     yield put(actions.hideLoader());
   } catch (e) { }
 }
@@ -160,6 +257,7 @@ function* fetchSearchData(action) {
     //
     const searchType = yield select((state) => state.search.searchType);
     const data = action ? action.payload : {};
+    yield put(actions.setSearchQueryData(data));
     let searchData = [];
     yield put(actions.showLoader());
     if (searchType === SEARCH_BY_ADDRESS) {

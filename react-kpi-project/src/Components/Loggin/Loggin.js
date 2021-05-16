@@ -20,7 +20,7 @@ const Loggin = () => {
   const currentPassword = watch().password;
 
   const onSubmitBtnClick = () => {
-    //dispatch(actions.loginUser(currentEmail, currentPassword))
+    dispatch(actions.loginUser({currentEmail, currentPassword}))
   }
 
   return (
