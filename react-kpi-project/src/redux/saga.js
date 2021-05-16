@@ -27,7 +27,8 @@ import {
   UPDATE_NOTARY,
   UPDATE_DEPARTMENT,
   DELETE_NOTARY,
-  DELETE_DEPARTMENT
+  DELETE_DEPARTMENT,
+  LOGOUT_USER
 } from "./types";
 import actions from "src/redux/actions";
 
@@ -50,6 +51,7 @@ export function* sagaWatcher() {
 
   //auth
   yield takeLatest(LOGIN_USER, loginUser);
+  yield takeLatest(LOGOUT_USER, logoutUser);
 
   //notaries
   yield takeLatest(ADD_NEW_NOTARY, addNewNotary);
@@ -151,14 +153,18 @@ function* loginUser(action) {
     const credentials = action.payload;
     yield put(actions.showLoader());
     const { data: { user }} = yield call(loginUserRequest, credentials);
-    console.log('userData:', user);
     yield put(actions.setUserData(user));
     yield put(actions.hideLoader());
+    localStorage.setItem('currentUser', yield select(state => state.app.currentUser))
   } catch (e) { }
 }
 
 async function loginUserRequest(userData) {
   return axios.post('http://localhost:3000/api/auth/login', userData);
+}
+
+function* logoutUser(action) {
+  localStorage.setItem('currentUser', '');
 }
 
 function* addUser(action) {
@@ -171,8 +177,7 @@ function* addUser(action) {
 }
 
 async function addUserRequest(userData) {
-  // make request
-  //await fetch("http://localhost:3000/api/regions");
+  await axios.post("http://localhost:3000/api/auth/register", userData);
 }
 
 function* removeUser(action) {

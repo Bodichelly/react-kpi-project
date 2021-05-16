@@ -13,7 +13,7 @@ import {
 const initialState = {
   currentPage: "",
   isLoading: false,
-  currentUser: REGISTRATOR,
+  currentUser: localStorage.getItem('currentUser') || COMMON,
   email: "",
   username: "",
 };
