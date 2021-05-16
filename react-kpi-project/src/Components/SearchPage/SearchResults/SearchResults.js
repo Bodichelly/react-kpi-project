@@ -2,41 +2,91 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import actions from "src/redux/actions";
 import SearchBar from "../SearchBar/SearchBar";
+import { useHistory } from 'react-router-dom';
 import {
   SEARCH_PRIVATE_NOTATY,
   SEARCH_STATE_NOTARY_DEPARTMENT,
   SEARCH_BY_ADDRESS,
+  ADMINISTRATOR,
 } from "src/redux/types";
+import { SEARCH_USERS } from "../../../redux/types";
 
-const SearchItemDepartment = (props) => {
+const SearchItemUser = (props) => {
+  const currentUser = useSelector((state) => state.app.currentUser);
+  const dispatch = useDispatch();
+
   return (
     <div className="card">
       <div className="card-body">
         <div className="card-title">
           <img
-            style={{ width: 30 + "px", height: 30 + "px" }}
+            style={{ width: 30 + "px", height: 30 + "px", margin: 5 + "px" }}
+            src="https://assets.stickpng.com/thumbs/585e4beacb11b227491c3399.png"
+          />
+          <span className="fw-bold">Електронна адреса: </span>{props.email}
+        </div>
+        <div className="card-text">Ім'я: {props.name};
+          Роль: {props?.role}
+        </div>
+        { currentUser === ADMINISTRATOR && props?.role !==ADMINISTRATOR ?(
+        <div class="d-flex justify-content-end">
+          <button onClick={()=>{/*DELETE ITEM*/}} className="btn btn-danger m-1">Видалити</button>
+        </div>)
+        : null}
+      </div>
+    </div>
+  );
+};
+
+const SearchItemDepartment = (props) => {
+  const currentUser = useSelector((state) => state.app.currentUser);
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  return (
+    <div className="card">
+      <div className="card-body">
+        <div className="card-title">
+          <img
+            style={{ width: 30 + "px", height: 30 + "px", margin: 5 + "px" }}
             src="https://icons.iconarchive.com/icons/icons8/windows-8/512/Business-Department-icon.png"
           />
-          <span class="fw-bold">Відомості про заклад: </span>{props.name}
+          <span className="fw-bold">Відомості про заклад: </span>{props.name}
         </div>
         <div className="card-text">Контактні дані: {props.information}</div>
+        { currentUser === ADMINISTRATOR ?(
+        <div class="d-flex justify-content-end">
+          <button onClick={() => history.push('/state-notary-department-page/'+props.id)} className="btn btn-primary m-1">Редагувати</button>
+          <button onClick={()=>{/*DELETE ITEM*/}}  className="btn btn-danger m-1">Видалити</button>
+        </div>)
+        : null}
       </div>
     </div>
   );
 };
 
 const SearchItemNotary = (props) => {
+  const currentUser = useSelector((state) => state.app.currentUser);
+  const history = useHistory();
+  const dispatch = useDispatch();
+
   return (
     <div className="card">
       <div className="card-body">
         <div className="card-title">
           <img
-            style={{ width: 30 + "px", height: 30 + "px" }}
+            style={{ width: 30 + "px", height: 30 + "px", margin: 5 + "px" }}
             src="https://icon-library.com/images/department-icon/department-icon-0.jpg"
           />
-          <span class="fw-bold">Відомості про нотаріус: </span>{props.lastName} {props.firstName} {props.middleName}
+          <span className="fw-bold">Відомості про нотаріус: </span>{props.lastName} {props.firstName} {props.middleName}
         </div>
         <div className="card-text">Номер свідоцтва: {props.certificateNumber}, Телефонний номер: {props.phoneNumbers}</div>
+        { currentUser === ADMINISTRATOR ?(
+        <div class="d-flex justify-content-end">
+          <button onClick={() => history.push('/private-notary-page/'+props.id)} className="btn btn-primary m-1">Редагувати</button>
+          <button onClick={()=>{/*DELETE ITEM*/}}  className="btn btn-danger m-1">Видалити</button>
+        </div>)
+        : null}
       </div>
     </div>
   );
@@ -88,25 +138,30 @@ const SearchResults = () => {
   };
 
   const getItemsHtml = () => {
-    if(items && items.length){
-      return items.slice(currentPage-1, itemsPerPage).map((item) => {
-        if(!!item.name){
-          return <SearchItemDepartment {...item}></SearchItemDepartment>;
-        }else{
-          return <SearchItemNotary {...item}></SearchItemNotary>;
+    if (items && items.length) {
+      return items.slice(currentPage - 1, itemsPerPage).map((item) => {
+        if (searchBarType!==SEARCH_USERS) {
+          if (!!item.name) {
+            return <SearchItemDepartment {...item}></SearchItemDepartment>;
+          } else {
+            return <SearchItemNotary {...item}></SearchItemNotary>;
+          }
+        } else {
+          return <SearchItemUser {...item}></SearchItemUser>;
         }
-    });
-    }else{
+
+      });
+    } else {
       return <h4>Інформацію не знайдено</h4>
     }
-    
+
   };
 
   return (
     <div className="card bg-warning">
       <div className="card-body bg-light m-1">
         <h3>Результати пошуку</h3>
-        { searchBarType===SEARCH_BY_ADDRESS ?<div className="container-fluid">
+        {searchBarType === SEARCH_BY_ADDRESS ? <div className="container-fluid">
           <div className="form-check">
             <input
               className="form-check-input"

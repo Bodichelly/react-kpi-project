@@ -13,61 +13,9 @@ import {
 } from "src/redux/types";
 import { useForm } from "react-hook-form";
 import randomStr from "src/utils/random";
-// import styles from "./Loggin.module.scss";
+import { REGISTRATOR } from "../../../redux/types";
 
 const SearchUsers = (props) => {
-  const onSubmitBtnClick = () => {
-    if (props.searchKey === null) {
-      return;
-    }
-    if (!username.current) {
-      //dispatch eror message with
-    }
-    dispatch(actions.fetchSearchData(username.current));
-  };
-
-  useEffect(onSubmitBtnClick, [props.searchKey]);
-
-  const username = useRef("");
-  const dispatch = useDispatch();
-
-  const searchUserType = useSelector((state) => state.search.searchUserType);
-
-  const onUserTypeSelect = (userType) => {
-    dispatch(actions.switchUserSearchType(userType));
-  };
-
-  return (
-    <div className="container-fluid d-grid gap-3">
-      <select class="form-select" aria-label="Default select example">
-        <option
-          selected={searchUserType == SEARCH_ADMINISTRATOR}
-          onSelect={() => {
-            onUserTypeSelect(SEARCH_ADMINISTRATOR);
-          }}
-        >
-          Адміністратори
-        </option>
-        <option
-          selected={searchUserType == SEARCH_REGISTRATOR}
-          onSelect={() => {
-            onUserTypeSelect(SEARCH_REGISTRATOR);
-          }}
-        >
-          Реєстратори
-        </option>
-      </select>
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Ім'я користувача"
-        ref={username}
-      ></input>
-    </div>
-  );
-};
-
-const SearchByAddressField = (props) => {
   const dispatch = useDispatch();
   const {
     register,
@@ -76,49 +24,81 @@ const SearchByAddressField = (props) => {
     getValues,
     setValue,
     watch,
-  } = useForm({
-    defaultValue: {
-      region: "default",
-      area: "default",
-      settlement: "default",
-    },
-  });
+  } = useForm();
 
-  // useEffect(() => {
-  //   if (getValues().region === "default") {
-  //     console.log("fetchRegion");
-  //     dispatch(actions.fetchRegion());
-  //   } else {
-  //     console.log("regionSelect ",getValues().region);
-  //     dispatch(
-  //       actions.fetchArea(regions.find(region=>region.id===getValues().region))
-  //     );
-  //   }
 
-  //   setValue("area" ,"default");
-  //   setValue("settlement" ,"default");
-  // }, [getValues().region]);
+  const onSubmitBtnClick = () => {
+    if (props.searchKey === null) {
+      return;
+    }
+    if (!currentUserType) {
+      //dispatch eror message with
+    }
+    dispatch(actions.fetchSearchData({
+      currentUserType,
+      currentUsername
+    }));
+  };
 
-  // useEffect(() => {
-  //   if (getValues().area === "default") {
-  //     dispatch(
-  //       actions.fetchArea(regions.find(region=>region.id===getValues().region))
-  //     );
-  //   } else {
-  //     dispatch(
-  //       actions.fetchSettlement(areas.find(area=>area.id===getValues().area))
-  //     );
-  //   }
-  //   setValue("settlement" ,"default") ;
-  // }, [getValues().area]);
+  useEffect(onSubmitBtnClick, [props.searchKey]);
+
+  const currentUserType = watch().userType;
+  const currentUsername = watch().username;
+
+  return (
+    <form className="container-fluid d-grid gap-3">
+      <select class="form-select" aria-label="Default select example"
+        {...register("userType")}
+      >
+        <option value={ADMINISTRATOR}>
+          Адміністратори
+        </option>
+        <option value={REGISTRATOR}>
+          Реєстратори
+        </option>
+      </select>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Ім'я користувача"
+        {...register("username")}
+      ></input>
+    </form>
+  );
+};
+
+const SearchByAddressField = (props) => {
+  const dispatch = useDispatch();
+  const {
+    register,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm();
 
   const currentRegion = watch().region;
   const currentArea = watch().area;
   const currentSettlement = watch().settlement;
+  const currentAddress = watch().address;
 
-  // useEffect(() => {
-  //   console.table({ currentRegion, currentArea, currentSettlement });
-  // }, [currentRegion, currentArea, currentSettlement]);
+  useEffect(() => {
+    if (currentRegion === "default") {
+      dispatch(actions.fetchRegion());
+    } else {
+      dispatch(actions.fetchArea(currentRegion));
+    }
+    setValue("area" ,"default");
+    setValue("settlement" ,"default");
+  }, [currentRegion]);
+
+  useEffect(() => {
+    if (currentArea === "default") {
+      dispatch(actions.fetchArea(currentRegion));
+    } else {
+      dispatch(actions.fetchSettlement(currentArea));
+    }
+    setValue("settlement" ,"default") ;
+  }, [currentArea]);
 
   const regions = useSelector((state) => state.search.region);
   const getRegionsHtml = () => {
@@ -143,18 +123,18 @@ const SearchByAddressField = (props) => {
       return;
     }
     if (
-      getValues().region === "default" ||
-      getValues().area === "default" ||
-      getValues().settlement === "default"
+      currentRegion === "default" ||
+      currentArea === "default" ||
+      currentSettlement === "default"
     ) {
       //error
     }
     dispatch(
       actions.fetchSearchData({
-        region: regions[regions.indexOf(getValues().region)],
-        area: areas[regions.indexOf(getValues().area)],
-        settlement: settlements[regions.indexOf(getValues().settlement)],
-        address: getValues().address,
+        region: currentRegion,
+        area: currentArea,
+        settlement: currentSettlement,
+        address: currentAddress,
       })
     );
   };
@@ -167,7 +147,7 @@ const SearchByAddressField = (props) => {
         {...register("region")}
         aria-label="Default select example"
       >
-        <option value="default" selected>
+        <option value="default" disabled selected>
           Регіон
         </option>
         {getRegionsHtml()}
@@ -176,9 +156,9 @@ const SearchByAddressField = (props) => {
         class="form-select"
         {...register("area")}
         aria-label="Default select example"
-        disabled={getValues().region === "default" || !getValues().region}
+        disabled={currentRegion === "default"}
       >
-        <option value="default" selected>
+        <option value="default" disabled  selected>
           Район
         </option>
         {getAreasHtml()}
@@ -186,10 +166,10 @@ const SearchByAddressField = (props) => {
       <select
         class="form-select"
         {...register("settlement")}
-        disabled={getValues().area === "default" || !getValues().area}
+        disabled={currentArea === "default" || currentRegion==="default"}
         aria-label="Default select example"
       >
-        <option value="default" selected>
+        <option value="default" disabled  selected>
           Населений пункт
         </option>
         {getSettlementsHtml()}
@@ -234,25 +214,35 @@ const SearchByNotaryField = (props) => {
   const dispatch = useDispatch();
   const {
     register,
-    handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
 
-  const onSubmitBtnClick = () =>
-    handleSubmit((data) => {
-      if (props.searchKey === null) {
-        return;
-      }
-      if (
-        !data.number &&
-        !data.lastName &&
-        !data.firstName &&
-        !data.middleName
-      ) {
-        //dispatch eror message with
-      }
-      dispatch(actions.fetchSearchData(data));
-    });
+  const onSubmitBtnClick = () => {
+    if (props.searchKey === null) {
+      return;
+    }
+    if (
+      !currentNumber &&
+      !currentLastName &&
+      !currentFirstName &&
+      !currentMiddleName
+    ) {
+      //dispatch eror message with
+    }
+    const data = {}
+    currentNumber ? data["licenceNumber"] = currentNumber : (()=>{})();
+    currentLastName ? data["lastName"] = currentLastName : (()=>{})();
+    currentFirstName ? data["firstName"] = currentFirstName : (()=>{})();
+    currentMiddleName ? data["middleName"] = currentMiddleName : (()=>{})();
+    dispatch(actions.fetchSearchData(data));
+  };
+
+  const currentNumber = watch().number;
+  const currentLastName = watch().lastName;
+  const currentFirstName = watch().firstName;
+  const currentMiddleName = watch().middleName;
+
   useEffect(onSubmitBtnClick, [props.searchKey]);
   return (
     <form className="container-fluid d-grid gap-3">
@@ -294,6 +284,7 @@ const SearchBar = () => {
 
   const onSearchTypeSelect = (searchType) => {
     setKey(null);
+    dispatch(actions.clearSearchData())
     dispatch(actions.switchSearchType(searchType));
   };
 

@@ -11,6 +11,9 @@ import {
   useParams,
 } from "react-router-dom";
 
+import { ADMINISTRATOR, REGISTRATOR } from "./redux/types";
+
+
 import Loggin from "./Components/Loggin/Loggin";
 import Header from "./Components/Header/Header";
 import Loader from "./Components/Loader/Loader";
@@ -21,9 +24,12 @@ import CreateUserPage from './Components/CreateUserPage/CreateUserPage';
 import GovernmentNotaryMessage from './Components/RegistratorMessages/GovernmentNotary/GovernmentNotaryMessage';
 import PrivateNotaryMessage from './Components/RegistratorMessages/PrivateNotary/PrivateNotary';
 import OrganizationMessage from './Components/RegistratorMessages/Organization/OrganizationMessage';
+import MessageListPage from './Components/RegistratorMessages/MessageListPage'
+
 
 function App() {
   const isLoading = useSelector((state) => state.app.isLoading);
+  const currentUser = useSelector((state) => state.app.currentUser);
 
   return (
     <div className="App">
@@ -37,21 +43,25 @@ function App() {
           <Route path="/login">
             <Loggin />
           </Route>
-          <Route path="/register">
+          {currentUser === ADMINISTRATOR ? (<Route path="/register">
             <CreateUserPage />
-          </Route>
+          </Route>) : null}
+          {currentUser === ADMINISTRATOR ? (
           <Route path="/private-notary-page/:notaryId">
             <PrivateNotaryPage />
-          </Route>
+          </Route>) : null}
+          {currentUser === ADMINISTRATOR ? (
           <Route path="/state-notary-department-page/:notaryId">
             <StateNotaryDepartment />
-          </Route>
+          </Route>) : null}
+          {currentUser === ADMINISTRATOR ? (
           <Route path="/new-private-notary-page">
             <PrivateNotaryPage />
-          </Route>
+          </Route>) : null}
+          {currentUser === ADMINISTRATOR ? (
           <Route path="/new-state-notary-department-page">
             <StateNotaryDepartment />
-          </Route>
+          </Route>) : null}
           <Route path="/help">
             <div className="container-md mt-1">
               <div className="card bg-warning">
@@ -75,28 +85,35 @@ function App() {
                     <br />
                     <a
                       href="https://ern.minjust.gov.ua/docs/ern_search_rules.pdf"
-                      style={{textDecoration: "underlined"}}
+                      style={{ textDecoration: "underlined" }}
                       disabled=""
                     >
                       Правила пошуку інформації на сайті
                     </a>
                     <br />
                     <br />
-                    
+
                   </div>
                 </div>
               </div>
             </div>
           </Route>
-          <Route path="/government-notary-message/:notaryId?">
+          {currentUser === REGISTRATOR ? (
+          <Route path="/government-notary-message">
             <GovernmentNotaryMessage />
-          </Route>
-          <Route path="/private-notary-message/:notaryId?">
+          </Route>) : null}
+          {currentUser === REGISTRATOR ? (
+          <Route path="/private-notary-message">
             <PrivateNotaryMessage />
-          </Route>
-          <Route path="/organization-message/:notaryId?">
+          </Route>) : null}
+          {currentUser === REGISTRATOR ? (
+          <Route path="/organization-message">
             <OrganizationMessage />
-          </Route>
+          </Route>) : null}
+          {currentUser === ADMINISTRATOR ? (
+          <Route path="/message-list-page">
+            <MessageListPage />
+          </Route>) : null}
           <Route path="/">
             <div className="container-md mt-1">
               <div className="card bg-warning">

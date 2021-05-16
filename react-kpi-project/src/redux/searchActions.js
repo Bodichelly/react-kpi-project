@@ -4,7 +4,6 @@ import {
     SEARCH_BY_NAME,
     SEARCH_BY_NOTARY,
     CHANGE_NOTARY_TYPE,
-    CHANGE_USER_SEARCH_TYPE,
     FETCH_REGION,
     SET_REGION,
     FETCH_AREA,
@@ -13,9 +12,16 @@ import {
     SET_SETTLEMENT,
     SET_ADDRESS,
     UPDATE_SEARCH_DATA,
-    FETCH_SEARCH_DATA
+    FETCH_SEARCH_DATA,
+    CLEAR_SEARCH_DATA
 } from './types'
 
+
+const clearSearchData = () => {
+    return {
+        type: CLEAR_SEARCH_DATA
+    }
+}
 
 const changeNotaryType = (notaryTypes) => {
     return {
@@ -30,14 +36,6 @@ const switchSearchType = (searchType) => {
         payload: searchType
     }
 }
-
-const switchUserSearchType = (searchType) =>{
-    return {
-        type: CHANGE_USER_SEARCH_TYPE,
-        payload: searchType
-    }
-}
-
 
 const fetchRegion = () =>{
     return {
@@ -97,7 +95,6 @@ const fetchSearchData = (searchData) =>{
 export default {
     changeNotaryType,
     switchSearchType,
-    switchUserSearchType,
     fetchRegion,
     setRegion,
     fetchArea,
@@ -105,5 +102,6 @@ export default {
     fetchSettlement,
     setSettlement,
     updateSearchData,
-    fetchSearchData
+    fetchSearchData,
+    clearSearchData
 }
