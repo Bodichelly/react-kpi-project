@@ -33,7 +33,7 @@ function App() {
 
   return (
     <div className="App">
-      {isLoading ? <Loader></Loader> : null}
+      {isLoading && <Loader />}
       <Router>
         <Header />
         <Switch>

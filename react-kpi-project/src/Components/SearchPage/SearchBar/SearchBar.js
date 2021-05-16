@@ -14,6 +14,7 @@ import {
 import { useForm } from "react-hook-form";
 import randomStr from "src/utils/random";
 import { REGISTRATOR } from "../../../redux/types";
+import { replaceDefault } from "./SearchBar.utils";
 
 const SearchUsers = (props) => {
   const dispatch = useDispatch();
@@ -124,16 +125,16 @@ const SearchByAddressField = (props) => {
     }
     if (
       currentRegion === "default" ||
-      currentArea === "default" ||
-      currentSettlement === "default"
+      currentArea === "default"
     ) {
       //error
+      return;
     }
     dispatch(
       actions.fetchSearchData({
-        region: currentRegion,
-        area: currentArea,
-        settlement: currentSettlement,
+        regionId: replaceDefault(currentRegion),
+        areaId: replaceDefault(currentArea),
+        localityId: replaceDefault(currentSettlement),
         address: currentAddress,
       })
     );

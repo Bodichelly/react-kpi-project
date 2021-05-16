@@ -14,7 +14,9 @@ import './index.css';
 
 const saga = createSagaMiddleware()
 
-const store = createStore(rootReducer, compose(applyMiddleware(logger, saga)))
+const store = createStore(rootReducer, compose(applyMiddleware(
+  logger, 
+  saga)))
 
 saga.run(sagaWatcher)
 

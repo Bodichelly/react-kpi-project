@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import actions from "../../redux/actions";
 
 const CreateUserPage = (props) => {
@@ -24,20 +25,23 @@ const CreateUserPage = (props) => {
   const currentSerieNumber = watch().serieNumber;
   const currentPassportNumber = watch().passportNumber;
   const currentIpn = watch().ipn;
+  const history = useHistory();
 
   const onSubmitBtnClick = () => {
     const data = {
       lastName: currentLastName,
       firstName: currentFirstName,
       middleName: currentMiddleName,
-      email: currentEmail,
+      login: currentEmail,
       password: currentPassword,
-      birthDay: currentBirthDate,
-      serieNumber: currentSerieNumber,
+      birthday: currentBirthDate,
+      passportSeria: currentSerieNumber,
       passportNumber: currentPassportNumber,
-      IPN: currentIpn
+      ITN: currentIpn,
+      role: 'registrator',
     }
     dispatch(actions.addUser(data))
+    history.push('/');
   }
 
   const validateRepeatPassword = (value) => currentRepeatPassword === currentPassword;
