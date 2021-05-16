@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import actions from "../../../redux/actions";
 import { MESSAGE_TYPE_GOVERNMENT_NOTARY } from "../../../redux/types";
 import random from "../../../utils/random";
@@ -7,6 +8,7 @@ import random from "../../../utils/random";
 const GovernmentNotaryMessage = (props) => {
   const { handleSubmit, register } = useForm();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const handler = (data) => {
     dispatch(
@@ -16,6 +18,7 @@ const GovernmentNotaryMessage = (props) => {
         type: MESSAGE_TYPE_GOVERNMENT_NOTARY,
       })
     );
+    history.push('/');
   };
 
   return (
@@ -328,7 +331,7 @@ const GovernmentNotaryMessage = (props) => {
                     <input
                       class="form-control"
                       id="updatedLastName"
-                      {...register("updatedLastName", { required: true })}
+                      {...register("updatedLastName", { required: false })}
                     />
                   </div>
                   <div className="mb-3">
@@ -338,7 +341,7 @@ const GovernmentNotaryMessage = (props) => {
                     <input
                       class="form-control"
                       id="updatedFirstName"
-                      {...register("updatedFirstName", { required: true })}
+                      {...register("updatedFirstName", { required: false })}
                     />
                   </div>
                   <div className="mb-3">
@@ -348,7 +351,7 @@ const GovernmentNotaryMessage = (props) => {
                     <input
                       class="form-control"
                       id="updatedMiddleName"
-                      {...register("updatedMiddleName", { required: true })}
+                      {...register("updatedMiddleName", { required: false })}
                     />
                   </div>
                 </div>

@@ -2,6 +2,7 @@ import { tableLabelsMap } from "./MessageList.utils";
 import { hiddenDisplayKeys } from "./MessageList.utils";
 
 const MessageListItem = ({ message }) => {
+  console.log('message:', message)
   const tableKeysMap = tableLabelsMap[message.type] || {};
   const displayTable = Object.entries(message).reduce(
     (res, [messageKey, value]) => ({
@@ -27,7 +28,7 @@ const MessageListItem = ({ message }) => {
         >
           #{displayTable?.id?.value} <br />
           <br />
-          {displayTable.type.translated}
+          {displayTable.type?.translated}
         </button>
       </h2>
       <div

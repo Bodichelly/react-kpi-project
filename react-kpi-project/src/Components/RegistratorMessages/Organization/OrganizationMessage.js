@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import actions from "../../../redux/actions";
 import { MESSAGE_TYPE_ORGANIZATION } from "../../../redux/types";
 import random from "../../../utils/random";
@@ -7,6 +8,8 @@ import random from "../../../utils/random";
 const OrganizationMessage = (props) => {
   const { handleSubmit, register } = useForm();
   const dispatch = useDispatch();
+
+  const history = useHistory();
 
   const handler = (data) => {
     dispatch(
@@ -16,6 +19,7 @@ const OrganizationMessage = (props) => {
         type: MESSAGE_TYPE_ORGANIZATION,
       })
     );
+    history.push('/');
   };
 
   return (
@@ -243,7 +247,7 @@ const OrganizationMessage = (props) => {
             <hr />
             <div className="form-group">
               <p className="form-label mr-2">
-                Відомості про зміну імені нотаріуса (у випадку внесення змін
+                Відомості про робоче місце нотаріуса (у випадку внесення змін
                 заповнюються відповідні поля)
               </p>
               <div className="form-group row">

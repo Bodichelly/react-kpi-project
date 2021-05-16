@@ -220,6 +220,9 @@ function* loginUser(action) {
     localStorage.setItem('currentUser', yield select(state => state.app.currentUser))
   } catch (e) {
     yield put(actions.hideLoader());
+    yield put(actions.showMessage('Некоректні аутентифікаційні дані, спробуйте змініти логін, або пароль'))
+    yield call(delay, 3);
+    yield put(actions.hideMessage())
    }
 }
 
@@ -262,7 +265,7 @@ async function removeUserRequest(userId) {
 
 function* createNewMessage(action) {
   try {
-    const messages = JSON.parse(localStorage.getItem('messages'));
+    const messages = JSON.parse(localStorage.getItem('messages') || '[]');
     messages.push(action.payload);
     localStorage.setItem('messages', JSON.stringify(messages))
     yield put(actions.updateMessageList());

@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import actions from "../../../redux/actions";
 import { MESSAGE_TYPE_PRIVATE_NOTARY } from "../../../redux/types";
 import random from "../../../utils/random";
@@ -8,6 +9,7 @@ const PrivateNotaryMessage = (props) => {
   const { handleSubmit, register } = useForm();
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const handler = (data) => {
     dispatch(
@@ -17,6 +19,7 @@ const PrivateNotaryMessage = (props) => {
         type: MESSAGE_TYPE_PRIVATE_NOTARY,
       })
     );
+    history.push('/');
   };
 
   return (
@@ -37,16 +40,11 @@ const PrivateNotaryMessage = (props) => {
                     Регіон
                   </label>
 
-                  <select
-                    className="form-select"
+                  <input
+                    class="form-control"
                     id="region"
                     {...register("region", { required: true })}
-                  >
-                    <option selected>Регіон</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
+                  />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="lastName" class="form-label mr-2">
