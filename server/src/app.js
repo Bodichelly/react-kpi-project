@@ -13,7 +13,7 @@ const app = express();
 
 sequelize
   .authenticate()
-  .then(() => sequelize.sync(/* { force: true } */))
+  .then(() => sequelize.sync())
   .then(() => {
     // eslint-disable-next-line no-console
     console.log('Connection has been established successfully.');
