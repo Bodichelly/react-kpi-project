@@ -66,6 +66,7 @@ const SearchItemDepartment = (props) => {
 };
 
 const SearchItemNotary = (props) => {
+  console.log('props:', props)
   const currentUser = useSelector((state) => state.app.currentUser);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -80,7 +81,7 @@ const SearchItemNotary = (props) => {
           />
           <span className="fw-bold">Відомості про нотаріус: </span>{props.lastName} {props.firstName} {props.middleName}
         </div>
-        <div className="card-text">Номер свідоцтва: {props.certificateNumber}, Телефонний номер: {props.phoneNumbers}</div>
+        <div className="card-text">Номер свідоцтва: {props.certificateNumber}, Телефонний номер: {props?.contact?.phoneNumbers[0]?.phoneNumber}</div>
         { currentUser === ADMINISTRATOR ?(
         <div class="d-flex justify-content-end">
           <button onClick={() => history.push('/private-notary-page/'+props.id)} className="btn btn-primary m-1">Редагувати</button>

@@ -15,34 +15,35 @@ import {
 } from "./types";
 
 const initialState = {
-  data: [
-    {
-      firstName: "Антон",
-      lastName: "Воробйов",
-      middleName: "Олексійович",
-      certificateNumber: "170",
-      isPrivate: true,
-      phoneNumbers: "+380592949243",
-      regionId: 2,
-      areaId: 1,
-      localityId: 1,
-      address: "вул. Центральна, 15",
-      id: "143183517351375137"
-    },
-    {
-      firstName: "Антон",
-      lastName: "Воробйов",
-      middleName: "Олексійович",
-      certificateNumber: "170",
-      isPrivate: true,
-      phoneNumbers: "+380592949243",
-      regionId: 2,
-      areaId: 1,
-      localityId: 1,
-      address: "вул. Центральна, 15",
-      id: "143183517351375137"
-    },
-  ],
+  // data: [
+  //   {
+  //     firstName: "Антон",
+  //     lastName: "Воробйов",
+  //     middleName: "Олексійович",
+  //     certificateNumber: "170",
+  //     isPrivate: true,
+  //     phoneNumbers: "+380592949243",
+  //     regionId: 2,
+  //     areaId: 1,
+  //     localityId: 1,
+  //     address: "вул. Центральна, 15",
+  //     id: "143183517351375137"
+  //   },
+  //   {
+  //     firstName: "Антон",
+  //     lastName: "Воробйов",
+  //     middleName: "Олексійович",
+  //     certificateNumber: "170",
+  //     isPrivate: true,
+  //     phoneNumbers: "+380592949243",
+  //     regionId: 2,
+  //     areaId: 1,
+  //     localityId: 1,
+  //     address: "вул. Центральна, 15",
+  //     id: "143183517351375137"
+  //   },
+  // ],
+  data: [],
   searchType: SEARCH_BY_ADDRESS,
   departmentTypes: [SEARCH_PRIVATE_NOTATY, SEARCH_STATE_NOTARY_DEPARTMENT],
   region: [],

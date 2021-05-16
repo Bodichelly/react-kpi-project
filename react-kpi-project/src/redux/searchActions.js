@@ -111,5 +111,6 @@ export default {
     setSettlement,
     updateSearchData,
     fetchSearchData,
-    clearSearchData
+    clearSearchData,
+    setSearchQueryData
 }

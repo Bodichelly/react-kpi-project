@@ -248,9 +248,8 @@ function* fetchSettlement(action) {
       return;
     }
     yield put(actions.showLoader());
-    //yield call(delay, 1);
     const area = action.payload;
-    const settlements = yield call(getLocalitiesByAreaId, area.id);
+    const settlements = yield call(getLocalitiesByAreaId, area);
     yield put(actions.setSettlement(settlements));
     yield put(actions.hideLoader());
   } catch (e) { }
@@ -259,15 +258,17 @@ function* fetchSettlement(action) {
 function* fetchSearchData(action) {
   try {
     //
-    return;
+    // return;
     //
     const searchType = yield select((state) => state.search.searchType);
+    console.log('searchType:', searchType)
     const data = action ? action.payload : {};
+    console.log('data:', data)
     yield put(actions.setSearchQueryData(data));
     let searchData = [];
     yield put(actions.showLoader());
     if (searchType === SEARCH_BY_ADDRESS) {
-      searchData = yield call(() => { }, data);
+      searchData = yield call(searchByAddress, data);
     } else if (searchType === SEARCH_BY_NAME) {
       searchData = yield call(() => { }, data);
     } else if (searchType === SEARCH_BY_NOTARY) {
@@ -275,184 +276,33 @@ function* fetchSearchData(action) {
     } else if (searchType === SEARCH_USERS) {
       searchData = yield call(() => { }, data);
     }
+    console.log('searchData:', searchData)
     yield put(actions.updateSearchData(searchData));
     yield put(actions.hideLoader());
   }
-  catch (e) { }
+  catch (e) { 
+    console.log('e:', e)
+  }
 }
 
-// function* selectUserWorker() {
-//   try {
-//     yield put({type: REQUEST_POSTS})
-//   } catch (e) {
-//     yield all([
-//       put(showLoader(POSTS)),
-//       put(showErrorMessage("Failed user selection"))
-//     ])
-//     // yield put(showLoader(POSTS))
-//     // yield put(showErrorMessage("Failed user selection"))
-//     yield call(delay, 5);
-//     yield put(hideErrorMessage())
-//   }
-// }
-
-// function* fetchPostsWorker() {
-//   try {
-//     yield put(showLoader(POSTS))
-//     const id = yield select(state=>state.users.selectedUserId)
-//     const payload = yield call(fetchPosts, id)
-//     yield put({ type: FETCH_POSTS, payload })
-//     yield put(hideLoader(POSTS))
-//   } catch (e) {
-//     yield put(showLoader(POSTS))
-//     yield put(showErrorMessage("Failed posts fetching"))
-//     yield call(delay, 5);
-//     yield put(hideErrorMessage())
-//   }
-// }
-
-// function* fetchUsersWorker() {
-//   try {
-//     yield put(showLoader(USERS))
-//     const payload = yield call(fetchUsers)
-//     yield put({ type: FETCH_USERS, payload })
-//     yield put(hideLoader(USERS))
-//   } catch (e) {
-//     yield put(showLoader(USERS))
-//     yield put(showErrorMessage("Failed users fetching"))
-//     yield call(delay, 5);
-//     yield put(hideErrorMessage())
-//   }
-// }
-
-// async function fetchPosts(id) {
-//   const response = await fetch('https://jsonplaceholder.typicode.com/posts?userId='+id)
-//   return await response.json()
-// }
-
-// async function fetchUsers() {
-//   const response = await fetch("https://jsonplaceholder.typicode.com/users?_limit=5")
-//   return await response.json()
-// }
+async function searchByAddress(query) {
+  const { data } = await axios.post('http://localhost:3000/api/search/address', query)
+  return data;
+}
 
 async function getRegions() {
-  return [
-    {
-      "id": 1,
-      "name": "Вінницька обл",
-      "createdAt": "2021-04-25T16:31:30.567Z",
-      "updatedAt": "2021-04-25T16:31:30.567Z"
-    },
-    {
-      "id": 2,
-      "name": "Житомирська обл",
-      "createdAt": "2021-04-25T16:31:30.567Z",
-      "updatedAt": "2021-04-25T16:31:30.567Z"
-    }]
-  // const response = await fetch("http://localhost:3000/api/regions");
-  // return response.json();
+  const { data } = await axios.get("http://localhost:3000/api/regions");
+  return data;
 }
 
 async function getAreasByRegionId(id) {
-  if (id == 1) {
-    return [
-      {
-        "id": 1,
-        "name": "for region 1 #1",
-        "createdAt": "2021-04-25T16:31:30.567Z",
-        "updatedAt": "2021-04-25T16:31:30.567Z"
-      },
-      {
-        "id": 2,
-        "name": "for region 1 #2",
-        "createdAt": "2021-04-25T16:31:30.567Z",
-        "updatedAt": "2021-04-25T16:31:30.567Z"
-      },
-    ]
-  } else {
-    return [
-      {
-        "id": 3,
-        "name": "for region 2 #3",
-        "createdAt": "2021-04-25T16:31:30.567Z",
-        "updatedAt": "2021-04-25T16:31:30.567Z"
-      },
-      {
-        "id": 4,
-        "name": "for region 2 #4",
-        "createdAt": "2021-04-25T16:31:30.567Z",
-        "updatedAt": "2021-04-25T16:31:30.567Z"
-      },
-    ]
-  }
-  // const response = await fetch(`http://localhost:3000/api/areas?id=${id}`);
-  // return response.json();
+  const { data } = await axios.get(`http://localhost:3000/api/areas?id=${id}`);
+  return data;
 }
 
 async function getLocalitiesByAreaId(id) {
-  if (id == 1) {
-    return [
-      {
-        "id": 1,
-        "name": "for area 1 #1",
-        "createdAt": "2021-04-25T16:31:30.567Z",
-        "updatedAt": "2021-04-25T16:31:30.567Z"
-      },
-      {
-        "id": 2,
-        "name": "for area 1 #2",
-        "createdAt": "2021-04-25T16:31:30.567Z",
-        "updatedAt": "2021-04-25T16:31:30.567Z"
-      },
-    ]
-  } else if (id == 2) {
-    return [
-      {
-        "id": 3,
-        "name": "for area 1 #3",
-        "createdAt": "2021-04-25T16:31:30.567Z",
-        "updatedAt": "2021-04-25T16:31:30.567Z"
-      },
-      {
-        "id": 4,
-        "name": "for area 1 #4",
-        "createdAt": "2021-04-25T16:31:30.567Z",
-        "updatedAt": "2021-04-25T16:31:30.567Z"
-      },
-    ]
-  } else if (id == 3) {
-    return [
-      {
-        "id": 5,
-        "name": "for area 1 #5",
-        "createdAt": "2021-04-25T16:31:30.567Z",
-        "updatedAt": "2021-04-25T16:31:30.567Z"
-      },
-      {
-        "id": 6,
-        "name": "for area 1 #6",
-        "createdAt": "2021-04-25T16:31:30.567Z",
-        "updatedAt": "2021-04-25T16:31:30.567Z"
-      },
-    ]
-  } else {
-    return [
-      {
-        "id": 7,
-        "name": "for area 1 #7",
-        "createdAt": "2021-04-25T16:31:30.567Z",
-        "updatedAt": "2021-04-25T16:31:30.567Z"
-      },
-      {
-        "id": 8,
-        "name": "for area 1 #8",
-        "createdAt": "2021-04-25T16:31:30.567Z",
-        "updatedAt": "2021-04-25T16:31:30.567Z"
-      },
-    ]
-  }
-  // const response = await fetch(`http://localhost:3000/api/localities?id=${id}`);
-  // return response.json();
+  const { data } = await axios.get(`http://localhost:3000/api/localities?id=${id}`);
+  return data;
 }
 
 function getNotaries() {
