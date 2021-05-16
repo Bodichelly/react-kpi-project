@@ -5,8 +5,23 @@ import {
     CHANGE_USER_TYPE,
     LOGIN_USER,
     LOGOUT_USER,
-    SET_USER_DATA
+    SET_USER_DATA,
+    SHOW_MESSAGE,
+    HIDE_MESSAGE
 } from './types'
+
+const showMessage = (message) => {
+    return {
+        type: SHOW_MESSAGE,
+        payload: message
+    }
+}
+
+const hideMessage = () => {
+    return {
+        type: HIDE_MESSAGE,
+    }
+}
 
 const hideLoader = () => {
     return {
@@ -53,5 +68,7 @@ export default {
     changeUserType,
     loginUser, 
     logoutUser,
-    setUserData
+    setUserData,
+    showMessage, 
+    hideMessage
 }

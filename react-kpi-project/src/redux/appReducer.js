@@ -8,6 +8,8 @@ import {
   LOGIN_USER,
   LOGOUT_USER,
   SET_USER_DATA,
+  SHOW_MESSAGE,
+  HIDE_MESSAGE
 } from "./types";
 
 const initialState = {
@@ -16,6 +18,7 @@ const initialState = {
   currentUser: localStorage.getItem('currentUser') || COMMON,
   email: "",
   username: "",
+  message: ""
 };
 
 export const appReducer = (state = initialState, action) => {
@@ -28,6 +31,10 @@ export const appReducer = (state = initialState, action) => {
       return { ...state, currentUser: action.payload };
     case LOGOUT_USER:
       return { ...state, currentUser: COMMON, email: "", username: "" };
+    case SHOW_MESSAGE:
+      return { ...state, message:action.payload };
+    case HIDE_MESSAGE:
+      return { ...state, message: ""};
     case SET_USER_DATA:
       return {
         ...state,

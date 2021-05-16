@@ -17,6 +17,7 @@ import { ADMINISTRATOR, REGISTRATOR } from "./redux/types";
 import Loggin from "./Components/Loggin/Loggin";
 import Header from "./Components/Header/Header";
 import Loader from "./Components/Loader/Loader";
+import GloabalMessage from "./Components/GloabalMessage/GlobalMessage";
 import SearchPage from "./Components/SearchPage/SearchPageTemplate/SearchPage";
 import PrivateNotaryPage from "./Components/NotaryPage/PrivateNotaryPage"
 import StateNotaryDepartment from "./Components/NotaryPage/StateNotaryDepartmentPage"
@@ -30,9 +31,11 @@ import MessageListPage from './Components/RegistratorMessages/MessageList/Messag
 function App() {
   const isLoading = useSelector((state) => state.app.isLoading);
   const currentUser = useSelector((state) => state.app.currentUser);
+  const message = !!(useSelector((state) => state.app.message));
 
   return (
     <div className="App">
+      {message && <GloabalMessage />}
       {isLoading && <Loader />}
       <Router>
         <Header />
