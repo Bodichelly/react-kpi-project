@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import actions from "../../redux/actions";
 
 
@@ -15,12 +16,16 @@ const Loggin = () => {
     handleSubmit,
   } = useForm();
 
+  const history = useHistory();
+
 
   const currentEmail = watch().email;
   const currentPassword = watch().password;
 
   const onSubmitBtnClick = () => {
-    dispatch(actions.loginUser({currentEmail, currentPassword}))
+    console.log('currentEmail, currentPassword:', currentEmail, currentPassword)
+    dispatch(actions.loginUser({login: currentEmail, password: currentPassword}))
+    history.push('/')
   }
 
   return (

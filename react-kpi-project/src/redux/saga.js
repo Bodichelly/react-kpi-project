@@ -6,6 +6,7 @@ import {
   all,
   takeLatest,
 } from "redux-saga/effects";
+import axios from "axios";
 import {
   UPDATE_SEARCH_DATA,
   FETCH_SEARCH_DATA,
@@ -62,7 +63,7 @@ export function* sagaWatcher() {
 //takeevery takeLatest takeLeading
 
 function* addNewNotary(action) {
-  try {
+try {
     const notaryData = action.payload;
     yield put(actions.showLoader());
     yield call(addNewNotaryRequest, notaryData);
@@ -70,8 +71,8 @@ function* addNewNotary(action) {
   } catch (e) { }
 }
 async function addNewNotaryRequest(notaryData) {
-  // make request
-  //await fetch("http://localhost:3000/api/regions");
+  console.log('notaryData:', notaryData)
+  // await fetch("http://localhost:3000/api/notaries");
 }
 
 function* addNewDepartment(action) {
@@ -149,15 +150,15 @@ function* loginUser(action) {
   try {
     const credentials = action.payload;
     yield put(actions.showLoader());
-    const userData = yield call(loginUserRequest, credentials);
-    yield put(actions.setUserData(userData));
+    const { data: { user }} = yield call(loginUserRequest, credentials);
+    console.log('userData:', user);
+    yield put(actions.setUserData(user));
     yield put(actions.hideLoader());
   } catch (e) { }
 }
 
 async function loginUserRequest(userData) {
-  // make request
-  //await fetch("http://localhost:3000/api/regions");
+  return axios.post('http://localhost:3000/api/auth/login', userData);
 }
 
 function* addUser(action) {
